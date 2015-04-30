@@ -1,3 +1,1 @@
-I made a commit->this line modified in branch
-
-This line added in branch
+I made a commit. 
