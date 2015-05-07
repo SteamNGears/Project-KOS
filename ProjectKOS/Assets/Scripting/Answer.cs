@@ -13,6 +13,42 @@ namespace Database {
 
 	public class Answer {
 
+        public string AnswerString
+        {
+            get
+            {
+                return this.AnswerString;
+            }
 
+            set
+            {
+                this.AnswerString = value;
+            }
+        }
+
+        public bool Correct
+        {
+            get
+            {
+                return this.Correct;
+            }
+
+            set
+            {
+                this.Correct = value;
+            }
+        }
+
+        protected Answer()
+        {
+            this.AnswerString = "";
+            this.Correct = false;
+        }
+
+        public Answer(string answerString, bool correct)
+        {
+            this.AnswerString = answerString;
+            this.Correct = correct;
+        }
 	}
 }

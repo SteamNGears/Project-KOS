@@ -11,8 +11,25 @@ using System.Collections;
 
 namespace Database {
 
-	public class DifficultyRestraint {
+	public class DifficultyRestraint : Restraint{
 
+        private int _upperBound;
+        public DifficultyRestraint(int difficulty)
+        {
+            Value = "" + difficulty;
+            Field = "difficulty";
+        }
 
+        public DifficultyRestraint(int lowerBound, int upperBound)
+        {
+            Value = "" + lowerBound;
+            Field = "difficulty";
+        }
+
+        public string[] getRange()
+        {
+            string[] returnString = { Value, "" + _upperBound };
+            return returnString;
+        }
 	}
 }

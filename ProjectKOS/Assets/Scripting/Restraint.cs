@@ -9,10 +9,38 @@
 
 using System.Collections;
 
-namespace Database {
+namespace Database 
+{
 
-	public class Restraint {
+	public abstract class Restraint 
+	{
 
+		public string Value 
+		{
+            get 
+            { 
+                return Value; 
+            }
+            
+            protected set 
+            { 
+                Value = value; 
+            }
+		}
 
+        public string Field
+        {
+            get
+            {
+                return Field;
+            }
+
+            protected set
+            {
+                Field = value;
+            }
+        }
+
+        public abstract string[] getRange();
 	}
 }

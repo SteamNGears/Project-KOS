@@ -7,12 +7,55 @@
  * Rev. Author: Aryk Anderson
  * */
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Database {
 
-	public class AnswerPool {
+	public class AnswerPool : IEnumerable<Answer> {
 
+        public List<Answer> Answers
+        {
+            get
+            {
+                return this.Answers;
+            }
 
+            protected set
+            {
+                this.Answers = value;
+            }
+        }
+
+        public int Size
+        {
+            get
+            {
+                return Answers.Count;
+            }
+
+            private set { }
+        }
+        public AnswerPool()
+        {
+            this.Answers = new List<Answer>();
+        }
+
+        public void AddAnswer(Answer answer)
+        {
+            this.Answers.Add(answer);
+        }
+
+        public Answer Get(int index)
+        {
+            if (index > 0 && index < Answers.Count)
+                return Answers[index];
+
+            return new NullAnswer();
+        }
+
+        public IEnumerator<Answer> GetEnumerator()
+        {
+            return Answers.GetEnumerator();
+        }
 	}
 }

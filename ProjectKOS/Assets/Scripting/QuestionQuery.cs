@@ -7,12 +7,30 @@
  * Rev. Author: Aryk Anderson
  * */
 
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Database {
 
 	public class QuestionQuery {
 
+		private List<Restraint> _restraints;
 
+		public QuestionQuery() 
+		{
+			_restraints = new List<Restraint> ();
+		}
+
+		public void addRestraint(Restraint newRestraint)
+		{
+			if (newRestraint == null)
+				return;
+
+			_restraints.Add (newRestraint);
+		}
+
+		public List<Restraint> receiveRestraints()
+		{
+			return _restraints;
+		}
 	}
 }

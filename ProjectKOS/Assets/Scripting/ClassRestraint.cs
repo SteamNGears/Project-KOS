@@ -11,9 +11,20 @@ using System.Collections;
 
 namespace Database {
 
-	public class ClassRestraint {
+	public class ClassRestraint : Restraint {
 
+        public ClassRestraint(string classValue)
+        {
+            Value = classValue;
+            Field = "class";
+        }
 
+        public string[] getRange()
+        {
+            string[] returnString = { Value, Value };
+
+            return returnString;
+        }
 	}
 
 }

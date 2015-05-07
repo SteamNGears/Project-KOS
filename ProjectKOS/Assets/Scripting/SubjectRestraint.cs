@@ -11,8 +11,19 @@ using System.Collections;
 
 namespace Database {
 
-	public class SubjectRestraint {
+	public class SubjectRestraint : Restraint {
 
+        public SubjectRestraint(string subject)
+        {
+            Value = subject;
+            Field = "subject";
+        }
 
+        public string[] getRange()
+        {
+            string[] returnString = { Value, Value };
+
+            return returnString;
+        }
 	}
 }
