@@ -19,11 +19,13 @@ namespace AssemblyCSharp
 		Button btnInteract;				/**The interact button itself(gotten from the canvas)*/
 		private bool buttonClicked;		/**Whether or not the interact button has been clicked*/
 
+
 		/**
 		 * Sets default values and calls base constructor
 		 * */
 		public InteractButtonState (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
 		{
+			this.actee.GetComponent<Interaction> ().ExitSignal += this.Suspend;
 			buttonClicked = false;
 		}
 
@@ -37,6 +39,7 @@ namespace AssemblyCSharp
 			//if the gui doesn't exist, create it
 			if (cvsQuestion == null && this.actor != null) 
 			{
+
 				if(this.actor.tag == "Player")
 				{
 					cvsQuestion = GameObject.Instantiate(Resources.Load("InteractionCanvas/InteractCanvas") as GameObject);//get the canvas
@@ -48,7 +51,6 @@ namespace AssemblyCSharp
 
 			//if the button has been clicked,
 			if (this.buttonClicked) {
-				Debug.Log("Button Clicked");
 				GameObject.Destroy(this.cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}
@@ -60,16 +62,17 @@ namespace AssemblyCSharp
 		/**
 		 * 
 		 * */
-		public override void Suspend()
+		public override void Suspend(Collider c)
 		{
-			Debug.Log("Cleared event");
+			//remove event listener
+			this.actee.GetComponent<Interaction> ().ExitSignal -= this.Suspend;
+			this.actor = null;
 			this.btnInteract.onClick.RemoveListener (this.onButtonClick);//clean up listener
 			GameObject.Destroy (this.cvsQuestion);
 		}
 
 		void onButtonClick()
 		{
-			Debug.Log ("Click event called! Clearing event");
 			this.buttonClicked = true;	//set button clicked to true
 			this.btnInteract.onClick.RemoveListener (this.onButtonClick);//clean up listener
 		}

@@ -24,6 +24,8 @@ namespace AssemblyCSharp
 		 * The constructor is called with one required param: the actee which is the object being acted upon
 		 * It also has oe optional param called actor which is the object acting upon the state machine
 		 * Actor can also be changed on the fly to allow for more dynamic behaviour
+		 * @param GameObject _actee - the gameobject that is is being interacted with
+		 * @param GameObject _actor - the GameObject that is interacting with the _actee
 		 * */
 		public InteractionState (GameObject _actee, GameObject _actor = null)
 		{
@@ -33,11 +35,15 @@ namespace AssemblyCSharp
 
 		/**
 		 * The generic bahaviour of the InteractionState
-		 * 
+		 * @return InteractionState - the next state we want to move to (could be this)
 		 * */
 		public abstract InteractionState Behave();
 
-		public virtual void Suspend()
+		/**
+		 * A method for suspending the state 
+		 * Useful for doing any kind of cleanup
+		 * */
+		public virtual void Suspend(Collider c = null)
 		{
 			//do nothing
 		}
