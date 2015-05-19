@@ -8,6 +8,9 @@
  * */
 
 using System.Collections;
+using System.Collections.Generic;
+using Mono.Data.Sqlite;
+using System;
 
 namespace Database {
 
@@ -28,13 +31,30 @@ namespace Database {
                 Instance = value;
             }
         }
-
         public DatabaseConnector() { }
 
         public QuestionPool GetQuestions(QuestionQuery query)
         {
+            try
+            {
+
+            }
+
+            catch (SqliteException e)
+            {
+                Console.WriteLine("Error occurred accessing database.");
+            }
+            
+            
             return new QuestionPool(); //TODO
         }
+
+        private string GenerateQuery(QuestionQuery query)
+        {
+            return "SELECT * FROM Meta NATURAL JOIN Questions";
+            //TODO, change this to actually select the correct questions as per the query
+        }
+
 
 	}
 }
