@@ -36,6 +36,12 @@ namespace Database {
             this.Questions = questionsList;
         }
 
+        public Question this[int index]
+        {
+            get { return Questions[index]; }
+            set { Questions[index] = value; }
+        }
+
         public IEnumerator<Question> GetEnumerator()
         {
             return Questions.GetEnumerator();
@@ -52,6 +58,11 @@ namespace Database {
                 return Questions[index];
 
             return new NullQuestion();
+        }
+        
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 	}
 }

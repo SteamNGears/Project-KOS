@@ -8,10 +8,11 @@
  * */
 
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Database {
 
-	public class AnswerPool : IEnumerable<Answer> {
+	public class AnswerPool : System.Collections.Generic.IEnumerable<Answer> {
 
         public List<Answer> Answers
         {
@@ -45,17 +46,21 @@ namespace Database {
             this.Answers.Add(answer);
         }
 
-        public Answer Get(int index)
+        public Answer this[int index] 
         {
-            if (index > 0 && index < Answers.Count)
-                return Answers[index];
-
-            return new NullAnswer();
+            get { return Answers[index]; }
+            set { Answers[index] = value; }
         }
 
         public IEnumerator<Answer> GetEnumerator()
         {
             return Answers.GetEnumerator();
         }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
 	}
 }
