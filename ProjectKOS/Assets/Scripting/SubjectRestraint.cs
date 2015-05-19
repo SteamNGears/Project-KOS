@@ -19,7 +19,7 @@ namespace Database {
             Field = "subject";
         }
 
-        public string[] getRange()
+        public override string[] getRange()
         {
             string[] returnString = { Value, Value };
 

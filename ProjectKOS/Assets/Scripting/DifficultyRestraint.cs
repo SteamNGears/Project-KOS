@@ -26,7 +26,7 @@ namespace Database {
             Field = "difficulty";
         }
 
-        public string[] getRange()
+        public override string[] getRange()
         {
             string[] returnString = { Value, "" + _upperBound };
             return returnString;

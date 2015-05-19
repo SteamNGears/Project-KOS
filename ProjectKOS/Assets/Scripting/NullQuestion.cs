@@ -15,7 +15,7 @@ namespace Database
             this.Type = "";
         }
 
-        public int DisplayForm()
+        public override int DisplayForm()
         {
             return 0;
             //TODO change this to GUI stuff
