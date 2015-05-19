@@ -11,8 +11,16 @@ using System.Collections;
 
 namespace Database {
 
-	public class ShortAnswerQuestion {
+	public class ShortAnswerQuestion : Question
+    {
+        public ShortAnswerQuestion()
+        {
+            this.Type = "SHORT_ANSWER";
+        }
 
+        public ShortAnswerQuestion(string subject, int difficulty, string qString) :
+            base(subject, "MULTIPLE_CHOICE", difficulty, qString)
+        { }
 
 	}
 }

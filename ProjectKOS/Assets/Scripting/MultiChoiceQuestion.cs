@@ -11,16 +11,15 @@ using System.Collections;
 
 namespace Database {
 
-	public class MultiChoiceQuestion {
+	public class MultiChoiceQuestion : Question
+    {
+        public MultiChoiceQuestion()
+        {
+            this.Type = "MULTIPLE_CHOICE";
+        }
 
-		// Use this for initialization
-		void Start () {
-		
-		}
-		
-		// Update is called once per frame
-		void Update () {
-		
-		}
+        public MultiChoiceQuestion(string subject, int difficulty, string qString) :
+            base(subject, "MULTIPLE_CHOICE", difficulty, qString)
+        { }
 	}
 }

@@ -12,13 +12,7 @@ namespace Database
             this.Difficulty = 0;
             this.QuestionString = "";
             this.Subject = "";
-            this.Type = "";
-        }
-
-        public override int DisplayForm()
-        {
-            return 0;
-            //TODO change this to GUI stuff
+            this.Type = "NULL";
         }
     }
 }

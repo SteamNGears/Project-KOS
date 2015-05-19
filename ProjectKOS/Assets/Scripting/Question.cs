@@ -84,6 +84,18 @@ namespace Database {
          * The method should return it's GUI display to be embedded in whatever document we
          * want to display it in. This will be moved to an interface when we define it.
          */
-        public abstract int DisplayForm();
+
+        public Question()
+        {
+            this.Answers = new AnswerPool();
+        }
+
+        public Question(string subject, string type, int difficulty, string qString)
+        {
+            this.Subject = subject;
+            this.Type = type;
+            this.Difficulty = difficulty;
+            this.QuestionString = qString;
+        }
 	}
 }

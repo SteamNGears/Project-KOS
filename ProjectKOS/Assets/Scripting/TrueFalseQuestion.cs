@@ -11,8 +11,15 @@ using System.Collections;
 
 namespace Database {
 
-	public class TrueFalseQuestion {
-
+	public class TrueFalseQuestion : Question
+    {
+        public TrueFalseQuestion() 
+        {
+            this.Type = "TRUE_FALSE";
+        }
+        public TrueFalseQuestion(string subject, int difficulty, string qString) :
+            base(subject, "TRUE_FALSE", difficulty, qString)
+        { }
 
 	}
 }
