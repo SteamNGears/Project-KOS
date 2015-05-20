@@ -14,7 +14,7 @@ public class Interaction : MonoBehaviour
 	{
 		//if we have not defined a starting state, then set the default start state to a simple button interaction. 
 		if (this.startingState == null) 
-			this.startingState = new InteractButtonState (this.gameObject);
+			this.startingState = new InteractTestUI_State (this.gameObject);
 		this.currentState = this.startingState;
 	}
 	
@@ -34,7 +34,6 @@ public class Interaction : MonoBehaviour
 	void OnTriggerStay()
 	{
 		this.currentState = this.currentState.Behave();
-		
 	}
 
 	//Reset the state after the user has walked away
