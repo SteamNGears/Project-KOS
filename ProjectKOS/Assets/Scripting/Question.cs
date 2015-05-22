@@ -14,6 +14,16 @@ namespace Database {
 
 	public abstract class Question {
 
+        public string ID
+        {
+            get
+            {
+                return this.ID;
+            }
+
+            private set
+            {  }
+        }
         public string Subject
         {
             get
@@ -90,7 +100,7 @@ namespace Database {
             this.Answers = new AnswerPool();
         }
 
-        public Question(string subject, string type, int difficulty, string qString)
+        public Question(string subject, string type, int difficulty, string qString, string id)
         {
             this.Subject = subject;
             this.Type = type;

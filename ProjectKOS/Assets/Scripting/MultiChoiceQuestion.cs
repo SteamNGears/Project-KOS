@@ -18,8 +18,8 @@ namespace Database {
             this.Type = "MULTIPLE_CHOICE";
         }
 
-        public MultiChoiceQuestion(string subject, int difficulty, string qString) :
-            base(subject, "MULTIPLE_CHOICE", difficulty, qString)
+        public MultiChoiceQuestion(string subject, int difficulty, string qString, string id) :
+            base(subject, "MULTIPLE_CHOICE", difficulty, qString, id)
         { }
 	}
 }

@@ -8,6 +8,7 @@
  * */
 
 using System.Collections;
+using System;
 
 namespace Database {
 
@@ -49,6 +50,16 @@ namespace Database {
         {
             this.AnswerString = answerString;
             this.Correct = correct;
+        }
+
+        public Answer(string answerString, string correct)
+        {
+            this.AnswerString = answerString;
+
+            if (Int32.Parse(correct) == 0)
+                this.Correct = false;
+            else
+                this.Correct = true;
         }
 	}
 }

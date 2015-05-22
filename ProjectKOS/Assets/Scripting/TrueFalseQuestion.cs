@@ -17,8 +17,8 @@ namespace Database {
         {
             this.Type = "TRUE_FALSE";
         }
-        public TrueFalseQuestion(string subject, int difficulty, string qString) :
-            base(subject, "TRUE_FALSE", difficulty, qString)
+        public TrueFalseQuestion(string subject, int difficulty, string qString, string id) :
+            base(subject, "TRUE_FALSE", difficulty, qString, id)
         { }
 
 	}

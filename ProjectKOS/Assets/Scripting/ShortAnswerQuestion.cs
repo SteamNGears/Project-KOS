@@ -18,8 +18,8 @@ namespace Database {
             this.Type = "SHORT_ANSWER";
         }
 
-        public ShortAnswerQuestion(string subject, int difficulty, string qString) :
-            base(subject, "MULTIPLE_CHOICE", difficulty, qString)
+        public ShortAnswerQuestion(string subject, int difficulty, string qString, string id) :
+            base(subject, "MULTIPLE_CHOICE", difficulty, qString, id)
         { }
 
 	}

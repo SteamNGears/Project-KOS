@@ -26,6 +26,19 @@ namespace Database {
             }
         }
 
+        public int Count
+        {
+            get
+            {
+                return Questions.Count;
+            }
+
+            private set
+            {
+
+            }
+        }
+
         public QuestionPool()
         {
             this.Questions = new List<Question>();
@@ -45,11 +58,6 @@ namespace Database {
         public IEnumerator<Question> GetEnumerator()
         {
             return Questions.GetEnumerator();
-        }
-
-        public int Size()
-        {
-            return Questions.Count;
         }
 
         public Question GetQuestion(int index)
