@@ -126,12 +126,12 @@ namespace Database {
                 {
                     if (subject.Equals(""))
                     {
-                        subject += " (Subject = " + restraints[i].Value;
+                        subject += " (Subject = \"" + restraints[i].Value + "\"";
                     }
 
                     else
                     {
-                        subject += " or Subject = " + restraints[i].Value;
+                        subject += " or Subject = \"" + restraints[i].Value + "\"";
                     }
                 }
 
@@ -139,12 +139,12 @@ namespace Database {
                 {
                     if (type.Equals(""))
                     {
-                        type += " (Type = " + restraints[i].Value;
+                        type += " (Type = \"" + restraints[i].Value + "\"";
                     }
 
                     else
                     {
-                        type += " or Type = " + restraints[i].Value;
+                        type += " or Type = \"" + restraints[i].Value + "\"";
                     }
                 }
 
