@@ -20,12 +20,12 @@ namespace Database {
         }
 
         
-        public override string[] getRange()
+        public override string[] GetRange()
         {
             throw new System.NotImplementedException();
         }
 
-        public override int numArgs()
+        public override int NumArgs()
         {
             return 1;
         }

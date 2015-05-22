@@ -17,7 +17,7 @@ namespace Database
 
         public string Value
         {
-            get;
+            get; //actually should probably have an sql filter on the get for the restraint value. This is the place to do it.
 
             protected set;
         }
@@ -29,8 +29,8 @@ namespace Database
             protected set;
         }
 
-        public abstract string[] getRange();
+        public abstract string[] GetRange();
 
-        public abstract int numArgs(); //should return 1 or 2
+        public abstract int NumArgs(); //should return 1 or 2
 	}
 }

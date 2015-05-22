@@ -29,13 +29,13 @@ namespace Database {
             numArgs = 2;
         }
 
-        public override string[] getRange()
+        public override string[] GetRange()
         {
             string[] returnString = { Value, "" + _upperBound };
             return returnString;
         }
 
-        public override int numArgs()
+        public override int NumArgs()
         {
             return numArgs;
         }

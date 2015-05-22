@@ -72,52 +72,103 @@ namespace Database {
             string difficulty = "";
             string type = "";
 
-            /* ALGORITHM
-             * 
-             * if query empty, select everything
-             * 
-             * if query not empty, then for each restraint check type
-             *      different types will use and
-             *      same types will use or
-             *      there can only be one difficulty restraint
-             *      
-             * each restraint type has a string to concat on it results
-             * 
-             * allows for easy expansion into more restraints in the future
-             * 
-             * can change default behavior easily to randomize if we want --later though--
-             */
-
             List<Restraint> restraints = query.Restraints;
+
+            if (restraints.Count == 0)
+                return queryString;
+
+            /* The idea of the algorithm is to go through and for every restraint type, create a stand alone logical
+             * statement that will capture the data from those restraints. This logic can handle any amount of
+             * restraints including multiple of the same type. All the restraints are essentially filters, we don't need
+             * anything more complicated, but if we did, we would need a much more complicated setup
+             */ 
 
             for (int i = 0; i < restraints.Count; i++)
             {
                 if (restraints[i].RetraintType.Equals("DIFFICULTY"))
                 {
+                    if (restraints[i].NumArgs() == 1)
+                    {
+                        if (difficulty.Equals(""))
+                        {
+                            difficulty += " (Difficulty = " + restraints[i].Value;
+                        }
 
+                        else
+                        {
+                            subject += " or Difficulty = " + restraints[i].Value;
+                        }
+                    }
+
+                    else
+                    {
+                        string[] values = restraints[i].GetRange();
+
+                        if (difficulty.Equals(""))
+                        {
+                            difficulty += " ((Difficulty > " + values[0] + " and Difficulty < " + values[1] + ")"; 
+                        }
+
+                        else
+                        {
+                            difficulty += " or (Difficulty > " + values[0] + " and Difficulty < " + values[1] + ")"; 
+                        }
+                    }
                 }
 
                 else if (restraints[i].RetraintType.Equals("SUBJECT"))
                 {
+                    if (!subject.Equals(""))
+                    {
+                        subject += " (Subject = " + restraints[i].Value;
+                    }
 
+                    else
+                    {
+                        subject += " or Subject = " + restraints[i].Value;
+                    }
                 }
 
                 else if (restraints[i].RetraintType.Equals("TYPE"))
                 {
+                    if (!type.Equals(""))
+                    {
+                        type += " (Type = " + restraints[i].Value;
+                    }
 
+                    else
+                    {
+                        type += " or Type = " + restraints[i].Value;
+                    }
                 }
 
                 else
                     continue;
             }
 
-                return queryString + subject + difficulty + type;
-        }
+            /* Below is a very very naiive implementation of how restraints should be cleaned up to create a proper string
+             * Much more thought needs to go into this if we need to be able to add many restraints
+             */ 
 
-        private void Strip(string queryString)
-        {
-            queryString.Replace(";", "");
-            queryString.Replace("`", "");
+            if (!difficulty.Equals("") || !subject.Equals("") || !type.Equals(""))
+                queryString += " Where";
+
+            if (!difficulty.Equals(""))
+                difficulty += ")";
+
+            if (!subject.Equals(""))
+                subject += ")";
+
+            if (!type.Equals(""))
+                type += ")";
+
+            if ((!difficulty.Equals("") || !subject.Equals("")) && !type.Equals(""))
+                type = " and" + type;
+
+            if (!difficulty.Equals("") && !subject.Equals(""))
+                subject = " and" + type;
+
+            return queryString + subject + difficulty + type;
         }
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
