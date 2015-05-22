@@ -25,9 +25,9 @@ namespace AssemblyCSharp
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractTestUI_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		public InteractMC_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
 		{
-
+			this._ansEntered = false;
 		}
 		
 		/**
@@ -69,7 +69,7 @@ namespace AssemblyCSharp
 		/**
 		 * 
 		 * */
-		public override void Suspend()
+		public override void Suspend(Collider c = null)
 		{
 			Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
