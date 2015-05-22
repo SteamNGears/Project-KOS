@@ -64,8 +64,25 @@ namespace Database {
 				Console.WriteLine(e.Message);
             }
             
-            
             return new QuestionPool(); //TODO
+        }
+
+        public bool InsertQuestion(Question question)
+        {
+            using (SqliteConnection conn = new SqliteConnection(ConnectionString))
+            {
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.CommandText = GenerateQueryString(question);
+
+                    if (cmd.CommandText == "INVALID_QUESTION")
+                        return false;
+
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
         }
 
         public string GenerateQueryString(QuestionQuery query)
@@ -177,6 +194,16 @@ namespace Database {
 			queryString = queryString + difficulty + subject  + type;
 
             return queryString;
+        }
+
+        public string GenerateQueryString(Question question)
+        {
+            if (question == null)
+                return "INVALID_COMMAND";
+
+            string questionQuery = "";
+
+            return questionQuery;
         }
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
