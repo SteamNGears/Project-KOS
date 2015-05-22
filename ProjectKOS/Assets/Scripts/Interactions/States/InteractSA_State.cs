@@ -14,21 +14,25 @@ using UnityEngine.UI;
 
 namespace AssemblyCSharp
 {
-	public class InteractMC_State:InteractionState
+	public class InteractSA_State:InteractionState
 	{
 		
 		private GameObject _cvsQuestion;
-		private accessMCCvs _cvsQuestMC;
+		private accessSACvs _cvsQuestSA;
+
+		private bool _ansEntered;
 		
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractMC_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		public InteractSA_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
 		{
-
+			this._ansEntered = false;
 		}
 		
 		/**
+		 * Displays a GUI with an interact button, 
+		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
 		 * 
 		 * */
 		public override InteractionState Behave ()
@@ -38,21 +42,24 @@ namespace AssemblyCSharp
 			{
 				if(this.actor.tag == "Player")
 				{
-					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/MCCvs") as GameObject);
+					//instantiate SACvs.prefab as GameObject
+					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/SACvs") as GameObject);
 
-					this._cvsQuestMC = this._cvsQuestion.GetComponentInChildren<accessMCCvs> ();
+					//script to access SACvs.prefab
+					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
 
+
+					//to be replaced by Question.getQuestion.question : string
 					string quest = "Is Unity is AMAZING?";
-					string[] ans = {"Everything","Something","Nothing","Particle Physics"};
 
-					this._cvsQuestMC.setQuestion (quest);
-					this._cvsQuestMC.setAnswers (ans);
+					this._cvsQuestSA.setQuestion (quest);
 				}
 			}
 			
 			//if the button has been clicked,
-			if (this._cvsQuestMC.btnClicked) {
-				this._cvsQuestMC.cleanListeners();
+			if (this._ansEntered) {
+				//Debug.Log("Answer Typed "  + this.cvsQuest.toggleTF.ToString());
+				//this.cvsQuest.cleanListeners();
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}
