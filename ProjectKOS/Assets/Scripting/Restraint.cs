@@ -2,8 +2,8 @@
  * Filename: Restraint.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 0
- * Rev. Date: 5/4/2015
+ * Revision: 1
+ * Rev. Date: 5/21/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -22,7 +22,7 @@ namespace Database
             protected set;
         }
 
-        public string Field
+        public string RetraintType
         {
             get;
 
@@ -30,5 +30,7 @@ namespace Database
         }
 
         public abstract string[] getRange();
+
+        public abstract int numArgs(); //should return 1 or 2
 	}
 }

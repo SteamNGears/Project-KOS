@@ -1,9 +1,9 @@
 ﻿/**
- * Filename: SubjectRestraint.cs
+ * Filename: ClassRestraint.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
  * Revision: 1
- * Rev. Date: 5/21/2015
+ * Rev. Date: 5/22/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -11,14 +11,15 @@ using System.Collections;
 
 namespace Database {
 
-	public class SubjectRestraint : Restraint {
+	public class TypeRestraint : Restraint {
 
-        public SubjectRestraint(string subject)
+        public TypeRestraint(string type)
         {
-            Value = subject;
-            RetraintType = "SUBJECT";
+            Value = type;
+            RetraintType = "TYPE";
         }
 
+        
         public override string[] getRange()
         {
             throw new System.NotImplementedException();
@@ -29,4 +30,5 @@ namespace Database {
             return 1;
         }
 	}
+
 }

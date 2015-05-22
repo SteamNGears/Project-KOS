@@ -2,8 +2,8 @@
  * Filename: QuestionQuery.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 0
- * Rev. Date: 5/4/2015
+ * Revision: 1
+ * Rev. Date: 5/21/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -14,6 +14,12 @@ namespace Database {
 	public class QuestionQuery {
 
 		private List<Restraint> _restraints;
+
+        public List<Restraint> Restraints
+        {
+            get;
+            private set;
+        }
 
 		public QuestionQuery() 
 		{
@@ -26,11 +32,6 @@ namespace Database {
 				return;
 
 			_restraints.Add (newRestraint);
-		}
-
-		public List<Restraint> receiveRestraints()
-		{
-			return _restraints;
 		}
 	}
 }

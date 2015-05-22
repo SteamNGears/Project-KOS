@@ -2,8 +2,8 @@
  * Filename: DifficultyRestraint.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 0
- * Rev. Date: 5/4/2015
+ * Revision: 1
+ * Rev. Date: 5/21/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -14,22 +14,30 @@ namespace Database {
 	public class DifficultyRestraint : Restraint{
 
         private int _upperBound;
+        private int numArgs;
         public DifficultyRestraint(int difficulty)
         {
             Value = "" + difficulty;
-            Field = "difficulty";
+            RetraintType = "difficulty";
+            numArgs = 1;
         }
 
         public DifficultyRestraint(int lowerBound, int upperBound)
         {
             Value = "" + lowerBound;
-            Field = "difficulty";
+            RetraintType = "difficulty";
+            numArgs = 2;
         }
 
         public override string[] getRange()
         {
             string[] returnString = { Value, "" + _upperBound };
             return returnString;
+        }
+
+        public override int numArgs()
+        {
+            return numArgs;
         }
 	}
 }

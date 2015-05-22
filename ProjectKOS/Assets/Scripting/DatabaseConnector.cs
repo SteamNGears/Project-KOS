@@ -2,8 +2,8 @@
  * Filename: DatabaseConnector.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 0
- * Rev. Date: 5/4/2015
+ * Revision: 3
+ * Rev. Date: 5/22/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -40,13 +40,12 @@ namespace Database {
             try
             {
                 SqliteConnection conn = new SqliteConnection(ConnectionString);
-                //conn.ConnectionString = ConnectionString;
 
                 conn.Open();
 
                 using (SqliteCommand cmd = new SqliteCommand(conn))
                 {
-                    cmd.CommandText = GenerateQuery(query);
+                    cmd.CommandText = GenerateQueryString(query);
                     SqliteDataReader reader = cmd.ExecuteReader();
                     return CreateQuestions(reader, conn);
                 }
@@ -66,10 +65,59 @@ namespace Database {
             return new QuestionPool(); //TODO
         }
 
-        private string GenerateQuery(QuestionQuery query)
+        public string GenerateQueryString(QuestionQuery query)
         {
-            return "SELECT * FROM Meta NATURAL JOIN Questions";
-            //TODO, change this to actually select the correct questions as per the query
+            string queryString = "SELECT * FROM Meta NATURAL JOIN Questions";
+            string subject = "";
+            string difficulty = "";
+            string type = "";
+
+            /* ALGORITHM
+             * 
+             * if query empty, select everything
+             * 
+             * if query not empty, then for each restraint check type
+             *      different types will use and
+             *      same types will use or
+             *      there can only be one difficulty restraint
+             *      
+             * each restraint type has a string to concat on it results
+             * 
+             * allows for easy expansion into more restraints in the future
+             * 
+             * can change default behavior easily to randomize if we want --later though--
+             */
+
+            List<Restraint> restraints = query.Restraints;
+
+            for (int i = 0; i < restraints.Count; i++)
+            {
+                if (restraints[i].RetraintType.Equals("DIFFICULTY"))
+                {
+
+                }
+
+                else if (restraints[i].RetraintType.Equals("SUBJECT"))
+                {
+
+                }
+
+                else if (restraints[i].RetraintType.Equals("TYPE"))
+                {
+
+                }
+
+                else
+                    continue;
+            }
+
+                return queryString + subject + difficulty + type;
+        }
+
+        private void Strip(string queryString)
+        {
+            queryString.Replace(";", "");
+            queryString.Replace("`", "");
         }
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
@@ -89,19 +137,31 @@ namespace Database {
 
                 if (type.Equals("TRUE_FALSE"))
                 {
-                    questions.Add(new TrueFalseQuestion(reader["Subject"].ToString(), Int32.Parse(reader["Difficulty"].ToString()), reader["QString"].ToString(), reader["ID"].ToString()));
+                    questions.Add(new TrueFalseQuestion(reader["Subject"].ToString(), 
+                                                        Int32.Parse(reader["Difficulty"].ToString()), 
+                                                        reader["QString"].ToString(), 
+                                                        reader["ID"].ToString()));
+
                     answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
                 }
 
                 else if (type.Equals("MULTIPLE_CHOICE"))
                 {
-                    questions.Add(new MultiChoiceQuestion(reader["Subject"].ToString(), Int32.Parse(reader["Difficulty"].ToString()), reader["QString"].ToString(), reader["ID"].ToString()));
+                    questions.Add(new MultiChoiceQuestion(reader["Subject"].ToString(), 
+                                                          Int32.Parse(reader["Difficulty"].ToString()), 
+                                                          reader["QString"].ToString(), 
+                                                          reader["ID"].ToString()));
+
                     answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
                 }
 
                 else if (type.Equals("SHORT_ANSWER"))
                 {
-                    questions.Add(new ShortAnswerQuestion(reader["Subject"].ToString(), Int32.Parse(reader["Difficulty"].ToString()), reader["QString"].ToString(), reader["ID"].ToString()));
+                    questions.Add(new ShortAnswerQuestion(reader["Subject"].ToString(), 
+                                                          Int32.Parse(reader["Difficulty"].ToString()), 
+                                                          reader["QString"].ToString(), 
+                                                          reader["ID"].ToString()));
+
                     answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
                 }
 
