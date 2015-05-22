@@ -18,14 +18,15 @@ namespace Database {
         public DifficultyRestraint(int difficulty)
         {
             Value = "" + difficulty;
-            RetraintType = "difficulty";
+            RetraintType = "DIFFICULTY";
             numArgs = 1;
         }
 
         public DifficultyRestraint(int lowerBound, int upperBound)
         {
             Value = "" + lowerBound;
-            RetraintType = "difficulty";
+			_upperBound = upperBound;
+            RetraintType = "DIFFICULTY";
             numArgs = 2;
         }
 

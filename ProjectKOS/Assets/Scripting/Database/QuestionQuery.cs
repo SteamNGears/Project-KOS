@@ -17,8 +17,15 @@ namespace Database {
 
         public List<Restraint> Restraints
         {
-            get;
-            private set;
+            get 
+			{
+				return _restraints;
+			}
+
+            private set
+			{
+				_restraints = value;
+			}
         }
 
 		public QuestionQuery() 

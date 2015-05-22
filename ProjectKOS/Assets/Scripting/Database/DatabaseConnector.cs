@@ -18,7 +18,8 @@ namespace Database {
 
         private static string ConnectionString = "Data Source=Assets/Database/Questions.db;Version=3;";
         private static DatabaseConnector _instance = null;
-        public static DatabaseConnector Instance
+        
+		public static DatabaseConnector Instance
         {
             get
             {
@@ -54,11 +55,13 @@ namespace Database {
             catch (SqliteException e)
             {
                 Console.WriteLine("Error occurred accessing database.");
+				Console.WriteLine (e.Message);
             }
 
             catch (Exception e)
             {
                 Console.WriteLine("NonSQL error occurred.");
+				Console.WriteLine(e.Message);
             }
             
             
@@ -96,7 +99,7 @@ namespace Database {
 
                         else
                         {
-                            subject += " or Difficulty = " + restraints[i].Value;
+                            difficulty += " or Difficulty = " + restraints[i].Value;
                         }
                     }
 
@@ -118,7 +121,7 @@ namespace Database {
 
                 else if (restraints[i].RetraintType.Equals("SUBJECT"))
                 {
-                    if (!subject.Equals(""))
+                    if (subject.Equals(""))
                     {
                         subject += " (Subject = " + restraints[i].Value;
                     }
@@ -131,7 +134,7 @@ namespace Database {
 
                 else if (restraints[i].RetraintType.Equals("TYPE"))
                 {
-                    if (!type.Equals(""))
+                    if (type.Equals(""))
                     {
                         type += " (Type = " + restraints[i].Value;
                     }
@@ -151,7 +154,7 @@ namespace Database {
              */ 
 
             if (!difficulty.Equals("") || !subject.Equals("") || !type.Equals(""))
-                queryString += " Where";
+                queryString += " WHERE";
 
             if (!difficulty.Equals(""))
                 difficulty += ")";
@@ -163,12 +166,14 @@ namespace Database {
                 type += ")";
 
             if ((!difficulty.Equals("") || !subject.Equals("")) && !type.Equals(""))
-                type = " and" + type;
+                type = " AND" + type;
 
             if (!difficulty.Equals("") && !subject.Equals(""))
-                subject = " and" + type;
+                subject = " AND" + subject;
 
-            return queryString + subject + difficulty + type;
+			queryString = queryString + difficulty + subject  + type;
+
+            return queryString;
         }
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
