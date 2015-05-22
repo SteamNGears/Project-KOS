@@ -15,15 +15,9 @@ namespace Database {
 
         public List<Question> Questions
         {
-            get
-            {
-                return this.Questions;
-            }
+            get;
 
-            protected set
-            {
-                this.Questions = value;
-            }
+            protected set;
         }
 
         public int Count

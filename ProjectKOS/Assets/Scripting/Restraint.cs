@@ -15,30 +15,18 @@ namespace Database
 	public abstract class Restraint 
 	{
 
-		public string Value 
-		{
-            get 
-            { 
-                return Value; 
-            }
-            
-            protected set 
-            { 
-                Value = value; 
-            }
-		}
+        public string Value
+        {
+            get;
+
+            protected set;
+        }
 
         public string Field
         {
-            get
-            {
-                return Field;
-            }
+            get;
 
-            protected set
-            {
-                Field = value;
-            }
+            protected set;
         }
 
         public abstract string[] getRange();

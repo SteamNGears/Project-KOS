@@ -16,28 +16,16 @@ namespace Database {
 
         public string AnswerString
         {
-            get
-            {
-                return this.AnswerString;
-            }
+            get;
 
-            set
-            {
-                this.AnswerString = value;
-            }
+            set;
         }
 
         public bool Correct
         {
-            get
-            {
-                return this.Correct;
-            }
+            get;
 
-            set
-            {
-                this.Correct = value;
-            }
+            set;
         }
 
         protected Answer()

@@ -16,20 +16,21 @@ namespace Database {
 
 	public class DatabaseConnector {
 
-        private static string ConnectionString = "";
+        private static string ConnectionString = "Data Source=Assets/Database/Questions.db;Version=3;";
+        private static DatabaseConnector _instance = null;
         public static DatabaseConnector Instance
         {
             get
             {
-                if (Instance == null)
-                    return (Instance = new DatabaseConnector());
+                if (_instance == null)
+                    _instance = new DatabaseConnector();
 
-                return Instance;
+                return _instance;
             }
 
             protected set
             {
-                Instance = value;
+                _instance = value;
             }
         }
         public DatabaseConnector() { }
@@ -146,6 +147,5 @@ namespace Database {
 
             return new QuestionPool(questions);
         }
-
 	}
 }

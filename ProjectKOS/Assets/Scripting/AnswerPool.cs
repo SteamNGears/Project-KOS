@@ -16,15 +16,9 @@ namespace Database {
 
         public List<Answer> Answers
         {
-            get
-            {
-                return this.Answers;
-            }
+            get;
 
-            protected set
-            {
-                this.Answers = value;
-            }
+            protected set;
         }
 
         public int Size

@@ -7,6 +7,10 @@ namespace Database
 {
     class NullAnswer : Answer
     {
-        public NullAnswer() {}
+        public NullAnswer() 
+        {
+            AnswerString = "";
+            Correct = false;
+        }
     }
 }

@@ -14,79 +14,46 @@ namespace Database {
 
 	public abstract class Question {
 
-        public string ID
-        {
-            get
-            {
-                return this.ID;
-            }
+        public string ID 
+		{
+			get;
 
-            private set
-            {  }
+			protected set;
         }
-        public string Subject
-        {
-            get
-            {
-                return Subject;
-            }
+        
+		public string Subject 
+		{
+			get;
 
-            protected set
-            {
-                this.Subject = value;
-            }
+			protected set;
         }
 
-        public string Type
-        {
-            get
-            {
-                return Type;
-            }
+        public string Type 
+		{
+			get;
 
-            protected set
-            {
-                this.Type = value;
-            }
+			protected set;
         }
 
-        public int Difficulty
-        {
-            get
-            {
-                return Difficulty;
-            }
+        public int Difficulty 
+		{
+			get;
 
-            protected set
-            {
-                this.Difficulty = value;
-            }
+			protected set; 
         }
 
-        public string QuestionString
-        {
-            get
-            {
-                return QuestionString;
-            }
+        public string QuestionString 
+		{
+			get;
 
-            protected set
-            {
-                this.QuestionString = value;
-            }
+			protected set;
         }
 
-        public AnswerPool Answers
-        {
-            get
-            {
-                return Answers;
-            }
+        public AnswerPool Answers 
+		{
+			get;
 
-            set
-            {
-                this.Answers = value;
-            }
+			set;
         }
 
         /**
@@ -106,6 +73,7 @@ namespace Database {
             this.Type = type;
             this.Difficulty = difficulty;
             this.QuestionString = qString;
+			this.ID = id;
         }
 	}
 }
