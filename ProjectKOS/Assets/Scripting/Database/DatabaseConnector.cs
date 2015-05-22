@@ -75,6 +75,9 @@ namespace Database {
             string difficulty = "";
             string type = "";
 
+			if (query == null)
+				return queryString;
+
             List<Restraint> restraints = query.Restraints;
 
             if (restraints.Count == 0)
@@ -198,7 +201,7 @@ namespace Database {
                                                         reader["QString"].ToString(), 
                                                         reader["ID"].ToString()));
 
-                    answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
+                    answersQuery += "SELECT * From Answers WHERE ID = " + reader["ID"] + ";";
                 }
 
                 else if (type.Equals("MULTIPLE_CHOICE"))
@@ -208,7 +211,7 @@ namespace Database {
                                                           reader["QString"].ToString(), 
                                                           reader["ID"].ToString()));
 
-                    answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
+					answersQuery += "SELECT * From Answers WHERE ID = " + reader["ID"] + ";";
                 }
 
                 else if (type.Equals("SHORT_ANSWER"))
@@ -218,7 +221,7 @@ namespace Database {
                                                           reader["QString"].ToString(), 
                                                           reader["ID"].ToString()));
 
-                    answersQuery += "Select * from answers were ID = " + reader["ID"] + ";";
+					answersQuery += "SELECT * From Answers WHERE ID = " + reader["ID"] + ";";
                 }
 
                 else
@@ -244,11 +247,15 @@ namespace Database {
                     if (!reader.Read())
                         continue;
 
-                    answers.Add(reader["ID"].ToString(), workPool);
+					string id = reader["ID"].ToString();
+
+                    answers.Add(id, workPool);
 
                     do
                     {
-                        workPool.AddAnswer(new Answer(reader["AString"].ToString(), reader["Correct"].ToString()));
+						string aString = reader["AString"].ToString();
+						string correct = reader["Correct"].ToString();
+                        workPool.AddAnswer(new Answer(aString, correct));
 
                     } while (reader.Read()); //end do while
                 } while (reader.NextResult()); //end do while
