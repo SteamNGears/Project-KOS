@@ -46,7 +46,7 @@ namespace AssemblyCSharp
 
 					//this.cvsQuest = this._cvsQuestion.GetComponentInChildren<accessTFCvs> ();
 
-					string quest = "Is Unity is AMAZING?";
+					//string quest = "Is Unity is AMAZING?";
 					//string[] ans = {"Everything","Something","Nothing","Particle Physics"};
 
 					//this.cvsQuest.setQuestion (quest);
