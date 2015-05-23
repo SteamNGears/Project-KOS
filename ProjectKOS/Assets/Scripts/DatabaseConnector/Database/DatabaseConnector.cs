@@ -35,50 +35,9 @@ namespace Database {
                 _instance = value;
             }
         }
-
-        private System.Object IDLock = new System.Object();
-        
-        private int _maxID;
-        
-        public int MaxID
-        {
-            get 
-            {
-                lock(IDLock)
-                {
-                    return _maxID;
-                }
-            }
-
-            private set
-            {
-                _maxID = value;
-            }
-        }
         
         public DatabaseConnector() 
-        {
-            try
-            {
-                using (SqliteConnection conn = new SqliteConnection(ConnectionString))
-                {
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.CommandText = "Select MAX(ID) From Meta;";
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            reader.Read();
-                            MaxID = Int32.Parse(reader["ID"].ToString());
-                        }
-                    }
-                }
-            }
-
-            catch (SqliteException e)
-            {
-                Debug.Log(e.Message);
-            }
-        }
+        {   }
 
         public QuestionPool GetQuestions(QuestionQuery query)
         {
@@ -119,7 +78,15 @@ namespace Database {
                 {
                     using (SqliteCommand cmd = new SqliteCommand())
                     {
-                        int id = MaxID++;
+                        int id;
+
+                        cmd.CommandText = "Select MAX(ID) From Meta;";
+
+                        using (SqliteDataReader reader = cmd.ExecuteReader())
+                        {
+                            reader.Read();
+                            id = Int32.Parse(reader["ID"].ToString());
+                        }
 
                         InsertIntoMeta(cmd, question, id);
                         InsertIntoQuestions(cmd, question, id);
