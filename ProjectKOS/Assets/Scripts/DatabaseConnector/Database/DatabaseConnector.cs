@@ -2,11 +2,12 @@
  * Filename: DatabaseConnector.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 3
+ * Revision: 4
  * Rev. Date: 5/22/2015
  * Rev. Author: Aryk Anderson
  * */
 
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
@@ -34,7 +35,50 @@ namespace Database {
                 _instance = value;
             }
         }
-        public DatabaseConnector() { }
+
+        private System.Object IDLock = new System.Object();
+        
+        private int _maxID;
+        
+        public int MaxID
+        {
+            get 
+            {
+                lock(IDLock)
+                {
+                    return _maxID;
+                }
+            }
+
+            private set
+            {
+                _maxID = value;
+            }
+        }
+        
+        public DatabaseConnector() 
+        {
+            try
+            {
+                using (SqliteConnection conn = new SqliteConnection(ConnectionString))
+                {
+                    using (SqliteCommand cmd = new SqliteCommand())
+                    {
+                        cmd.CommandText = "Select MAX(ID) From Meta;";
+                        using (SqliteDataReader reader = cmd.ExecuteReader())
+                        {
+                            reader.Read();
+                            MaxID = Int32.Parse(reader["ID"].ToString());
+                        }
+                    }
+                }
+            }
+
+            catch (SqliteException e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
 
         public QuestionPool GetQuestions(QuestionQuery query)
         {
@@ -54,35 +98,45 @@ namespace Database {
 
             catch (SqliteException e)
             {
-                Console.WriteLine("Error occurred accessing database.");
-				Console.WriteLine (e.Message);
+                Debug.Log("Error occurred accessing database.");
+                Debug.Log(e.Message);
             }
 
             catch (Exception e)
             {
-                Console.WriteLine("NonSQL error occurred.");
-				Console.WriteLine(e.Message);
+                Debug.Log("NonSQL error occurred.");
+                Debug.Log(e.Message);
             }
             
-            return new QuestionPool(); //TODO
+            return new QuestionPool(); //Returns an empty Question Pool if error occurs
         }
 
         public bool InsertQuestion(Question question)
         {
-            using (SqliteConnection conn = new SqliteConnection(ConnectionString))
+            try
             {
-                using (SqliteCommand cmd = new SqliteCommand())
+                using (SqliteConnection conn = new SqliteConnection(ConnectionString))
                 {
-                    cmd.CommandText = GenerateQueryString(question);
+                    using (SqliteCommand cmd = new SqliteCommand())
+                    {
+                        int id = MaxID++;
 
-                    if (cmd.CommandText == "INVALID_QUESTION")
-                        return false;
+                        InsertIntoMeta(cmd, question, id);
+                        InsertIntoQuestions(cmd, question, id);
+                        InsertIntoAnswers(cmd, question, id);
 
-                    cmd.ExecuteNonQuery();
-
-                    return true;
+                        return true;
+                    }
                 }
             }
+
+            catch (SqliteException e)
+            {
+                Debug.Log(e.Message);
+            }
+
+            return false;
+            
         }
 
         public string GenerateQueryString(QuestionQuery query)
@@ -143,12 +197,12 @@ namespace Database {
                 {
                     if (subject.Equals(""))
                     {
-                        subject += " (Subject = " + restraints[i].Value;
+                        subject += " (Subject = \"" + restraints[i].Value + "\"";
                     }
 
                     else
                     {
-                        subject += " or Subject = " + restraints[i].Value;
+                        subject += " or Subject = \"" + restraints[i].Value + "\"";
                     }
                 }
 
@@ -156,12 +210,12 @@ namespace Database {
                 {
                     if (type.Equals(""))
                     {
-                        type += " (Type = " + restraints[i].Value;
+                        type += " (Type = \"" + restraints[i].Value + "\"";
                     }
 
                     else
                     {
-                        type += " or Type = " + restraints[i].Value;
+                        type += " or Type = \"" + restraints[i].Value + "\"";
                     }
                 }
 
@@ -196,14 +250,71 @@ namespace Database {
             return queryString;
         }
 
-        public string GenerateQueryString(Question question)
+        private void InsertIntoMeta(SqliteCommand cmd, Question question, int id)
         {
             if (question == null)
-                return "INVALID_COMMAND";
+                return;
 
-            string questionQuery = "";
+            cmd.CommandText = "INSERT INTO Meta VALUES (?,?,?,?);";
 
-            return questionQuery;
+            int Difficulty = question.Difficulty;
+            string Subject = question.Subject;
+            string Type = question.Type;
+
+            cmd.Parameters.Add(id);
+            cmd.Parameters.Add(Difficulty);
+            cmd.Parameters.Add(Subject);
+            cmd.Parameters.Add(Type);
+
+            cmd.Prepare();
+            Debug.Log(cmd.CommandText);
+
+            cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
+        }
+
+        private void InsertIntoAnswers(SqliteCommand cmd, Question question, int id)
+        {
+            if (question == null)
+                return;
+
+            cmd.CommandText = "INSERT INTO Answers VALUES (?,?,?);";
+            AnswerPool answers = question.Answers;
+
+            foreach(Answer temp in answers)
+            {
+                string aString = temp.AnswerString;
+                bool correct = temp.Correct;
+
+                cmd.Parameters.Add(id);
+                cmd.Parameters.Add(aString);
+                cmd.Parameters.Add(correct);
+                
+                cmd.Prepare();
+                Debug.Log(cmd.CommandText);
+
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+            }   
+        }
+
+        private void InsertIntoQuestions(SqliteCommand cmd, Question question, int id)
+        {
+            if (question == null)
+                return;
+
+            cmd.CommandText = "INSERT INTO Questions VALUES (?,?);";
+
+            string qString = question.QuestionString;
+
+            cmd.Parameters.Add(id);
+            cmd.Parameters.Add(qString);
+
+            cmd.Prepare();
+            Debug.Log(cmd.CommandText);
+
+            cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
         }
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
