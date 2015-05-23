@@ -1,0 +1,82 @@
+/**
+ * Filename: InteractSA_State.cs
+ * Author: Chris Hatch
+ * Created: 5/15/2015
+ * Revision: 1
+ * Rev. Date: 5/21/2015
+ * Rev. Author: Chris Hatch
+ * */
+
+using System;
+using UnityEngine;
+using UnityEditor;
+using UnityEngine.UI;
+
+namespace AssemblyCSharp
+{
+	public class InteractSA_State:InteractionState
+	{
+		
+		private GameObject _cvsQuestion;
+		private accessSACvs _cvsQuestSA;
+
+		private bool _ansEntered;
+		
+		/**
+		 * Sets default values and calls base constructor
+		 * */
+		public InteractSA_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		{
+			this._ansEntered = false;
+		}
+		
+		/**
+		 * Displays a GUI with an interact button, 
+		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
+		 * 
+		 * */
+		public override InteractionState Behave ()
+		{
+			//if the gui doesn't exist, create it
+			if (_cvsQuestion == null && this.actor != null) 
+			{
+				if(this.actor.tag == "Player")
+				{
+					//instantiate SACvs.prefab as GameObject
+					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/SACvs") as GameObject);
+
+					//script to access SACvs.prefab
+					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
+
+
+					//to be replaced by Question.getQuestion.question : string
+					string quest = "Is Unity is AMAZING?";
+
+					this._cvsQuestSA.setQuestion (quest);
+				}
+			}
+			
+			//if the button has been clicked,
+			if (this._ansEntered) {
+				//Debug.Log("Answer Typed "  + this.cvsQuest.toggleTF.ToString());
+				//this.cvsQuest.cleanListeners();
+				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
+				return new OpeningState (this.actee, this.actor);	//open the door
+			}
+			else
+				return this;//continue incurrent state
+			
+		}
+		
+		/**
+		 * 
+		 * */
+		public override void Suspend(Collider c = null)
+		{
+			Debug.Log("Cleared event");
+			GameObject.Destroy (this._cvsQuestion);
+		}
+
+	}
+}
+
