@@ -1,6 +1,14 @@
-﻿using UnityEngine;
+﻿/**
+ * Filename: accessTFCvs.cs
+ * Author: Chris Hatch
+ * Created: 5/15/2015
+ * Revision: 1
+ * Rev. Date: 5/22/2015
+ * Rev. Author: Chris Hatch
+ * */
+
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 using System.Collections;
 
 public class accessTFCvs : MonoBehaviour {
