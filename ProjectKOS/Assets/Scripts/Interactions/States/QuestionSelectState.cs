@@ -63,17 +63,30 @@ namespace States
 
 
 			if (question.Type == "MULTIPLE_CHOICE") {
-				Debug.Log("Mulitple choice question: " + question.QuestionString);
+				Debug.Log(
+					"Mulitple choice question: " + question.QuestionString
+					+ "\n1) " + question.Answers[0].AnswerString
+					+ "\n2) " + question.Answers[1].AnswerString
+					+ "\n3) " + question.Answers[2].AnswerString
+					+ "\n4) " + question.Answers[3].AnswerString
+					);
+
 				//------create and return multiple choice state--------
 			}
 
 			if (question.Type == "TRUE_FALSE") {
-				Debug.Log("True/false question: " + question.QuestionString);
+				Debug.Log(
+					"True/false question: " + question.QuestionString
+					+ "Answer: " + question.Answers[0].AnswerString
+					);
 				//--------create and return true false state--------
 			}
 
 			if (question.Type == "SHORT_ANSWER") {
-				Debug.Log("Short answer question: " + question.QuestionString);
+				Debug.Log(
+					"Short answer question: " + question.QuestionString
+					+ "Answer: " + question.Answers[0].AnswerString
+					);
 				//--------create and return short answer state--------
 			}
 
