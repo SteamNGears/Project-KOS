@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
-namespace AssemblyCSharp
+namespace States
 {
 	public class OpeningState:InteractionState
 	{
@@ -35,7 +35,7 @@ namespace AssemblyCSharp
 
 		public override InteractionState Behave ()
 		{
-				return new OpenState(this.actee, this.actor);
+				return new IdleState(this.actee, this.actor);
 		}
 	}
 }

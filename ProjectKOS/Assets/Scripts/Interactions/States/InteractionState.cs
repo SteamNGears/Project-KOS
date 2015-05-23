@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
-namespace AssemblyCSharp
+namespace States
 {
 	/**
 	 * A base interaction state for all interactions such as gui displays

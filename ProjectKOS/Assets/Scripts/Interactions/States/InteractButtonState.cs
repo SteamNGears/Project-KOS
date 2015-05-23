@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-namespace AssemblyCSharp
+namespace States
 {
 	public class InteractButtonState:InteractionState
 	{
@@ -52,7 +52,7 @@ namespace AssemblyCSharp
 			//if the button has been clicked,
 			if (this.buttonClicked) {
 				GameObject.Destroy(this.cvsQuestion);	//clean up the question 
-				return new OpeningState (this.actee, this.actor);	//open the door
+				return new QuestionSelectState(this.actee, this.actor);	//open the door
 			}
 			else
 				return this;//continue incurrent state

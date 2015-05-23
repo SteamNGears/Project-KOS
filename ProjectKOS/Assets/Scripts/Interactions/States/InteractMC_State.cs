@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 
-namespace AssemblyCSharp
+namespace States
 {
 	public class InteractMC_State:InteractionState
 	{
