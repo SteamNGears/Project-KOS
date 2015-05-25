@@ -55,14 +55,14 @@ namespace States
 			questions = DatabaseConnector.Instance.GetQuestions(query);	//use restaints to query the database for a question pool
 
 
-			if(questions.Count <= 0)									//if there are no questions, then there was probably an error so just leave the door as it is
-				return new IdleState(this.actee, this.actor);
+			if(questions.Count <= 0)									//if there are no questions, then there was probably an error 
+				return new OpeningState(this.actee, this.actor);
 			else  														//else select a random question from that pool				
 				question = questions[rnd.Next(0,questions.Count)];
 
 
 
-			if (question.Type == "MULTIPLE_CHOICE") {
+			if (question.Type == "MULTIPLE_CHOICE") {					//if the question is multiple choice, create and return that state
 				Debug.Log(
 					"Mulitple choice question: " + question.QuestionString
 					+ "\n1) " + question.Answers[0].AnswerString
@@ -71,28 +71,29 @@ namespace States
 					+ "\n4) " + question.Answers[3].AnswerString
 					);
 
-				//------create and return multiple choice state--------
+				//------create and return multiple choice state here--------
 			}
 
-			if (question.Type == "TRUE_FALSE") {
+			if (question.Type == "TRUE_FALSE") {						//if the question is true/false, create and return that state
 				Debug.Log(
 					"True/false question: " + question.QuestionString
 					+ "Answer: " + question.Answers[0].AnswerString
 					);
-				//--------create and return true false state--------
+				//--------create and return true false state here--------
 			}
 
-			if (question.Type == "SHORT_ANSWER") {
+			if (question.Type == "SHORT_ANSWER") {						//if the question is short answer, create and return that state
 				Debug.Log(
 					"Short answer question: " + question.QuestionString
 					+ "Answer: " + question.Answers[0].AnswerString
 					);
-				//--------create and return short answer state--------
+				//--------create and return short answer state here--------
 			}
 
-			//failsafe
-			return new OpeningState(this.actee, this.actor);
+
+			return new OpeningState(this.actee, this.actor);			//if all else fails, open the door1
 		}
+
 	}
 }
 
