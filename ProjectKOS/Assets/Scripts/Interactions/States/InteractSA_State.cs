@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
-
+using Database;
 namespace AssemblyCSharp
 {
 	public class InteractSA_State:InteractionState
@@ -20,14 +20,14 @@ namespace AssemblyCSharp
 		private GameObject _cvsQuestion;
 		private accessSACvs _cvsQuestSA;
 
-		private bool _ansEntered;
+		private Question _quest;
 		
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractSA_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		public InteractSA_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
-			this._ansEntered = false;
+			this._quest = quest;
 		}
 		
 		/**
@@ -48,18 +48,12 @@ namespace AssemblyCSharp
 					//script to access SACvs.prefab
 					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
 
-
-					//to be replaced by Question.getQuestion.question : string
-					string quest = "Is Unity is AMAZING?";
-
-					this._cvsQuestSA.setQuestion (quest);
+					this._cvsQuestSA.setQuestion (this._quest.QuestionString);
 				}
 			}
 			
 			//if the button has been clicked,
-			if (this._ansEntered) {
-				//Debug.Log("Answer Typed "  + this.cvsQuest.toggleTF.ToString());
-				//this.cvsQuest.cleanListeners();
+			if (this._cvsQuestSA.ansTyped) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}

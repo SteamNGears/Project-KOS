@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
-
+using Database;
 namespace AssemblyCSharp
 {
 	public class InteractMC_State:InteractionState
@@ -19,13 +19,13 @@ namespace AssemblyCSharp
 		
 		private GameObject _cvsQuestion;
 		private accessMCCvs _cvsQuestMC;
-		
+		private Question _quest;
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractMC_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		public InteractMC_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
-
+			this._quest = quest;
 		}
 		
 		/**
@@ -42,11 +42,8 @@ namespace AssemblyCSharp
 
 					this._cvsQuestMC = this._cvsQuestion.GetComponentInChildren<accessMCCvs> ();
 
-					string quest = "Is Unity is AMAZING?";
-					string[] ans = {"Everything","Something","Nothing","Particle Physics"};
-
-					this._cvsQuestMC.setQuestion (quest);
-					this._cvsQuestMC.setAnswers (ans);
+					this._cvsQuestMC.setQuestion (this._quest.QuestionString);
+					this._cvsQuestMC.setAnswers (this._quest.Answers);
 				}
 			}
 			
