@@ -9,7 +9,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using Database;
 public class accessMCCvs : MonoBehaviour {
 
 	public Canvas textPanel;//panel with question
@@ -79,7 +79,7 @@ public class accessMCCvs : MonoBehaviour {
 		}
 	}
 	
-	public void setAnswers(string[] ans)
+	public void setAnswers(AnswerPool ans)
 	{
 		if (this.buttonsPanel != null) {
 			//gets buttons 0-3 from answer panel, adds listeners for click events to each
@@ -94,25 +94,29 @@ public class accessMCCvs : MonoBehaviour {
 			
 			this._btnFour = this.buttonsPanel.GetComponentsInChildren<Button> () [3];
 			this._btnFour.onClick.AddListener (fourClicked);
-			//ensures system is not trying to assign to null canvas component
-			if(this._btnOne != null)
+
+			if(ans.Size == 4)
 			{
-				this._btnOne.GetComponentInChildren<Text>().text = ans[0];
-			}
-			//ensures system is not trying to assign to null canvas component
-			if(this._btnTwo != null)
-			{
-				this._btnTwo.GetComponentInChildren<Text>().text = ans[1];
-			}
-			//ensures system is not trying to assign to null canvas component
-			if(this._btnThree != null)
-			{
-				this._btnThree.GetComponentInChildren<Text>().text = ans[2];
-			}
-			//ensures system is not trying to assign to null canvas component
-			if(this._btnFour != null)
-			{
-				this._btnFour.GetComponentInChildren<Text>().text = ans[3];
+				//ensures system is not trying to assign to null canvas component
+				if(this._btnOne != null)
+				{
+					this._btnOne.GetComponentInChildren<Text>().text = ans[0].AnswerString;
+				}
+				//ensures system is not trying to assign to null canvas component
+				if(this._btnTwo != null)
+				{
+					this._btnTwo.GetComponentInChildren<Text>().text = ans[1].AnswerString;
+				}
+				//ensures system is not trying to assign to null canvas component
+				if(this._btnThree != null)
+				{
+					this._btnThree.GetComponentInChildren<Text>().text = ans[2].AnswerString;
+				}
+				//ensures system is not trying to assign to null canvas component
+				if(this._btnFour != null)
+				{
+					this._btnFour.GetComponentInChildren<Text>().text = ans[3].AnswerString;
+				}
 			}
 		}
 	}

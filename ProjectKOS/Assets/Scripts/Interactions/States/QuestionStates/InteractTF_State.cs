@@ -11,21 +11,21 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
-
-namespace States
+using Database;
+namespace AssemblyCSharp
 {
 	public class InteractTF_State:InteractionState
 	{
 		
 		private GameObject _cvsQuestion;
 		private accessTFCvs _cvsQuestTF;
-		
+		private Question _quest;
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractTF_State (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
+		public InteractTF_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
-
+			this._quest = quest;
 		}
 		
 		/**
@@ -45,10 +45,7 @@ namespace States
 
 					this._cvsQuestTF = this._cvsQuestion.GetComponentInChildren<accessTFCvs> ();
 
-					//to be replaced with Question.question string
-					string quest = "Is Unity is AMAZING?";
-
-					this._cvsQuestTF.setQuestion (quest);
+					this._cvsQuestTF.setQuestion (this._quest.QuestionString);
 				}
 			}
 			
