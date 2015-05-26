@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using Database;
-namespace AssemblyCSharp
+namespace States
 {
 	public class InteractTF_State:InteractionState
 	{

@@ -70,8 +70,7 @@ namespace States
 					+ "\n3) " + question.Answers[2].AnswerString
 					+ "\n4) " + question.Answers[3].AnswerString
 					);
-
-				//------create and return multiple choice state here--------
+				return new InteractMC_State(this.actee, question, this.actor);
 			}
 
 			if (question.Type == "TRUE_FALSE") {						//if the question is true/false, create and return that state
@@ -79,7 +78,8 @@ namespace States
 					"True/false question: " + question.QuestionString
 					+ "Answer: " + question.Answers[0].AnswerString
 					);
-				//--------create and return true false state here--------
+
+				return new InteractTF_State(this.actee, question, this.actor);
 			}
 
 			if (question.Type == "SHORT_ANSWER") {						//if the question is short answer, create and return that state
@@ -87,7 +87,8 @@ namespace States
 					"Short answer question: " + question.QuestionString
 					+ "Answer: " + question.Answers[0].AnswerString
 					);
-				//--------create and return short answer state here--------
+
+				return new InteractSA_State(this.actee, question, this.actee);
 			}
 
 

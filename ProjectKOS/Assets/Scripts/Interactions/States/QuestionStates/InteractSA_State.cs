@@ -12,13 +12,13 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using Database;
-namespace AssemblyCSharp
+namespace States
 {
 	public class InteractSA_State:InteractionState
 	{
 		
-		private GameObject _cvsQuestion;
-		private accessSACvs _cvsQuestSA;
+		private GameObject _cvsQuestion = null;
+		private accessSACvs _cvsQuestSA = null;
 
 		private Question _quest;
 		
