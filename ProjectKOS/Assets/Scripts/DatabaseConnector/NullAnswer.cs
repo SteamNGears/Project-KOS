@@ -14,8 +14,16 @@ using System.Text;
 
 namespace Database
 {
+    /**
+     * Null Object to be a placeholder for a non-answer instead of a null
+     */
+        
     class NullAnswer : Answer
     {
+        /**
+         * Default Constructor
+         */
+
         public NullAnswer() 
         {
             AnswerString = "";

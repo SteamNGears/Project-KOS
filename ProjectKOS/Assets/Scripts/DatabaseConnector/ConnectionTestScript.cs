@@ -17,10 +17,10 @@ public class ConnectionTestScript : MonoBehaviour {
 	void Start () 
     {
 		QuestionQuery query = new QuestionQuery ();
-		query.addRestraint(new DifficultyRestraint(1, 3));
-		query.addRestraint (new SubjectRestraint ("MATH"));
-		query.addRestraint (new TypeRestraint ("MULTIPLE_CHOICE"));
-		query.addRestraint (new TypeRestraint ("SHORT_ANSWER"));
+		query.AddRestraint(new DifficultyRestraint(1, 3));
+		query.AddRestraint (new SubjectRestraint ("MATH"));
+		query.AddRestraint (new TypeRestraint ("MULTIPLE_CHOICE"));
+		query.AddRestraint (new TypeRestraint ("SHORT_ANSWER"));
 
 		string queryString = DatabaseConnector.Instance.GenerateQueryString(query);
 		Debug.Log (queryString);

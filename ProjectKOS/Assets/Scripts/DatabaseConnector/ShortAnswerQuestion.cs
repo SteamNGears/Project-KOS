@@ -11,13 +11,34 @@ using System.Collections;
 
 namespace Database {
 
+    /**
+     * Class that represents a Short Answer Question. Currently isn't more than a wrapper around question
+     * @see Question
+     * @author Aryk Anderson
+     */
+        
 	public class ShortAnswerQuestion : Question
     {
+        /**
+         * Default Constructor
+         * @returns ShortAnswerquestion
+         */
+        
         public ShortAnswerQuestion()
         {
             this.Type = "SHORT_ANSWER";
         }
 
+
+        /**
+         * Constructor to get a useful question
+         * @param string subject
+         * @param int difficulty
+         * @param string qString
+         * @param string id
+         * @returns ShortAnswerQuestion
+         */
+        
         public ShortAnswerQuestion(string subject, int difficulty, string qString, string id) :
             base(subject, "MULTIPLE_CHOICE", difficulty, qString, id)
         { }

@@ -2,8 +2,8 @@
  * Filename: DatabaseConnector.cs
  * Author: Aryk Anderson
  * Created: 5/4/2015
- * Revision: 4
- * Rev. Date: 5/22/2015
+ * Revision: 5
+ * Rev. Date: 5/27/2015
  * Rev. Author: Aryk Anderson
  * */
 
@@ -15,11 +15,29 @@ using System;
 
 namespace Database {
 
+    /**
+     * This class is solely responsible for all the connections and transactions with the database.
+     * It uses Singleton pattern as it is useful to provide a global access point to a single connector
+     * as well as ensuring that all the transactions that are performed in the database are not
+     * conflicting with each other. Though synchronization issues are not yet a problem, they can be
+     * easily dealt with within this single class.
+     * 
+     * @author Aryk Anderson
+     */
+ 
 	public class DatabaseConnector {
 
         private static string ConnectionString = "Data Source=Assets/Database/Questions.db;Version=3;";
         private static DatabaseConnector _instance = null;
         
+
+        /**
+         * This is the static property that enforces singleton access. 
+         * Done through a property to make it look cleaner
+         * 
+         * @returns DatabaseConnector - the private instance that is maintained by this class
+         */
+ 
 		public static DatabaseConnector Instance
         {
             get
@@ -36,10 +54,28 @@ namespace Database {
             }
         }
         
-        public DatabaseConnector() 
+
+        /**
+         * Default constructor. Does not need any information to create this object, made private to
+         * enforce access requirements
+         * 
+         * @returns DatabaseConnector
+         */ 
+
+        private DatabaseConnector() 
         {   }
 
-        public QuestionPool GetQuestions(QuestionQuery query)
+
+        /**
+         * Main piece of functionality for the class, returns pre-constructed questions from the database
+         * 
+         * @param QuestionQuery query - the list of filters on the questions to return
+         * @returns QuestionPool questions - a wrapped list of constructed questions
+         * @see QuestionPool
+         * @see QuestionQuery
+         */ 
+
+        public sealed QuestionPool GetQuestions(QuestionQuery query)
         {
             try
             {
@@ -51,7 +87,10 @@ namespace Database {
                 {
                     cmd.CommandText = GenerateQueryString(query);
                     SqliteDataReader reader = cmd.ExecuteReader();
-                    return CreateQuestions(reader, conn);
+                    QuestionPool questions = CreateQuestions(reader, conn);
+                    ApplyAdditionalQueries(questions, query);
+
+                    return questions;
                 }
             }
 
@@ -70,43 +109,34 @@ namespace Database {
             return new QuestionPool(); //Returns an empty Question Pool if error occurs
         }
 
-        public bool InsertQuestion(Question question)
+
+        /** 
+         * Template method for adding addition filters to the QuestionPool called inside GetQuestions.
+         * Can only check against already created questions and filter those out. Use this for things
+         * such as randomization
+         * 
+         * @param QuestionPool pool - questions to apply query against
+         * @param QuestionQuery query - list of filters to apply against pool. 
+         * Method should ignore Difficulty, Subject and Type restraints
+         * 
+         * @returns QuestionPool pool - the modified list of questions
+         */ 
+
+        protected QuestionPool ApplyAdditionalQueries(QuestionPool pool, QuestionQuery query)
         {
-            try
-            {
-                using (SqliteConnection conn = new SqliteConnection(ConnectionString))
-                {
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        int id;
-
-                        cmd.CommandText = "Select MAX(ID) From Meta;";
-
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            reader.Read();
-                            id = Int32.Parse(reader["ID"].ToString());
-                        }
-
-                        InsertIntoMeta(cmd, question, id);
-                        InsertIntoQuestions(cmd, question, id);
-                        InsertIntoAnswers(cmd, question, id);
-
-                        return true;
-                    }
-                }
-            }
-
-            catch (SqliteException e)
-            {
-                Debug.Log(e.Message);
-            }
-
-            return false;
-            
+            return pool;
         }
 
-        public string GenerateQueryString(QuestionQuery query)
+
+        /**
+         * This method generates the SQL string to query against the database. Only looks at Type, Difficulty and Subject
+         * restraints withing the query.
+         * 
+         * @param QuestionQuery query - list of filters to apply
+         * @returns string queryString - generated SQL string
+         */ 
+
+        public sealed string GenerateQueryString(QuestionQuery query)
         {
             string queryString = "SELECT * FROM Meta NATURAL JOIN Questions";
             string subject = "";
@@ -217,6 +247,59 @@ namespace Database {
             return queryString;
         }
 
+
+        /**
+         * Takes a pre-constructed question and then inserts that question properly into the database
+         * 
+         * @param Question question - the question to insert into the database
+         * @returns bool success
+         */ 
+
+        public sealed bool InsertQuestion(Question question)
+        {
+            try
+            {
+                using (SqliteConnection conn = new SqliteConnection(ConnectionString))
+                {
+                    using (SqliteCommand cmd = new SqliteCommand())
+                    {
+                        int id;
+
+                        cmd.CommandText = "Select MAX(ID) From Meta;";
+
+                        using (SqliteDataReader reader = cmd.ExecuteReader())
+                        {
+                            reader.Read();
+                            id = Int32.Parse(reader["ID"].ToString());
+                        }
+
+                        InsertIntoMeta(cmd, question, id);
+                        InsertIntoQuestions(cmd, question, id);
+                        InsertIntoAnswers(cmd, question, id);
+
+                        return true;
+                    }
+                }
+            }
+
+            catch (SqliteException e)
+            {
+                Debug.Log(e.Message);
+            }
+
+            return false;
+
+        }
+
+
+        /**
+         * Private helper method to InsertQuestion to insert into one of the database tables
+         * 
+         * @param SqliteCommand cmd - a Sqlite command object keyed to an already open connection in the database
+         * @param Question question - the question to insert
+         * @param int id - the new id of the question to insert
+         */ 
+
         private void InsertIntoMeta(SqliteCommand cmd, Question question, int id)
         {
             if (question == null)
@@ -236,9 +319,19 @@ namespace Database {
             cmd.Prepare();
             Debug.Log(cmd.CommandText);
 
-            cmd.ExecuteNonQuery();
+            //uncomment these after debugging is finished
+            //cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
         }
+
+
+        /**
+         * Private helper method to InsertQuestion to insert into one of the database tables
+         * 
+         * @param SqliteCommand cmd - a Sqlite command object keyed to an already open connection in the database
+         * @param Question question - the question to insert
+         * @param int id - the new id of the question to insert
+         */ 
 
         private void InsertIntoAnswers(SqliteCommand cmd, Question question, int id)
         {
@@ -260,10 +353,20 @@ namespace Database {
                 cmd.Prepare();
                 Debug.Log(cmd.CommandText);
 
-                cmd.ExecuteNonQuery();
+                //uncomment these after debugging is finished
+                //cmd.ExecuteNonQuery();
                 cmd.Parameters.Clear();
             }   
         }
+
+
+        /**
+         * Private helper method to InsertQuestion to insert into one of the database tables
+         * 
+         * @param SqliteCommand cmd - a Sqlite command object keyed to an already open connection in the database
+         * @param Question question - the question to insert
+         * @param int id - the new id of the question to insert
+         */ 
 
         private void InsertIntoQuestions(SqliteCommand cmd, Question question, int id)
         {
@@ -280,9 +383,19 @@ namespace Database {
             cmd.Prepare();
             Debug.Log(cmd.CommandText);
 
-            cmd.ExecuteNonQuery();
+            //uncomment these after debugging is finished
+            //cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
         }
+
+
+        /**
+         * Helper method to GetQuestions that takes in the already executed reader and generates questions
+         * based on the contents inside its fields
+         * 
+         * @param SqliteDataReader reader - opened reader of the questions to retrieve
+         * @param Sqliteconnection conn - opened connection to the database
+         */ 
 
         private QuestionPool CreateQuestions(SqliteDataReader reader, SqliteConnection conn)
         {

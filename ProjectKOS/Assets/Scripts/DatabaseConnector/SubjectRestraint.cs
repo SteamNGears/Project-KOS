@@ -11,19 +11,42 @@ using System.Collections;
 
 namespace Database {
 
+    /**
+     * Represents a filter for questions based on the subject of the question
+     * @see Restraint
+     * @author Aryk Anderson
+     */
+        
 	public class SubjectRestraint : Restraint {
 
+        /**
+         * Constructor
+         * @param string subject - the subject to filter on
+         */
+        
         public SubjectRestraint(string subject)
         {
             Value = subject;
             RetraintType = "SUBJECT";
         }
 
+
+        /**
+         * Unimplemented method from parent
+         * @throws System.NotImplementedException
+         */
+        
         public override string[] GetRange()
         {
             throw new System.NotImplementedException();
         }
 
+
+        /**
+         * Unimplemented method from parent
+         * @returns int
+         */
+        
         public override int NumArgs()
         {
             return 1;
