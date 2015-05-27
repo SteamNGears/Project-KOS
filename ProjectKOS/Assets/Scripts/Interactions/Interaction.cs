@@ -27,7 +27,7 @@ public class Interaction : MonoBehaviour
 	{
 		//if we have not defined a starting state, then set the default start state to a simple button interaction. 
 		if (this.startingState == null) 
-			this.startingState = new InteractSA_State (this.gameObject, new Database.TrueFalseQuestion("MATH", 1, "What is pi?", "zero"), null);
+			this.startingState = new InteractButtonState (this.gameObject);
 		this.currentState = this.startingState;
 
 

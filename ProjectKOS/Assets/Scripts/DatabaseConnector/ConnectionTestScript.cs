@@ -25,7 +25,7 @@ public class ConnectionTestScript : MonoBehaviour {
 		string queryString = DatabaseConnector.Instance.GenerateQueryString(query);
 		Debug.Log (queryString);
 
-//        QuestionPool questions = DatabaseConnector.Instance.GetQuestions(null);
+        QuestionPool questions = DatabaseConnector.Instance.GetQuestions(null);
 	}
 	
 	// Update is called once per frame
