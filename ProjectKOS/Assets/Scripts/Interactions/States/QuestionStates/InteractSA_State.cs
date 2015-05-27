@@ -42,7 +42,9 @@ namespace States
 			{
 				if(this.actor.tag == "Player")
 				{
+
 					//instantiate SACvs.prefab as GameObject
+
 					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/SACvs") as GameObject);
 
 					//script to access SACvs.prefab

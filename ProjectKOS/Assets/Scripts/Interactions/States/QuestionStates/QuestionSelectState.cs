@@ -88,7 +88,7 @@ namespace States
 					+ "Answer: " + question.Answers[0].AnswerString
 					);
 
-				return new InteractSA_State(this.actee, question, this.actee);
+				return new InteractSA_State(this.actee, question, this.actor);
 			}
 
 
