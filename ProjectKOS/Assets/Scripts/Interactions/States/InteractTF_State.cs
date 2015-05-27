@@ -1,9 +1,9 @@
 /**
- * Filename: InteractMC_State.cs
+ * Filename: InteractTF_State.cs
  * Author: Chris Hatch
  * Created: 5/15/2015
  * Revision: 1
- * Rev. Date: 5/22/2015
+ * Rev. Date: 5/21/2015
  * Rev. Author: Chris Hatch
  * */
 
@@ -14,21 +14,23 @@ using UnityEngine.UI;
 using Database;
 namespace AssemblyCSharp
 {
-	public class InteractMC_State:InteractionState
+	public class InteractTF_State:InteractionState
 	{
 		
 		private GameObject _cvsQuestion;
-		private accessMCCvs _cvsQuestMC;
+		private accessTFCvs _cvsQuestTF;
 		private Question _quest;
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractMC_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
+		public InteractTF_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
 			this._quest = quest;
 		}
 		
 		/**
+		 * Displays a GUI with an interact button, 
+		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
 		 * 
 		 * */
 		public override InteractionState Behave ()
@@ -38,18 +40,17 @@ namespace AssemblyCSharp
 			{
 				if(this.actor.tag == "Player")
 				{
-					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/MCCvs") as GameObject);
+					//instantiate TFCvs.prefab as GameObject
+					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/TFCvs") as GameObject);
 
-					this._cvsQuestMC = this._cvsQuestion.GetComponentInChildren<accessMCCvs> ();
+					this._cvsQuestTF = this._cvsQuestion.GetComponentInChildren<accessTFCvs> ();
 
-					this._cvsQuestMC.setQuestion (this._quest.QuestionString);
-					this._cvsQuestMC.setAnswers (this._quest.Answers);
+					this._cvsQuestTF.setQuestion (this._quest.QuestionString);
 				}
 			}
 			
 			//if the button has been clicked,
-			if (this._cvsQuestMC.btnClicked) {
-				this._cvsQuestMC.cleanListeners();
+			if (this._cvsQuestTF.ansSelected) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}
