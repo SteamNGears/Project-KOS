@@ -31,8 +31,7 @@ namespace AssemblyCSharp
 		}
 		
 		/**
-		 * Displays a GUI with an interact button, 
-		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
+		 * Displays a GUI with a short answer canvas
 		 * 
 		 * */
 		public override InteractionState Behave ()
@@ -52,7 +51,7 @@ namespace AssemblyCSharp
 				}
 			}
 			
-			//if the button has been clicked,
+			//if the answer has been entered,
 			if (this._cvsQuestSA.ansTyped) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door

@@ -1,5 +1,5 @@
 ﻿/**
- * Filename: AccessSettingsCvs.cs
+ * Filename: accessSettingsCvs.cs
  * Author: Chris Hatch
  * Created: 5/28/2015
  * Revision: 0
@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using System.Collections;
 namespace AssemblyCSharp
 {
-	public class AccessSettingsCvs : MonoBehaviour {
+	public class accessSettingsCvs : MonoBehaviour {
 		
 		// Use this for initialization
 		void Start () {

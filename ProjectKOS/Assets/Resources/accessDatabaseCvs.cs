@@ -1,15 +1,27 @@
-﻿using UnityEngine;
+﻿/**
+ * Filename: AccessDatabaseCvs.cs
+ * Author: Chris Hatch
+ * Created: 5/28/2015
+ * Revision: 0
+ * Rev. Date: 5/28/2015
+ * Rev. Author: Chris Hatch
+ * */
+
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
-
-public class accessDatabaseCvs : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+namespace AssemblyCSharp
+{
+	public class AccessDatabaseCvs : MonoBehaviour {
+		
+		// Use this for initialization
+		void Start () {
+			
+		}
+		
+		// Update is called once per frame
+		void Update () {
+			
+		}
 	}
 }

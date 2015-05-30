@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class accessMainScr : MonoBehaviour {
+public class AccessLoadCvs : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
