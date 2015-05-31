@@ -9,7 +9,7 @@
 
 using System;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine.UI;
 using Database;
 namespace AssemblyCSharp
@@ -66,7 +66,7 @@ namespace AssemblyCSharp
 		 * */
 		public override void Suspend(Collider c = null)
 		{
-			Debug.Log("Cleared event");
+			//Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
 		}
 

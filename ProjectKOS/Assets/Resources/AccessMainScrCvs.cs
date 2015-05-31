@@ -8,68 +8,115 @@
  * */
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 namespace AssemblyCSharp
 {
 	public class AccessMainScrCvs : MonoBehaviour {
 
-		private Canvas _msCvs;
+		public Canvas msCvs;
 
 		private Button _play;
 		private Button _load;
 		private Button _settings;
 		private Button _dbManager;
+		private Button _exit;
 
-
-		public enum nextState {NEW_GAME, LOAD_GAME, SETTINGS, DB_MANAGER};
-		public nextState nxtState;
 		public bool checkState;
+
+		public enum nextState {NEW_GAME, LOAD_GAME, SETTINGS, DB_MANAGER, EXIT_GAME};
+		public nextState nxtState;
 
 		// Use this for initialization
 		void Start () {
-			this._msCvs = this.GetComponentInParent<Canvas> ();
+			this.msCvs = this.GetComponentInChildren<Canvas> ();
 
-			this._play = this._msCvs.GetComponentsInChildren<Button> () [0];
-			this._play.onClick.AddListener (playListener);
-			this._load = this._msCvs.GetComponentsInChildren<Button> () [1];
-			this._load.onClick.AddListener (loadListener);
-			this._settings = this._msCvs.GetComponentsInChildren<Button> () [2];
+			this._play = this.msCvs.GetComponentsInChildren<Button> () [0];
+			this._play.onClick.AddListener (playNewListener);
+			this._load = this.msCvs.GetComponentsInChildren<Button> () [1];
+			this._load.onClick.AddListener (loadGameListener);
+			this._settings = this.msCvs.GetComponentsInChildren<Button> () [2];
 			this._settings.onClick.AddListener (settingsListener);
-			this._dbManager = this._msCvs.GetComponentsInChildren<Button> () [3];
+			this._dbManager = this.msCvs.GetComponentsInChildren<Button> () [3];
 			this._dbManager.onClick.AddListener (dbManListener);
+			this._exit = this.msCvs.GetComponentsInChildren<Button> () [4];
+			this._exit.onClick.AddListener (exitGameListener);
 		}
 
 		void dbManListener ()
 		{
 			this.nxtState = nextState.DB_MANAGER;
 			checkState = true;
-			this._dbManager.onClick.RemoveListener (dbManListener);
+
 		}
 
-		void loadListener ()
+		void exitGameListener ()
+		{
+			this.nxtState = nextState.EXIT_GAME;
+			checkState = true;
+
+		}
+
+		void loadGameListener ()
 		{
 			this.nxtState = nextState.LOAD_GAME;
 			checkState = true;
-			this._load.onClick.RemoveListener (loadListener);
+
 		}
 
-		void playListener ()
+		void playNewListener ()
 		{
 			this.nxtState = nextState.NEW_GAME;
 			checkState = true;
-			this._play.onClick.RemoveListener (playListener);
+
 		}
 
 		void settingsListener ()
 		{
 			this.nxtState = nextState.SETTINGS;
 			checkState = true;
+
+		}
+
+		void removeListeners()
+		{
+			this._dbManager.onClick.RemoveListener (dbManListener);
+			this._exit.onClick.RemoveListener (exitGameListener);
+			this._load.onClick.RemoveListener (loadGameListener);
+			this._play.onClick.RemoveListener (playNewListener);
 			this._settings.onClick.RemoveListener (settingsListener);
 		}
 
 		// Update is called once per frame
 		void Update () {
-			
+
+			if (checkState) {
+				//Debug.Log("State selected: " + nxtState.ToString ());
+				checkState = false;
+				this.msCvs.enabled = false;
+
+				//Debug.Log ("Main Disabled");
+
+				switch(this.nxtState)
+				{
+					case nextState.NEW_GAME:
+						Application.LoadLevel("TrainingRoom");
+						break;
+					case nextState.LOAD_GAME:
+						
+						break;
+					case nextState.SETTINGS:
+						break;
+					case nextState.DB_MANAGER:
+						break;
+					case nextState.EXIT_GAME:
+						Application.Quit ();
+						break;
+				}
+
+				removeListeners ();
+			}
+
 		}
 	}
 
