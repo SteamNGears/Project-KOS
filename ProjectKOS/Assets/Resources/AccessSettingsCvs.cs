@@ -34,27 +34,44 @@ namespace AssemblyCSharp
 			this._credits = this._settingsCvs.GetComponentsInChildren<Button> () [0];
 			this._credits.onClick.AddListener (rollCredits);
 			this._mainMenu = this._settingsCvs.GetComponentsInChildren<Button> () [1];
-			this._mainMenu.onClick.AddListener (returnToMain);
+			this._mainMenu.onClick.AddListener (mainMenu);
 			
 		}
 		
-		void returnToMain ()
+		void mainMenu ()
 		{
 			this.nxtSet = nextSetting.MAIN_MENU;
 			this.checkSet = true;
-			this._mainMenu.onClick.RemoveListener (returnToMain);
+		}
+
+		void removeListeners ()
+		{
+			this._credits.onClick.RemoveListener (rollCredits);
+			this._mainMenu.onClick.RemoveListener (mainMenu);
 		}
 		
 		void rollCredits ()
 		{
 			this.nxtSet = nextSetting.CREDITS;
 			this.checkSet = true;
-			this._credits.onClick.RemoveListener (rollCredits);
 		}
 		
 		// Update is called once per frame
 		void Update () {
-			
+			if (this.checkSet) 
+			{
+				this._settingsCvs.enabled = false;
+				removeListeners();
+				switch(this.nxtSet)
+				{
+				case nextSetting.CREDITS:
+					//load credits
+					break;
+				default:
+					break;
+				}
+				this.checkSet = false;
+			}
 		}
 	}
 	

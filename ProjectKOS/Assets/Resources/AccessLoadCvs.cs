@@ -18,6 +18,7 @@ namespace AssemblyCSharp
 
 		private Button _checkFiles;
 		private Button _loadFile;
+		private Button _mainMenu;
 
 		private Text _fileSelections;
 
@@ -25,7 +26,7 @@ namespace AssemblyCSharp
 
 		public bool chkState;
 
-		public enum nextLoadState {CHECK_FILES, LOAD_FILE};
+		public enum nextLoadState {CHECK_FILES, LOAD_FILE, MAIN_MENU};
 		public nextLoadState nxtLState;
 
 		// Use this for initialization
@@ -36,6 +37,8 @@ namespace AssemblyCSharp
 			this._checkFiles.onClick.AddListener (chkFiles);
 			this._loadFile = this.GetComponentsInChildren<Button> () [1];
 			this._loadFile.onClick.AddListener (loadFile);
+			this._mainMenu = this.GetComponentsInChildren<Button> () [2];
+			this._mainMenu.onClick.AddListener (mainMenu);
 
 			this._fileSelections = this._loadCvs.GetComponentInChildren<Text> ();
 			this._fileName = this._loadCvs.GetComponentInChildren<InputField> ();
@@ -54,8 +57,21 @@ namespace AssemblyCSharp
 			this.nxtLState = nextLoadState.LOAD_FILE;
 			this.chkState = true;
 			this.fileName = this._fileName.GetComponentsInChildren<Text> () [1].text;
-			this._checkFiles.onClick.RemoveListener (loadFile);
 		}
+
+		void mainMenu ()
+		{
+			this.nxtLState = nextLoadState.MAIN_MENU;
+			this.chkState = true;
+		}
+
+		void removeListeners()
+		{
+			this._checkFiles.onClick.RemoveListener (chkFiles);
+			this._loadFile.onClick.RemoveListener (loadFile);
+			this._mainMenu.onClick.RemoveListener (mainMenu);
+		}
+
 		public string fileName{
 			get{
 					return this.fileName;

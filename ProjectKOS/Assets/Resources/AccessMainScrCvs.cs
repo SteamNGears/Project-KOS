@@ -15,6 +15,7 @@ namespace AssemblyCSharp
 	public class AccessMainScrCvs : MonoBehaviour {
 
 		public Canvas msCvs;
+		private GameObject _nextScreen;
 
 		private Button _play;
 		private Button _load;
@@ -91,11 +92,7 @@ namespace AssemblyCSharp
 		void Update () {
 
 			if (checkState) {
-				//Debug.Log("State selected: " + nxtState.ToString ());
-				checkState = false;
 				this.msCvs.enabled = false;
-
-				//Debug.Log ("Main Disabled");
 
 				switch(this.nxtState)
 				{
@@ -103,11 +100,26 @@ namespace AssemblyCSharp
 						Application.LoadLevel("TrainingRoom");
 						break;
 					case nextState.LOAD_GAME:
-						
+					this._nextScreen = GameObject.Instantiate(Resources.Load ("LoadCvs") as GameObject);
+
+					AccessLoadCvs loadScript = _nextScreen.GetComponentInParent<AccessLoadCvs> ();
+
 						break;
 					case nextState.SETTINGS:
+					this._nextScreen = GameObject.Instantiate(Resources.Load ("SettingsCvs") as GameObject);
+					
+					AccessSettingsCvs settingsScript = _nextScreen.GetComponentInParent<AccessSettingsCvs> ();
+					if(settingsScript.checkSet)
+					{
+						if(settingsScript.nxtSet == AccessSettingsCvs.nextSetting.MAIN_MENU)
+							this.msCvs.enabled = true;
+					}
 						break;
 					case nextState.DB_MANAGER:
+					this._nextScreen = GameObject.Instantiate(Resources.Load ("DatabaseCvs") as GameObject);
+					
+					AccessDbManCvs dbScript = _nextScreen.GetComponentInParent<AccessDbManCvs> ();
+
 						break;
 					case nextState.EXIT_GAME:
 						Application.Quit ();

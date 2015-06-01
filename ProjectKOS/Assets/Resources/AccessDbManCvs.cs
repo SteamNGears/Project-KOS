@@ -46,7 +46,7 @@ namespace AssemblyCSharp
 			this._addToDB = this._DbManCvs.GetComponentsInChildren<Button> () [0];
 			this._addToDB.onClick.AddListener (databaseAdd);
 			this._mainMenu = this._DbManCvs.GetComponentsInChildren<Button> () [1];
-			this._mainMenu.onClick.AddListener (returnToMain);
+			this._mainMenu.onClick.AddListener (mainMenu);
 		}
 
 		void databaseAdd ()
@@ -58,14 +58,13 @@ namespace AssemblyCSharp
 			this.qType = this._questionType.GetComponentsInChildren<Text> () [1].text;
 			this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
 			Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
-			this._addToDB.onClick.RemoveListener (databaseAdd);
+
 		}
 
-		void returnToMain ()
+		void mainMenu ()
 		{
 			this.nxtState = nextDbManState.MAIN_MENU;
 			this.checkState = true;
-			this._mainMenu.onClick.RemoveListener (returnToMain);
 		}
 
 		public string answers{
@@ -123,6 +122,12 @@ namespace AssemblyCSharp
 			private set{
 				this.question = value;
 			}
+		}
+
+		void removeListeners()
+		{
+			this._addToDB.onClick.RemoveListener (databaseAdd);
+			this._mainMenu.onClick.RemoveListener (mainMenu);
 		}
 
 		// Update is called once per frame
