@@ -9,11 +9,11 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
-namespace AssemblyCSharp
+namespace States
 {
-	public class OpenState:InteractionState
+	public class IdleState:InteractionState
 	{
-		public OpenState(GameObject _actee, GameObject _actor):base(_actee, _actor)
+		public IdleState(GameObject _actee, GameObject _actor):base(_actee, _actor)
 		{
 			//nothing
 		}
