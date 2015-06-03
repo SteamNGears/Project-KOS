@@ -9,7 +9,7 @@
 
 using System;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine.UI;
 using Database;
 namespace States
@@ -31,8 +31,7 @@ namespace States
 		}
 		
 		/**
-		 * Displays a GUI with an interact button, 
-		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
+		 * Displays a GUI with a short answer canvas
 		 * 
 		 * */
 		public override InteractionState Behave ()
@@ -54,7 +53,7 @@ namespace States
 				}
 			}
 			
-			//if the button has been clicked,
+			//if the answer has been entered,
 			if (this._cvsQuestSA.ansTyped) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
@@ -69,7 +68,7 @@ namespace States
 		 * */
 		public override void Suspend(Collider c = null)
 		{
-			Debug.Log("Cleared event");
+			//Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
 		}
 
