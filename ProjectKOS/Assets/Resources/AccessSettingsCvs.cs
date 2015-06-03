@@ -67,7 +67,8 @@ namespace AssemblyCSharp
 				case nextSetting.CREDITS:
 					//load credits
 					break;
-				default:
+				case nextSetting.MAIN_MENU:
+					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
 					break;
 				}
 				this.checkSet = false;

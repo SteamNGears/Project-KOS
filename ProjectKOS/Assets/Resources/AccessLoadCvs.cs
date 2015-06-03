@@ -24,7 +24,8 @@ namespace AssemblyCSharp
 
 		private InputField _fileName;
 
-		public bool chkState;
+		private bool _chkState;
+		private bool _fileNameEntered;
 
 		public enum nextLoadState {CHECK_FILES, LOAD_FILE, MAIN_MENU};
 		public nextLoadState nxtLState;
@@ -48,21 +49,20 @@ namespace AssemblyCSharp
 		void chkFiles ()
 		{
 			this.nxtLState = nextLoadState.CHECK_FILES;
-			this.chkState = true;
-			this._checkFiles.onClick.RemoveListener (chkFiles);
+			this._chkState = true;
 		}
 
 		void loadFile ()
 		{
 			this.nxtLState = nextLoadState.LOAD_FILE;
-			this.chkState = true;
+			this._chkState = true;
 			this.fileName = this._fileName.GetComponentsInChildren<Text> () [1].text;
 		}
 
 		void mainMenu ()
 		{
 			this.nxtLState = nextLoadState.MAIN_MENU;
-			this.chkState = true;
+			this._chkState = true;
 		}
 
 		void removeListeners()
@@ -77,12 +77,32 @@ namespace AssemblyCSharp
 					return this.fileName;
 			}
 			private set{
-				this.fileName = value;
+				if(value != null)
+					this.fileName = value;
+				else
+					this._fileName.GetComponentsInChildren<Text> () [0].text = "No filename entered";
 			}
 		}
 		// Update is called once per frame
 		void Update () {
-			
+			if (this._chkState) 
+			{
+				this._loadCvs.enabled = false;
+				switch(this.nxtLState)
+				{
+				case nextLoadState.CHECK_FILES:
+					//checkFiles();
+					break;
+				case nextLoadState.LOAD_FILE:
+					//loadFile();
+					break;
+				case nextLoadState.MAIN_MENU:
+					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
+					break;
+				}
+				removeListeners();
+				this._chkState = false;
+			}
 		}
 	}
 	

@@ -28,7 +28,7 @@ namespace AssemblyCSharp
 		private Button _addToDB;
 		private Button _mainMenu;
 
-		public bool checkState;
+		private bool _chkState;
 
 		public enum nextDbManState {DATABASE, MAIN_MENU};
 		public nextDbManState nxtState;
@@ -52,75 +52,80 @@ namespace AssemblyCSharp
 		void databaseAdd ()
 		{
 			this.nxtState = nextDbManState.DATABASE;
-			this.checkState = true;
-			this.answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
-			this.correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
-			this.qType = this._questionType.GetComponentsInChildren<Text> () [1].text;
-			this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
-			Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
-
+			this._chkState = true;
 		}
 
 		void mainMenu ()
 		{
 			this.nxtState = nextDbManState.MAIN_MENU;
-			this.checkState = true;
+			this._chkState = true;
 		}
 
 		public string answers{
 			get{
-				if(this.answers != null)
+				if(this.answers != "")
 					return this.answers;
 				else
 					return "";
 			}
 			private set{
-				this.answers = value;
+				if(value != "")
+					this.answers = value;
+				else
+				{
+					this._answerString.GetComponentsInChildren<Text> () [0].text = "Answers blank";
+				}
 			}
 		}
 
 		public string correct{
 			get{
-				if(this.correct != null)
+				if(this.correct != "")
 					return this.correct;
 				else
 					return "";
 			}
 			private set{
-				this.correct = value;
-			}
-		}
-
-		public int diff{
-			get{
-					return this.diff;
-			}
-			private set{
-				this.diff = value;
+				if(value != "")
+					this.correct = value;
+				else
+				{
+					this._correctAnswer.GetComponentsInChildren<Text> () [0].text = "Correct answer blank";
+				}
 			}
 		}
 
 		public string qType{
 			get{
-				if(this.qType != null)
+				if(this.qType != "")
 					return this.qType;
 				else
 					return "";
 			}
 			private set{
-				this.qType = value;
+				if(value != "")
+					this.qType = value;
+				else
+				{
+					this._questionType.GetComponentsInChildren<Text> () [0].text = "Type blank";
+				}
 			}
 		}
 
 		public string question{
 			get{
-				if(this.question != null)
+				if(this.question != "")
 					return this.question;
 				else
 					return "";
 			}
 			private set{
-				this.question = value;
+				if(value != "")
+					this.question = value;
+				else
+				{
+					this._questionString.GetComponentsInChildren<Text> () [0].text = "Question blank";
+				}
 			}
 		}
 
@@ -132,7 +137,26 @@ namespace AssemblyCSharp
 
 		// Update is called once per frame
 		void Update () {
-			
+			if (this._chkState) 
+			{
+
+				switch(this.nxtState)
+				{
+				case nextDbManState.DATABASE:
+					this.answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
+					this.correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
+					this.qType = this._questionType.GetComponentsInChildren<Text> () [1].text;
+					this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
+					Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
+					break;
+				case nextDbManState.MAIN_MENU:
+					this._DbManCvs.enabled = false;
+					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
+					break;
+				}
+				removeListeners ();
+				this._chkState = false;
+			}
 		}
 	}
 	

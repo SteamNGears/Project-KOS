@@ -15,7 +15,6 @@ namespace AssemblyCSharp
 	public class AccessMainScrCvs : MonoBehaviour {
 
 		public Canvas msCvs;
-		private GameObject _nextScreen;
 
 		private Button _play;
 		private Button _load;
@@ -55,28 +54,24 @@ namespace AssemblyCSharp
 		{
 			this.nxtState = nextState.EXIT_GAME;
 			checkState = true;
-
 		}
 
 		void loadGameListener ()
 		{
 			this.nxtState = nextState.LOAD_GAME;
 			checkState = true;
-
 		}
 
 		void playNewListener ()
 		{
 			this.nxtState = nextState.NEW_GAME;
 			checkState = true;
-
 		}
 
 		void settingsListener ()
 		{
 			this.nxtState = nextState.SETTINGS;
 			checkState = true;
-
 		}
 
 		void removeListeners()
@@ -93,40 +88,29 @@ namespace AssemblyCSharp
 
 			if (checkState) {
 				this.msCvs.enabled = false;
-
+				removeListeners ();
 				switch(this.nxtState)
 				{
 					case nextState.NEW_GAME:
 						Application.LoadLevel("TrainingRoom");
 						break;
 					case nextState.LOAD_GAME:
-					this._nextScreen = GameObject.Instantiate(Resources.Load ("LoadCvs") as GameObject);
-
-					AccessLoadCvs loadScript = _nextScreen.GetComponentInParent<AccessLoadCvs> ();
+						GameObject.Instantiate(Resources.Load ("LoadCvs") as GameObject);
 
 						break;
 					case nextState.SETTINGS:
-					this._nextScreen = GameObject.Instantiate(Resources.Load ("SettingsCvs") as GameObject);
-					
-					AccessSettingsCvs settingsScript = _nextScreen.GetComponentInParent<AccessSettingsCvs> ();
-					if(settingsScript.checkSet)
-					{
-						if(settingsScript.nxtSet == AccessSettingsCvs.nextSetting.MAIN_MENU)
-							this.msCvs.enabled = true;
-					}
+						GameObject.Instantiate(Resources.Load ("SettingsCvs") as GameObject);
+
 						break;
 					case nextState.DB_MANAGER:
-					this._nextScreen = GameObject.Instantiate(Resources.Load ("DatabaseCvs") as GameObject);
-					
-					AccessDbManCvs dbScript = _nextScreen.GetComponentInParent<AccessDbManCvs> ();
+						GameObject.Instantiate(Resources.Load ("DatabaseCvs") as GameObject);
 
 						break;
 					case nextState.EXIT_GAME:
 						Application.Quit ();
 						break;
 				}
-
-				removeListeners ();
+				this.checkState = false;
 			}
 
 		}
