@@ -46,10 +46,13 @@ namespace Database {
         {
             get
             {
-                return Answers.Count;
+                return _answers.Count;
             }
 
-            protected set;
+            protected set
+            {
+                return;
+            }
         }
 
 
@@ -71,7 +74,7 @@ namespace Database {
         
         public void AddAnswer(Answer answer)
         {
-            this.Answers.Add(answer);
+            this._answers.Add(answer);
         }
 
 
@@ -82,8 +85,8 @@ namespace Database {
         
         public Answer this[int index] 
         {
-            get { return Answers[index]; }
-            set { Answers[index] = value; }
+            get { return _answers[index]; }
+            set { _answers[index] = value; }
         }
 
 
@@ -94,7 +97,7 @@ namespace Database {
         
         public IEnumerator<Answer> GetEnumerator()
         {
-            return Answers.GetEnumerator();
+            return _answers.GetEnumerator();
         }
 
 

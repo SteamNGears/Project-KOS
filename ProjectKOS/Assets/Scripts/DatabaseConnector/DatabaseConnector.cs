@@ -75,22 +75,23 @@ namespace Database {
          * @see QuestionQuery
          */ 
 
-        public sealed QuestionPool GetQuestions(QuestionQuery query)
+        public QuestionPool GetQuestions(QuestionQuery query)
         {
             try
             {
-                SqliteConnection conn = new SqliteConnection(ConnectionString);
+                using (SqliteConnection conn = new SqliteConnection(ConnectionString)) 
+                { 
+                    conn.Open();
 
-                conn.Open();
+                    using (SqliteCommand cmd = new SqliteCommand(conn))
+                    {
+                        cmd.CommandText = GenerateQueryString(query);
+                        SqliteDataReader reader = cmd.ExecuteReader();
+                        QuestionPool questions = CreateQuestions(reader, conn);
+                        ApplyAdditionalQueries(questions, query);
 
-                using (SqliteCommand cmd = new SqliteCommand(conn))
-                {
-                    cmd.CommandText = GenerateQueryString(query);
-                    SqliteDataReader reader = cmd.ExecuteReader();
-                    QuestionPool questions = CreateQuestions(reader, conn);
-                    ApplyAdditionalQueries(questions, query);
-
-                    return questions;
+                        return questions;
+                    }
                 }
             }
 
@@ -136,7 +137,7 @@ namespace Database {
          * @returns string queryString - generated SQL string
          */ 
 
-        public sealed string GenerateQueryString(QuestionQuery query)
+        public string GenerateQueryString(QuestionQuery query)
         {
             string queryString = "SELECT * FROM Meta NATURAL JOIN Questions";
             string subject = "";
@@ -255,17 +256,19 @@ namespace Database {
          * @returns bool success
          */ 
 
-        public sealed bool InsertQuestion(Question question)
+        public bool InsertQuestion(Question question)
         {
             try
             {
                 using (SqliteConnection conn = new SqliteConnection(ConnectionString))
                 {
-                    using (SqliteCommand cmd = new SqliteCommand())
+                    using (SqliteCommand cmd = new SqliteCommand(conn))
                     {
                         int id;
 
-                        cmd.CommandText = "Select MAX(ID) From Meta;";
+                        conn.Open();
+
+                        cmd.CommandText = "Select MAX(ID) AS ID From Meta;";
 
                         using (SqliteDataReader reader = cmd.ExecuteReader())
                         {
@@ -305,22 +308,22 @@ namespace Database {
             if (question == null)
                 return;
 
-            cmd.CommandText = "INSERT INTO Meta VALUES (?,?,?,?);";
+            cmd.CommandText = "INSERT INTO Meta VALUES (@param1,@param2,@param3,@param4);";
 
             int Difficulty = question.Difficulty;
             string Subject = question.Subject;
             string Type = question.Type;
-
-            cmd.Parameters.Add(id);
-            cmd.Parameters.Add(Difficulty);
-            cmd.Parameters.Add(Subject);
-            cmd.Parameters.Add(Type);
+            
+            cmd.Parameters.Add(new SqliteParameter("@param1", id));
+            cmd.Parameters.Add(new SqliteParameter("@param2", Difficulty));
+            cmd.Parameters.Add(new SqliteParameter("@param3", Subject));
+            cmd.Parameters.Add(new SqliteParameter("@param4", Type));
 
             cmd.Prepare();
             Debug.Log(cmd.CommandText);
 
             //uncomment these after debugging is finished
-            //cmd.ExecuteNonQuery();
+            Debug.Log(cmd.ExecuteNonQuery());
             cmd.Parameters.Clear();
         }
 
@@ -335,26 +338,31 @@ namespace Database {
 
         private void InsertIntoAnswers(SqliteCommand cmd, Question question, int id)
         {
+            //Debug.Log("Inside InsertIntoAnswers");
+
             if (question == null)
                 return;
 
-            cmd.CommandText = "INSERT INTO Answers VALUES (?,?,?);";
+            cmd.CommandText = "INSERT INTO Answers VALUES (@param1,@param2,@param3);";
             AnswerPool answers = question.Answers;
+
+            //Debug.Log(answers.Size);
 
             foreach(Answer temp in answers)
             {
                 string aString = temp.AnswerString;
                 bool correct = temp.Correct;
 
-                cmd.Parameters.Add(id);
-                cmd.Parameters.Add(aString);
-                cmd.Parameters.Add(correct);
-                
+                cmd.Parameters.Add(new SqliteParameter("@param1", id));
+                cmd.Parameters.Add(new SqliteParameter("@param2", aString));
+                cmd.Parameters.Add(new SqliteParameter("@param3", correct));
+
+                //Debug.Log("Before command prep");
                 cmd.Prepare();
                 Debug.Log(cmd.CommandText);
 
                 //uncomment these after debugging is finished
-                //cmd.ExecuteNonQuery();
+                Debug.Log(cmd.ExecuteNonQuery());
                 cmd.Parameters.Clear();
             }   
         }
@@ -373,18 +381,18 @@ namespace Database {
             if (question == null)
                 return;
 
-            cmd.CommandText = "INSERT INTO Questions VALUES (?,?);";
+            cmd.CommandText = "INSERT INTO Questions VALUES (@param1,@param2);";
 
             string qString = question.QuestionString;
 
-            cmd.Parameters.Add(id);
-            cmd.Parameters.Add(qString);
+            cmd.Parameters.Add(new SqliteParameter("@param1", id));
+            cmd.Parameters.Add(new SqliteParameter("@param2", qString));
 
             cmd.Prepare();
             Debug.Log(cmd.CommandText);
 
             //uncomment these after debugging is finished
-            //cmd.ExecuteNonQuery();
+            Debug.Log(cmd.ExecuteNonQuery());
             cmd.Parameters.Clear();
         }
 
@@ -487,6 +495,29 @@ namespace Database {
             } //end loop i
 
             return new QuestionPool(questions);
+        }
+
+        public Question GetQuestionByID(int id)
+        {
+            using (SqliteConnection conn = new SqliteConnection(ConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    conn.Open();
+                    cmd.CommandText = "SELECT * FROM META WHERE ID = @id;" +
+                                       "SELECT * FROM QUESTIONS WHERE ID = @id;" +
+                                       "SELECT * FROM ANSWERS WHERE ID = @id;";
+
+                    cmd.Parameters.Add(new SqliteParameter("@id", id));
+                    cmd.Prepare();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        QuestionPool temp = CreateQuestions(reader, conn);
+                        return temp.Questions[0];
+                    }
+                }
+            }
         }
 	}
 }
