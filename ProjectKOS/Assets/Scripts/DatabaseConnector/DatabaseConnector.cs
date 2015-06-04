@@ -273,7 +273,7 @@ namespace Database {
                         using (SqliteDataReader reader = cmd.ExecuteReader())
                         {
                             reader.Read();
-                            id = Int32.Parse(reader["ID"].ToString());
+                            id = Int32.Parse(reader["ID"].ToString()) + 1;
                         }
 
                         InsertIntoMeta(cmd, question, id);
@@ -427,7 +427,7 @@ namespace Database {
                                                         reader["QString"].ToString(), 
                                                         reader["ID"].ToString()));
 
-                    answersQuery += "SELECT * From Answers WHERE ID = " + reader["ID"] + ";";
+                    answersQuery += "SELECT * From Answers WHERE ID = " + reader["ID"].ToString() + ";";
                 }
 
                 else if (type.Equals("MULTIPLE_CHOICE"))
@@ -504,9 +504,7 @@ namespace Database {
                 using (SqliteCommand cmd = conn.CreateCommand())
                 {
                     conn.Open();
-                    cmd.CommandText = "SELECT * FROM META WHERE ID = @id;" +
-                                       "SELECT * FROM QUESTIONS WHERE ID = @id;" +
-                                       "SELECT * FROM ANSWERS WHERE ID = @id;";
+                    cmd.CommandText = "SELECT * FROM META NATURAL JOIN QUESTIONS WHERE ID = @id;";
 
                     cmd.Parameters.Add(new SqliteParameter("@id", id));
                     cmd.Prepare();
@@ -514,7 +512,12 @@ namespace Database {
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         QuestionPool temp = CreateQuestions(reader, conn);
-                        return temp.Questions[0];
+
+                        if (temp.Count == 1)
+                            return temp.Questions[0];
+
+                        else
+                            return new NullQuestion();
                     }
                 }
             }
