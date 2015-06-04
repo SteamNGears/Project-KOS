@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 3d935324f72aeb141911d951f3f0db85
-timeCreated: 1433437928
+guid: 0c2904e766faeb04a8a69fabbdd83e7b
+timeCreated: 1433437953
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Over_0
-    21300002: Over_1
-    21300004: Over_2
-    21300006: Over_3
-    21300008: Over_4
-    21300010: Over_5
+    21300000: Pressed_0
+    21300002: Pressed_1
+    21300004: Pressed_2
+    21300006: Pressed_3
+    21300008: Pressed_4
+    21300010: Pressed_5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -55,7 +55,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Over_0
+    - name: Pressed_0
       rect:
         serializedVersion: 2
         x: 0
@@ -65,7 +65,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Over_1
+    - name: Pressed_1
       rect:
         serializedVersion: 2
         x: 256
@@ -75,7 +75,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Over_2
+    - name: Pressed_2
       rect:
         serializedVersion: 2
         x: 512
@@ -85,7 +85,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Over_3
+    - name: Pressed_3
       rect:
         serializedVersion: 2
         x: 0
@@ -95,7 +95,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Over_4
+    - name: Pressed_4
       rect:
         serializedVersion: 2
         x: 256
@@ -105,7 +105,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Over_5
+    - name: Pressed_5
       rect:
         serializedVersion: 2
         x: 512
