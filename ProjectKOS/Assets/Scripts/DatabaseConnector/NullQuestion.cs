@@ -12,8 +12,15 @@ using System.Collections;
 
 namespace Database
 {
+    /**
+     * Null Object pattern for Questions
+     */ 
+
     public class NullQuestion : Question
     {
+        /**
+         * Default Constructor
+         */ 
 
         public NullQuestion()
         {
