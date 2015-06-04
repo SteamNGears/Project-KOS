@@ -11,13 +11,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using Database;
 namespace AssemblyCSharp
 {
 	public class AccessDbManCvs : MonoBehaviour {
 		
 		private Canvas _DbManCvs;
-		
-		private InputField _questionType;
+
 		private InputField _questionString;
 		private InputField _answerString;
 		private InputField _correctAnswer;
@@ -27,26 +27,38 @@ namespace AssemblyCSharp
 
 		private Button _addToDB;
 		private Button _mainMenu;
+		private Button _typeMC;
+		private Button _typeSA;
+		private Button _typeTF;
 
 		private bool _chkState;
 
 		public enum nextDbManState {DATABASE, MAIN_MENU};
+		public enum questType {MC, SA, TF, NULL};
+		public questType qt;
 		public nextDbManState nxtState;
+
+		private DatabaseConnector _dbConn;
 
 		// Use this for initialization
 		void Start () {
 			this._DbManCvs = this.GetComponentInChildren<Canvas> ();
 
-			this._questionType = this._DbManCvs.GetComponentsInChildren<InputField> () [0];
-			this._questionString = this._DbManCvs.GetComponentsInChildren<InputField> () [1];
-			this._answerString = this._DbManCvs.GetComponentsInChildren<InputField> () [2];
-			this._correctAnswer = this._DbManCvs.GetComponentsInChildren<InputField> () [3];
-			this._difficulty = this._DbManCvs.GetComponentsInChildren<InputField> () [4];
+			this._questionString = this._DbManCvs.GetComponentsInChildren<InputField> () [0];
+			this._answerString = this._DbManCvs.GetComponentsInChildren<InputField> () [1];
+			this._correctAnswer = this._DbManCvs.GetComponentsInChildren<InputField> () [2];
+			this._difficulty = this._DbManCvs.GetComponentsInChildren<InputField> () [3];
 
 			this._addToDB = this._DbManCvs.GetComponentsInChildren<Button> () [0];
 			this._addToDB.onClick.AddListener (databaseAdd);
 			this._mainMenu = this._DbManCvs.GetComponentsInChildren<Button> () [1];
 			this._mainMenu.onClick.AddListener (mainMenu);
+			this._typeMC = this._DbManCvs.GetComponentsInChildren<Button> () [2];
+			this._typeMC.onClick.AddListener (typeMc);
+			this._typeSA = this._DbManCvs.GetComponentsInChildren<Button> () [3];
+			this._typeSA.onClick.AddListener (typeSa);
+			this._typeTF = this._DbManCvs.GetComponentsInChildren<Button> () [4];
+			this._typeTF.onClick.AddListener (typeTf);
 		}
 
 		void databaseAdd ()
@@ -59,6 +71,21 @@ namespace AssemblyCSharp
 		{
 			this.nxtState = nextDbManState.MAIN_MENU;
 			this._chkState = true;
+		}
+
+		void typeMc ()
+		{
+			this.qt = questType.MC;
+		}
+
+		void typeSa ()
+		{
+			this.qt = questType.SA;
+		}
+
+		void typeTf ()
+		{
+			this.qt = questType.TF;
 		}
 
 		public string answers{
@@ -95,23 +122,6 @@ namespace AssemblyCSharp
 			}
 		}
 
-		public string qType{
-			get{
-				if(this.qType != "")
-					return this.qType;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.qType = value;
-				else
-				{
-					this._questionType.GetComponentsInChildren<Text> () [0].text = "Type blank";
-				}
-			}
-		}
-
 		public string question{
 			get{
 				if(this.question != "")
@@ -143,19 +153,29 @@ namespace AssemblyCSharp
 				switch(this.nxtState)
 				{
 				case nextDbManState.DATABASE:
+					this._dbConn = DatabaseConnector.Instance;
 					this.answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
 					this.correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
-					this.qType = this._questionType.GetComponentsInChildren<Text> () [1].text;
 					this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
 					Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
+					switch(this.qt)
+					{
+					case questType.MC:
+						_dbConn.InsertQuestion(new MultiChoiceQuestion(
+						break;
+					case questType.SA:
+						break;
+					case questType.TF:
+						break;
+					}
 					break;
 				case nextDbManState.MAIN_MENU:
 					this._DbManCvs.enabled = false;
+					removeListeners ();
+					this._chkState = false;
 					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
 					break;
 				}
-				removeListeners ();
-				this._chkState = false;
 			}
 		}
 	}

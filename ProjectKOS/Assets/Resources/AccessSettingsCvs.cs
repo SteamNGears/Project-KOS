@@ -19,10 +19,11 @@ namespace AssemblyCSharp
 		private Slider _volume;
 		private Button _credits;
 		private Button _mainMenu;
+		private Button _keyboardLayout;
 		
-		public bool checkSet;
+		public bool chkSet;
 		
-		public enum nextSetting {CREDITS, MAIN_MENU};
+		public enum nextSetting {CREDITS, MAIN_MENU, KEYBOARD};
 		public nextSetting nxtSet;
 		
 		// Use this for initialization
@@ -35,13 +36,21 @@ namespace AssemblyCSharp
 			this._credits.onClick.AddListener (rollCredits);
 			this._mainMenu = this._settingsCvs.GetComponentsInChildren<Button> () [1];
 			this._mainMenu.onClick.AddListener (mainMenu);
+			this._keyboardLayout = this._settingsCvs.GetComponentsInChildren<Button> () [2];
+			this._keyboardLayout.onClick.AddListener (keyLayout);
 			
 		}
 		
 		void mainMenu ()
 		{
 			this.nxtSet = nextSetting.MAIN_MENU;
-			this.checkSet = true;
+			this.chkSet = true;
+		}
+
+		void keyLayout ()
+		{
+			this.nxtSet = nextSetting.KEYBOARD;
+			this.chkSet = true;
 		}
 
 		void removeListeners ()
@@ -53,25 +62,28 @@ namespace AssemblyCSharp
 		void rollCredits ()
 		{
 			this.nxtSet = nextSetting.CREDITS;
-			this.checkSet = true;
+			this.chkSet = true;
 		}
 		
 		// Update is called once per frame
 		void Update () {
-			if (this.checkSet) 
+			if (this.chkSet) 
 			{
 				this._settingsCvs.enabled = false;
 				removeListeners();
 				switch(this.nxtSet)
 				{
 				case nextSetting.CREDITS:
-					//load credits
+					GameObject.Instantiate (Resources.Load ("CreditsCvs") as GameObject);
 					break;
 				case nextSetting.MAIN_MENU:
 					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
 					break;
+				case nextSetting.KEYBOARD:
+					GameObject.Instantiate (Resources.Load ("KeyCvs") as GameObject);
+					break;
 				}
-				this.checkSet = false;
+				this.chkSet = false;
 			}
 		}
 	}
