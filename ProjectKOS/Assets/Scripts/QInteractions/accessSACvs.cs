@@ -27,7 +27,7 @@ public class accessSACvs : MonoBehaviour {
 	void Start () {
 		this.answerPanel = this.GetComponentsInParent<Canvas> () [0];//child canvas[0] from SACvs.prefab
 		this.textPanel = this.GetComponentsInParent<Canvas> () [1];//child canvas[1] from SACvs.prefab
-		this.ansTyped = false;
+
 		this._input = this.answerPanel.GetComponentsInChildren<InputField> () [0];//inputField from child canvas[0] from SACvs.prefab
 		this._chkAns = this.answerPanel.GetComponentsInChildren<Button> () [0];//check answer button from child canvas[0] from SACvs.prefab
 		this._chkAns.onClick.AddListener (checkAnswer);//listener to tell system click event has occurred

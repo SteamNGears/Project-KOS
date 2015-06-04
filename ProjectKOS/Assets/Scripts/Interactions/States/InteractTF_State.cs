@@ -1,5 +1,5 @@
 /**
- * Filename: InteractSA_State.cs
+ * Filename: InteractTF_State.cs
  * Author: Chris Hatch
  * Created: 5/15/2015
  * Revision: 1
@@ -9,29 +9,28 @@
 
 using System;
 using UnityEngine;
-//using UnityEditor;
+using UnityEditor;
 using UnityEngine.UI;
 using Database;
-namespace States
+namespace AssemblyCSharp
 {
-	public class InteractSA_State:InteractionState
+	public class InteractTF_State:InteractionState
 	{
 		
-		private GameObject _cvsQuestion = null;
-		private accessSACvs _cvsQuestSA = null;
-
+		private GameObject _cvsQuestion;
+		private accessTFCvs _cvsQuestTF;
 		private Question _quest;
-		
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractSA_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
+		public InteractTF_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
 			this._quest = quest;
 		}
 		
 		/**
-		 * Displays a GUI with a short answer canvas
+		 * Displays a GUI with an interact button, 
+		 * if the button is clicked, then the state is transitioned to an Opening State(See OpeningState.cs)
 		 * 
 		 * */
 		public override InteractionState Behave ()
@@ -41,20 +40,17 @@ namespace States
 			{
 				if(this.actor.tag == "Player")
 				{
+					//instantiate TFCvs.prefab as GameObject
+					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/TFCvs") as GameObject);
 
-					//instantiate SACvs.prefab as GameObject
+					this._cvsQuestTF = this._cvsQuestion.GetComponentInChildren<accessTFCvs> ();
 
-					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/SACvs") as GameObject);
-
-					//script to access SACvs.prefab
-					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
-
-					this._cvsQuestSA.setQuestion (this._quest.QuestionString);
+					this._cvsQuestTF.setQuestion (this._quest.QuestionString);
 				}
 			}
 			
-			//if the answer has been entered,
-			if (this._cvsQuestSA.ansTyped) {
+			//if the button has been clicked,
+			if (this._cvsQuestTF.ansSelected) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}
@@ -68,7 +64,7 @@ namespace States
 		 * */
 		public override void Suspend(Collider c = null)
 		{
-			//Debug.Log("Cleared event");
+			Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
 		}
 

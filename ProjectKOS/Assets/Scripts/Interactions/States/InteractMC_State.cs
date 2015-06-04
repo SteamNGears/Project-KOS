@@ -9,10 +9,10 @@
 
 using System;
 using UnityEngine;
-//using UnityEditor;
+using UnityEditor;
 using UnityEngine.UI;
 using Database;
-namespace States
+namespace AssemblyCSharp
 {
 	public class InteractMC_State:InteractionState
 	{
@@ -63,7 +63,7 @@ namespace States
 		 * */
 		public override void Suspend(Collider c = null)
 		{
-			//Debug.Log("Cleared event");
+			Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
 		}
 
