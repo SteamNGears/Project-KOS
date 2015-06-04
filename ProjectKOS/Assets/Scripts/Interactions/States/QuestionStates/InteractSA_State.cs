@@ -1,5 +1,5 @@
 /**
- * Filename: InteractTF_State.cs
+ * Filename: InteractSA_State.cs
  * Author: Chris Hatch
  * Created: 5/15/2015
  * Revision: 1
@@ -12,18 +12,20 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using Database;
-namespace AssemblyCSharp
+namespace States
 {
-	public class InteractTF_State:InteractionState
+	public class InteractSA_State:InteractionState
 	{
 		
 		private GameObject _cvsQuestion;
-		private accessTFCvs _cvsQuestTF;
+		private accessSACvs _cvsQuestSA;
+
 		private Question _quest;
+		
 		/**
 		 * Sets default values and calls base constructor
 		 * */
-		public InteractTF_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
+		public InteractSA_State (GameObject _actee, Question quest, GameObject _actor = null):base(_actee, _actor)
 		{
 			this._quest = quest;
 		}
@@ -40,17 +42,18 @@ namespace AssemblyCSharp
 			{
 				if(this.actor.tag == "Player")
 				{
-					//instantiate TFCvs.prefab as GameObject
-					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/TFCvs") as GameObject);
+					//instantiate SACvs.prefab as GameObject
+					this._cvsQuestion = GameObject.Instantiate(Resources.Load ("QCanvas/SACvs") as GameObject);
 
-					this._cvsQuestTF = this._cvsQuestion.GetComponentInChildren<accessTFCvs> ();
+					//script to access SACvs.prefab
+					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
 
-					this._cvsQuestTF.setQuestion (this._quest.QuestionString);
+					this._cvsQuestSA.setQuestion (this._quest.QuestionString);
 				}
 			}
 			
 			//if the button has been clicked,
-			if (this._cvsQuestTF.ansSelected) {
+			if (this._cvsQuestSA.ansTyped) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 				return new OpeningState (this.actee, this.actor);	//open the door
 			}
