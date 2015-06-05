@@ -52,7 +52,27 @@ namespace States
 			//if the button has been clicked,
 			if (this._cvsQuestTF.ansSelected) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
-				return new OpeningState (this.actee, this.actor);	//open the door
+
+				string userAns = this._cvsQuestTF.toggleTF.ToString;
+				string correctAns;
+
+				foreach(Answer ans in this._quest.Answers)
+				{
+					if(ans.Correct)
+					{
+						correctAns = ans.ToString;
+					}
+				}
+				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
+
+				if(correct)
+				{
+					return new OpeningState (this.actee, this.actor);	//open the door
+				}
+				else
+				{
+					return new LockingState (this.actee, this.actor);   //lock the door
+				}
 			}
 			else
 				return this;//continue incurrent state

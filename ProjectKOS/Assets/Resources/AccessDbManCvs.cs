@@ -39,6 +39,7 @@ namespace AssemblyCSharp
 		public nextDbManState nxtState;
 
 		private DatabaseConnector _dbConn;
+		private Question _toInsert;
 
 		// Use this for initialization
 		void Start () {
@@ -161,11 +162,13 @@ namespace AssemblyCSharp
 					switch(this.qt)
 					{
 					case questType.MC:
-						_dbConn.InsertQuestion(new MultiChoiceQuestion(
+						_toInsert = new MultiChoiceQuestion();
 						break;
 					case questType.SA:
+						_toInsert = new ShortAnswerQuestion();
 						break;
 					case questType.TF:
+						_toInsert = new TrueFalseQuestion();
 						break;
 					}
 					break;
