@@ -2,8 +2,8 @@
  * Filename: InteractTF_State.cs
  * Author: Chris Hatch
  * Created: 5/15/2015
- * Revision: 1
- * Rev. Date: 5/21/2015
+ * Revision: 2
+ * Rev. Date: 6/05/2015
  * Rev. Author: Chris Hatch
  * */
 
@@ -53,16 +53,17 @@ namespace States
 			if (this._cvsQuestTF.ansSelected) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question 
 
-				string userAns = this._cvsQuestTF.toggleTF.ToString;
-				string correctAns;
+				string userAns = this._cvsQuestTF.toggleTF.ToString ();
+				string correctAns = "";
 
 				foreach(Answer ans in this._quest.Answers)
 				{
 					if(ans.Correct)
 					{
-						correctAns = ans.ToString;
+						correctAns = ans.ToString ();   //sets answer to check against
 					}
 				}
+
 				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
 
 				if(correct)

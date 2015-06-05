@@ -2,8 +2,8 @@
  * Filename: InteractSA_State.cs
  * Author: Chris Hatch
  * Created: 5/15/2015
- * Revision: 1
- * Rev. Date: 5/21/2015
+ * Revision: 2
+ * Rev. Date: 6/05/2015
  * Rev. Author: Chris Hatch
  * */
 
@@ -48,24 +48,25 @@ namespace States
 					//script to access SACvs.prefab
 					this._cvsQuestSA = this._cvsQuestion.GetComponentInChildren<accessSACvs> ();
 
-					this._cvsQuestSA.setQuestion (this._quest.QuestionString);
+					this._cvsQuestSA.setQuestion (this._quest.QuestionString);   //sets question text panel
 				}
 			}
 			
 			//if the button has been clicked,
 			if (this._cvsQuestSA.ansTyped) {
 				GameObject.Destroy(this._cvsQuestion);	//clean up the question
-				string userAns = this._cvsQuestSA.userAnswer;
-				string correctAns;
+				string userAns = this._cvsQuestSA.userAnswer;   //answer from user
+				string correctAns = "";
 				foreach(Answer ans in this._quest.Answers)
 				{
 					if(ans.Correct)
 					{
-						correctAns = ans.ToString;
+						correctAns = ans.ToString ();   //sets answer from answer pool to check against
 					}
 				}
 
 				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
+
 				if(correct)
 				{
 					return new OpeningState (this.actee, this.actor);	//open the door
@@ -85,7 +86,7 @@ namespace States
 		 * */
 		public override void Suspend(Collider c = null)
 		{
-			Debug.Log("Cleared event");
+			//Debug.Log("Cleared event");
 			GameObject.Destroy (this._cvsQuestion);
 		}
 
