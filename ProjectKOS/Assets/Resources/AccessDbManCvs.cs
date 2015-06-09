@@ -22,18 +22,25 @@ namespace AssemblyCSharp
 		private InputField _answerString;
 		private InputField _correctAnswer;
 		private InputField _difficulty;
+		private InputField _subject;
 
 		private int _diff;
+
+		private string _question;
+		private string _answers;
+		private string _correct;
+		private string _subjectStr;
 
 		private Button _addToDB;
 		private Button _mainMenu;
 		private Button _typeMC;
 		private Button _typeSA;
 		private Button _typeTF;
+		private Button _howTo;
 
 		private bool _chkState;
 
-		public enum nextDbManState {DATABASE, MAIN_MENU};
+		public enum nextDbManState {DATABASE, HOW_TO, MAIN_MENU};
 		public enum questType {MC, SA, TF, NULL};
 		public questType qt;
 		public nextDbManState nxtState;
@@ -49,6 +56,7 @@ namespace AssemblyCSharp
 			this._answerString = this._DbManCvs.GetComponentsInChildren<InputField> () [1];
 			this._correctAnswer = this._DbManCvs.GetComponentsInChildren<InputField> () [2];
 			this._difficulty = this._DbManCvs.GetComponentsInChildren<InputField> () [3];
+			this._subject = this._DbManCvs.GetComponentsInChildren<InputField> () [4];
 
 			this._addToDB = this._DbManCvs.GetComponentsInChildren<Button> () [0];
 			this._addToDB.onClick.AddListener (databaseAdd);
@@ -60,11 +68,20 @@ namespace AssemblyCSharp
 			this._typeSA.onClick.AddListener (typeSa);
 			this._typeTF = this._DbManCvs.GetComponentsInChildren<Button> () [4];
 			this._typeTF.onClick.AddListener (typeTf);
+			this._howTo = this._DbManCvs.GetComponentsInChildren<Button> () [5];
+			this._howTo.onClick.AddListener (howTo);
+
 		}
 
 		void databaseAdd ()
 		{
 			this.nxtState = nextDbManState.DATABASE;
+			this._chkState = true;
+		}
+
+		void howTo ()
+		{
+			this.nxtState = nextDbManState.HOW_TO;
 			this._chkState = true;
 		}
 
@@ -89,61 +106,11 @@ namespace AssemblyCSharp
 			this.qt = questType.TF;
 		}
 
-		public string answers{
-			get{
-				if(this.answers != "")
-					return this.answers;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.answers = value;
-				else
-				{
-					this._answerString.GetComponentsInChildren<Text> () [0].text = "Answers blank";
-				}
-			}
-		}
-
-		public string correct{
-			get{
-				if(this.correct != "")
-					return this.correct;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.correct = value;
-				else
-				{
-					this._correctAnswer.GetComponentsInChildren<Text> () [0].text = "Correct answer blank";
-				}
-			}
-		}
-
-		public string question{
-			get{
-				if(this.question != "")
-					return this.question;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.question = value;
-				else
-				{
-					this._questionString.GetComponentsInChildren<Text> () [0].text = "Question blank";
-				}
-			}
-		}
-
 		void removeListeners()
 		{
 			this._addToDB.onClick.RemoveListener (databaseAdd);
 			this._mainMenu.onClick.RemoveListener (mainMenu);
+			this._howTo.onClick.RemoveListener (howTo);
 		}
 
 		// Update is called once per frame
@@ -153,11 +120,18 @@ namespace AssemblyCSharp
 
 				switch(this.nxtState)
 				{
+				case nextDbManState.HOW_TO:
+					this._DbManCvs.enabled = false;
+					removeListeners ();
+					this._chkState = false;
+					GameObject.Instantiate (Resources.Load ("HowToCvs") as GameObject);
+					break;
 				case nextDbManState.DATABASE:
 					this._dbConn = DatabaseConnector.Instance;
-					this.answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
-					this.correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
-					this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
+					this._answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
+					this._correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
+					this._question = this._questionString.GetComponentsInChildren<Text> () [1].text;
+					this._subjectStr = this._subject.GetComponentsInChildren<Text> () [1].text;
 					Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
 					switch(this.qt)
 					{

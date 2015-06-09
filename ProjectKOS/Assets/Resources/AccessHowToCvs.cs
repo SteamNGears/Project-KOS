@@ -1,9 +1,9 @@
 ﻿/**
- * Filename: AccessCreditsCvs.cs
+ * Filename: AccessHowToCvs.cs
  * Author: Chris Hatch
- * Created: 6/05/2015
+ * Created: 6/07/2015
  * Revision: 0
- * Rev. Date: 6/05/2015
+ * Rev. Date: 6/07/2015
  * Rev. Author: Chris Hatch
  * */
 using UnityEngine;
@@ -12,9 +12,9 @@ using System;
 using System.Collections;
 namespace AssemblyCSharp
 {
-	public class AccessCreditsCvs : MonoBehaviour {
+	public class AccessHowToCvs : MonoBehaviour {
 		
-		private Canvas _creditsCvs;
+		private Canvas _howToCvs;
 		
 		private Button _settings;
 		
@@ -24,9 +24,9 @@ namespace AssemblyCSharp
 		
 		// Use this for initialization
 		void Start () {
-			this._creditsCvs = this.GetComponentInChildren<Canvas> ();
+			this._howToCvs = this.GetComponentInChildren<Canvas> ();
 			
-			this._settings = this._creditsCvs.GetComponentsInChildren<Button> () [0];
+			this._settings = this._howToCvs.GetComponentsInChildren<Button> () [0];
 			this._settings.onClick.AddListener (settings);			
 		}
 		
@@ -40,9 +40,9 @@ namespace AssemblyCSharp
 		void Update () {
 			if (this.chkSet) 
 			{
-				this._creditsCvs.enabled = false;
+				this._howToCvs.enabled = false;
 				this.chkSet = false;
-				GameObject.Instantiate (Resources.Load ("SettingsCvs") as GameObject);
+				GameObject.Instantiate (Resources.Load ("DatabaseCvs") as GameObject);
 			}
 		}
 	}

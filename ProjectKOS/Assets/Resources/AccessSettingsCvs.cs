@@ -67,12 +67,10 @@ namespace AssemblyCSharp
 		
 		// Update is called once per frame
 		void Update () {
-			if (this.chkSet) 
-			{
+			if (this.chkSet) {
 				this._settingsCvs.enabled = false;
-				removeListeners();
-				switch(this.nxtSet)
-				{
+				removeListeners ();
+				switch (this.nxtSet) {
 				case nextSetting.CREDITS:
 					GameObject.Instantiate (Resources.Load ("CreditsCvs") as GameObject);
 					break;
