@@ -119,32 +119,32 @@ namespace AssemblyCSharp
 		AnswerPool buildAnswerPool (string answers, string correctAns)
 		{
 			AnswerPool tmpPool = new AnswerPool ();
-			string[] tmpArr = answers.Split (';');
 
-			if (tmpArr.Length > 1) {
-				if (this._toInsert.Type.Equals ("MULTIPLE_CHOICE", StringComparison.OrdinalIgnoreCase)) {
-					foreach (string s in tmpArr) {
-						if (s.Equals (correctAns, StringComparison.OrdinalIgnoreCase)) {
-							tmpPool.AddAnswer (new Answer (s, true));
-						} else {
-							tmpPool.AddAnswer (new Answer (s, false));
+			if (answers != null && correctAns != null) {
+				string[] tmpArr = answers.Split (';');
+
+				if (tmpArr.Length > 1) {
+					if (this._toInsert.Type.Equals ("MULTIPLE_CHOICE", StringComparison.OrdinalIgnoreCase)) {
+						foreach (string s in tmpArr) {
+							if (s.Equals (correctAns, StringComparison.OrdinalIgnoreCase)) {
+								tmpPool.AddAnswer (new Answer (s, true));
+							} else {
+								tmpPool.AddAnswer (new Answer (s, false));
+							}
+						}
+					} else if (this._toInsert.Type.Equals ("TRUE_FALSE", StringComparison.OrdinalIgnoreCase)) {
+						if (correctAns.Equals ("TRUE", StringComparison.OrdinalIgnoreCase)) {
+							tmpPool.AddAnswer (new Answer ("TRUE", true));
+							tmpPool.AddAnswer (new Answer ("FALSE", false));
+						} else if (correctAns.Equals ("FALSE", StringComparison.OrdinalIgnoreCase)) {
+							tmpPool.AddAnswer (new Answer ("FALSE", true));
+							tmpPool.AddAnswer (new Answer ("TRUE", false));
 						}
 					}
-				} else if (this._toInsert.Type.Equals ("TRUE_FALSE", StringComparison.OrdinalIgnoreCase)) {
-					if (correctAns.Equals ("TRUE", StringComparison.OrdinalIgnoreCase)) {
-						tmpPool.AddAnswer (new Answer ("TRUE", true));
-						tmpPool.AddAnswer (new Answer ("FALSE", false));
-					} else if (correctAns.Equals ("FALSE", StringComparison.OrdinalIgnoreCase)) {
-						tmpPool.AddAnswer (new Answer ("FALSE", true));
-						tmpPool.AddAnswer (new Answer ("TRUE", false));
-					}
+				} else {
+					tmpPool.AddAnswer (new Answer (correctAns, true));
 				}
-			} 
-			else 
-			{
-				tmpPool.AddAnswer(new Answer(correctAns, true));
 			}
-
 			return tmpPool;
 		}
 
