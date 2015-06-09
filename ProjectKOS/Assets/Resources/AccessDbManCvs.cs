@@ -39,6 +39,7 @@ namespace AssemblyCSharp
 		private Button _howTo;
 
 		private bool _chkState;
+		private bool _submit;
 
 		public enum nextDbManState {DATABASE, HOW_TO, MAIN_MENU};
 		public enum questType {MC, SA, TF, NULL};
@@ -47,6 +48,7 @@ namespace AssemblyCSharp
 
 		private DatabaseConnector _dbConn;
 		private Question _toInsert;
+		private AnswerPool _newAnswers;
 
 		// Use this for initialization
 		void Start () {
@@ -77,6 +79,7 @@ namespace AssemblyCSharp
 		{
 			this.nxtState = nextDbManState.DATABASE;
 			this._chkState = true;
+			this._submit = true;
 		}
 
 		void howTo ()
@@ -113,6 +116,47 @@ namespace AssemblyCSharp
 			this._howTo.onClick.RemoveListener (howTo);
 		}
 
+		AnswerPool buildAnswerPool (string answers, string correctAns)
+		{
+			AnswerPool tmpPool = new AnswerPool ();
+			string[] tmpArr = answers.Split (';');
+
+			if (tmpArr.Length > 1) {
+				if (this._toInsert.Type.Equals ("MULTIPLE_CHOICE", StringComparison.OrdinalIgnoreCase)) {
+					foreach (string s in tmpArr) {
+						if (s.Equals (correctAns, StringComparison.OrdinalIgnoreCase)) {
+							tmpPool.AddAnswer (new Answer (s, true));
+						} else {
+							tmpPool.AddAnswer (new Answer (s, false));
+						}
+					}
+				} else if (this._toInsert.Type.Equals ("TRUE_FALSE", StringComparison.OrdinalIgnoreCase)) {
+					if (correctAns.Equals ("TRUE", StringComparison.OrdinalIgnoreCase)) {
+						tmpPool.AddAnswer (new Answer ("TRUE", true));
+						tmpPool.AddAnswer (new Answer ("FALSE", false));
+					} else if (correctAns.Equals ("FALSE", StringComparison.OrdinalIgnoreCase)) {
+						tmpPool.AddAnswer (new Answer ("FALSE", true));
+						tmpPool.AddAnswer (new Answer ("TRUE", false));
+					}
+				}
+			} 
+			else 
+			{
+				tmpPool.AddAnswer(new Answer(correctAns, true));
+			}
+
+			return tmpPool;
+		}
+
+		void clearInfo ()
+		{
+			this._questionString.GetComponentsInChildren<Text> () [1].text = "";
+			this._answerString.GetComponentsInChildren<Text> () [1].text = "";
+			this._correctAnswer.GetComponentsInChildren<Text> () [1].text = "";
+			this._subject.GetComponentsInChildren<Text> () [1].text = "";
+			this._difficulty.GetComponentsInChildren<Text> () [1].text = "";
+		}
+
 		// Update is called once per frame
 		void Update () {
 			if (this._chkState) 
@@ -133,18 +177,30 @@ namespace AssemblyCSharp
 					this._question = this._questionString.GetComponentsInChildren<Text> () [1].text;
 					this._subjectStr = this._subject.GetComponentsInChildren<Text> () [1].text;
 					Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
+
 					switch(this.qt)
 					{
 					case questType.MC:
-						_toInsert = new MultiChoiceQuestion();
+						_toInsert = new MultiChoiceQuestion(this._subjectStr, this._diff, this._question, "1");
 						break;
 					case questType.SA:
-						_toInsert = new ShortAnswerQuestion();
+						_toInsert = new ShortAnswerQuestion(this._subjectStr, this._diff, this._question, "1");
 						break;
 					case questType.TF:
-						_toInsert = new TrueFalseQuestion();
+						_toInsert = new TrueFalseQuestion(this._subjectStr, this._diff, this._question, "1");
 						break;
 					}
+					if(this._submit)
+					{
+						this._newAnswers = buildAnswerPool(this._answers, this._correct);
+						this._toInsert.Answers = this._newAnswers;
+						if(this._dbConn.InsertQuestion (this._toInsert))
+							Debug.Log ("Success");
+						clearInfo ();
+						this._submit = false;
+					}
+
+					this.qt = questType.NULL;
 					break;
 				case nextDbManState.MAIN_MENU:
 					this._DbManCvs.enabled = false;
