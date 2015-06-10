@@ -61,7 +61,8 @@ namespace States
 				{
 					if(ans.Correct)
 					{
-						correctAns = ans.ToString ();   //sets answer from answer pool to check against
+						correctAns = ans.AnswerString;   //sets answer from answer pool to check against
+						break;
 					}
 				}
 				Debug.Log (correctAns + " " + userAns);

@@ -60,10 +60,12 @@ namespace States
 				{
 					if(ans.Correct)
 					{
-						correctAns = ans.ToString ();   //sets answer to check against
+						correctAns = ans.AnswerString;   //sets answer to check against
+						break;
 					}
 				}
-				Debug.Log (correctAns + " " + userAns);
+				Debug.Log (correctAns + "\n");
+				Debug.Log (userAns + "\n");
 				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
 
 				if(correct)

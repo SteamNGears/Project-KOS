@@ -107,10 +107,10 @@ namespace AssemblyCSharp
 			{
 				this._dbConn = DatabaseConnector.Instance;
 
-				_mc = new MultiChoiceQuestion(this._subject, this._difficulty, this._question, "1");
-				_mc.Answers = buildAnswers();
+				this._mc = new MultiChoiceQuestion(this._subject, this._difficulty, this._question, "1");
+				this._mc.Answers = buildAnswers();
 
-				this._dbConn.InsertQuestion (_mc);
+				this._dbConn.InsertQuestion (this._mc);
 				resetInputFields();
 				this._mc = null;
 				this.submitQuest = false;
