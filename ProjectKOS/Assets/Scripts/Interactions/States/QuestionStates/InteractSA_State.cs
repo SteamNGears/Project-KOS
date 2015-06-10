@@ -64,7 +64,7 @@ namespace States
 						correctAns = ans.ToString ();   //sets answer from answer pool to check against
 					}
 				}
-
+				Debug.Log (correctAns + " " + userAns);
 				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
 
 				if(correct)

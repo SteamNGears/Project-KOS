@@ -15,8 +15,7 @@ namespace AssemblyCSharp
 	public class AccessSettingsCvs : MonoBehaviour {
 		
 		private Canvas _settingsCvs;
-		
-		private Slider _volume;
+
 		private Button _credits;
 		private Button _mainMenu;
 		private Button _keyboardLayout;
@@ -29,9 +28,7 @@ namespace AssemblyCSharp
 		// Use this for initialization
 		void Start () {
 			this._settingsCvs = this.GetComponentInChildren<Canvas> ();
-			
-			this._volume = this._settingsCvs.GetComponentInChildren<Slider> ();
-			
+
 			this._credits = this._settingsCvs.GetComponentsInChildren<Button> () [0];
 			this._credits.onClick.AddListener (rollCredits);
 			this._mainMenu = this._settingsCvs.GetComponentsInChildren<Button> () [1];
