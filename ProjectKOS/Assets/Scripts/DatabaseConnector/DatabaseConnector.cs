@@ -497,6 +497,13 @@ namespace Database {
             return new QuestionPool(questions);
         }
 
+
+        /**
+         * Grabs a single question by ID, mostly for testing purposes so not done as a restraint
+         * @param int id : ID of the question to grab
+         * @returns Question
+         */
+ 
         public Question GetQuestionByID(int id)
         {
             using (SqliteConnection conn = new SqliteConnection(ConnectionString))
