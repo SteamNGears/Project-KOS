@@ -8,20 +8,23 @@
  * */
 
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace SaveLoad
 {
+    public delegate void SaveHandler();
+    public delegate void LoadHandler();
+
     public class SaveLoadManager
     {
-
         public static string SaveFileDirectory = "Assets/SavedGames/";
 
-        private SaveLoadManager _instance;
-        public SaveLoadManager Instance
+        private static SaveLoadManager _instance;
+        public static SaveLoadManager Instance
         {
             get
             {
@@ -37,6 +40,11 @@ namespace SaveLoad
             }
         }
 
+        private Dictionary<string, SaveData> _snapshot;
+
+        public event SaveHandler SaveObject;
+        public event LoadHandler LoadObject;
+
 
         /**
          * Default constructor. Don't know if something should be inside this /yet/
@@ -44,7 +52,7 @@ namespace SaveLoad
 
         private SaveLoadManager()
         {
-
+            _snapshot = new Dictionary<string, SaveData>();
         }
 
 
@@ -58,8 +66,7 @@ namespace SaveLoad
         {
             string savePath = "" + SaveFileDirectory;
 
-            SceneSave scene = new SceneSave();
-            scene.TakeSnapshot();
+            this.SaveObject();
 
             try
             {
@@ -68,7 +75,7 @@ namespace SaveLoad
                 FileStream fout = File.Open(savePath, FileMode.Create);
                 BinaryFormatter writer = new BinaryFormatter();
 
-                writer.Serialize(fout, scene);
+                writer.Serialize(fout, _snapshot);
 
                 fout.Close();
             }
@@ -107,8 +114,7 @@ namespace SaveLoad
                 FileStream fin = File.Open(filePath, FileMode.Open);
                 BinaryFormatter reader = new BinaryFormatter();
 
-                SceneSave scene = (SceneSave)reader.Deserialize(fin);
-                scene.InstantiateSnapshot();
+                _snapshot = (Dictionary<string, SaveData>) reader.Deserialize(fin);
 
                 fin.Close();
             }
@@ -179,6 +185,30 @@ namespace SaveLoad
             } //end loop i
 
             return files[newestIndex];
+        }
+
+
+        /**
+         */
+
+        public void AddSaveData(string key, SaveData data)
+        {
+            if (key != null && data != null)
+                _snapshot.Add(key, data);
+        }
+
+
+        /**
+         */
+
+        public SaveData GetSaveData(string key)
+        {
+            SaveData data;
+
+            if (_snapshot.TryGetValue(key, out data))
+                return data;
+
+            return new NullSaveData();
         }
     }
 }

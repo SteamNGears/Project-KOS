@@ -15,6 +15,24 @@ namespace SaveLoad
     public interface ISaveable
     {
         /**
+         * Method that will be registered with SaveLoadManager in order to write data to disk.
+         * Internals should look something like:
+         * SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
+         */
+
+        void SaveObject();
+
+
+        /**
+         * Method that will be registered with SaveLoadManager in order to load data from disk.
+         * Internals should look something like:
+         * this.Load(SaveLoadManager.Instance.GetSaveData(this.ObjectID()));
+         */
+
+        void SaveObject();
+
+
+        /**
          * Method should return a unique object ID for the object to be saved
          * @returns string ID
          */ 
