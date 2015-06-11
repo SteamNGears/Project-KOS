@@ -1,0 +1,131 @@
+fileFormatVersion: 2
+guid: e05bf3954d4ff4748b14e9f207ef5f16
+timeCreated: 1433520621
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Empty
+    100004: Hall
+    100006: Hall.001
+    100008: Hall.002
+    100010: Hall.003
+    100012: Hall.004
+    100014: Hall45Left
+    100016: Hall45LeftCol
+    100018: Hall45Right
+    100020: Hall45RightCol
+    100022: HallHP
+    100024: //RootNode
+    100026: Lamp
+    100028: WallLp
+    400000: Camera
+    400002: Empty
+    400004: Hall
+    400006: Hall.001
+    400008: Hall.002
+    400010: Hall.003
+    400012: Hall.004
+    400014: Hall45Left
+    400016: Hall45LeftCol
+    400018: Hall45Right
+    400020: Hall45RightCol
+    400022: HallHP
+    400024: //RootNode
+    400026: Lamp
+    400028: WallLp
+    2300000: Hall
+    2300002: Hall.001
+    2300004: Hall.002
+    2300006: Hall.003
+    2300008: Hall.004
+    2300010: Hall45Left
+    2300012: Hall45LeftCol
+    2300014: Hall45Right
+    2300016: Hall45RightCol
+    2300018: HallHP
+    2300020: WallLp
+    2300022: //RootNode
+    3300000: Hall
+    3300002: Hall.001
+    3300004: Hall.002
+    3300006: Hall.003
+    3300008: Hall.004
+    3300010: Hall45Left
+    3300012: Hall45LeftCol
+    3300014: Hall45Right
+    3300016: Hall45RightCol
+    3300018: HallHP
+    3300020: WallLp
+    3300022: //RootNode
+    4300000: Hall.004
+    4300002: Hall45LeftCol
+    4300004: Hall45RightCol
+    4300006: Hall.002
+    4300008: Hall45Left
+    4300010: Hall45Right
+    4300012: Hall.003
+    4300014: Hall.001
+    4300016: HallHP
+    4300018: Hall
+    4300020: WallLp
+    4300022: Hall.005
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -9,8 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
-using States;
-namespace AssemblyCSharp
+namespace States
 {
 	public class OpenState:InteractionState
 	{
