@@ -9,6 +9,7 @@
 
 
 using System.Collections;
+using SaveLoad;
 
 namespace Database {
 
@@ -18,7 +19,7 @@ namespace Database {
      * @author Aryk Anderson
      */ 
 
-	public abstract class Question {
+	public class Question : ISaveable{
 
         /**
          * Readonly access to the ID property
@@ -126,6 +127,81 @@ namespace Database {
             this.Difficulty = difficulty;
             this.QuestionString = qString;
 			this.ID = id;
+        }
+
+        /**
+         * Method that will be registered with SaveLoadManager in order to write data to disk.
+         * Internals should look something like:
+         * SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
+         */
+
+        public void LoadObject()
+        {
+            this.Load(SaveLoadManager.Instance.GetSaveData(this.ObjectID()));
+        }
+
+
+        /**
+         * Method that will be registered with SaveLoadManager in order to load data from disk.
+         * Internals should look something like:
+         * this.Load(SaveLoadManager.Instance.GetSaveData(this.ObjectID()));
+         */
+
+        public void SaveObject()
+        {
+            SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
+        }
+
+
+        /**
+         * Method should return a unique object ID for the object to be saved
+         * @returns string ID
+         */
+
+        public string ObjectID()
+        {
+            if (!ID.Equals(""))
+                return "Question" + ID;
+            else
+                return "Question" + this;
+        }
+
+
+        /**
+         * Method should save the relevant data to be saved in a SaveData object that
+         * can have all of its fields serialized.
+         * @returns SaveData
+         */
+
+        public SaveData Save()
+        {
+            return new SaveLoad.QuestionSaveData(ID, Subject, Type, Difficulty, QuestionString, Answers);
+        }
+
+
+        /**
+         * Method should take an unserialized object and then load all of the previously saved fields into
+         * memory.
+         * @params SaveData
+         */
+
+        public void Load(SaveData data)
+        {
+            try
+            {
+                QuestionSaveData questionData = (QuestionSaveData) data;
+                this.ID = questionData.ID;
+                this.Subject = questionData.Subject;
+                this.Type = questionData.Type;
+                this.Difficulty = questionData.Difficulty;
+                this.QuestionString = questionData.QuestionString;
+                this.Answers = questionData.Answers;
+            }
+
+            catch (System.InvalidCastException e)
+            {
+                UnityEngine.Debug.Log(e.Message);
+            }
         }
 	}
 }
