@@ -29,7 +29,7 @@ namespace SaveLoad
             get
             {
                 if (_instance != null)
-                    return Instance;
+                    return _instance;
 
                 return _instance = new SaveLoadManager();
             }

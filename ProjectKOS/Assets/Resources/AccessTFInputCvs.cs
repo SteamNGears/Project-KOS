@@ -1,5 +1,5 @@
 ﻿/**
- * Filename: AccessMCInputCvs.cs
+ * Filename: AccessTFInputCvs.cs
  * Author: Chris Hatch
  * Created: 6/05/2015
  * Revision: 0
@@ -15,15 +15,15 @@ namespace AssemblyCSharp
 {
 	public class AccessTFInputCvs : MonoBehaviour {
 		
-		private Canvas _TFInputCvs;
+		private Canvas _TFInputCvs;//   true false canvas for db entry
 		
-		private Button _submit;
-		private Button _settings;
+		private Button _submit;//   Button for user to submit question
+		private Button _settings;//   Button for user to return to settings pane
 		
-		private InputField[] _mcFields;
+		private InputField[] _tfFields;//   input fields from true false input pane
 		
-		public bool chkSet;
-		public bool submitQuest;
+		public bool chkSet;//   bool indicating to go back to the settings pane
+		public bool submitQuest;//   bool indicating question is ready to submit to db
 		
 		private string _question;
 		private string _subject;
@@ -31,44 +31,56 @@ namespace AssemblyCSharp
 		private int _difficulty;
 		
 		
-		private DatabaseConnector _dbConn;
+		private DatabaseConnector _dbConn;//   connector for db access
 		
-		private Question _tf;
+		private Question _tf;//   Question to be inserted
 		
 		// Use this for initialization
 		void Start () {
 			this._TFInputCvs = this.GetComponentInChildren<Canvas> ();
 			
-			this._mcFields = this._TFInputCvs.GetComponentsInChildren<InputField> ();
+			this._tfFields = this._TFInputCvs.GetComponentsInChildren<InputField> ();
 			this._submit = this._TFInputCvs.GetComponentsInChildren<Button> () [0];
-			this._submit.onClick.AddListener (submitQ);
+			this._submit.onClick.AddListener (submitQ);//   listener to add question to db
 			this._settings = this._TFInputCvs.GetComponentsInChildren<Button> () [1];
-			this._settings.onClick.AddListener (settings);		
+			this._settings.onClick.AddListener (settings);//   listener to return to settings panel	
 		}
-		
+
+		/**
+		 * method to reset InputField.text for the entire panel
+		 * */
 		void resetInputFields ()
 		{
-			this._mcFields [0].text = "";
-			this._mcFields [1].text = "";
-			this._mcFields [2].text = "";
-			this._mcFields [3].text = "";
+			foreach (InputField iF in this._tfFields)
+			{
+				iF.text = "";//   resets input field for next entry
+			}
 		}
-		
+
+		/**
+		 * listener for user requesting to return to the settings panel
+		 * */
 		void settings ()
 		{
-			this._settings.onClick.RemoveListener (settings);
+			this._settings.onClick.RemoveListener (settings);//   clean up listener
 			this.chkSet = true;
 		}
-		
+
+		/**
+		 * listener to grab data from user input for adding question to db
+		 * */
 		void submitQ ()
 		{
 			this.submitQuest = true;
-			this._question = this._mcFields [0].text;
-			this._subject = this._mcFields [1].text;
-			Int32.TryParse (this._mcFields [2].text, out this._difficulty);
-			this._correctAns = this._mcFields [3].text;
+			this._question = this._tfFields [0].text;
+			this._subject = this._tfFields [1].text.ToUpper;
+			Int32.TryParse (this._tfFields [2].text, out this._difficulty);
+			this._correctAns = this._tfFields [3].text;
 		}
-		
+
+		/**
+		 * method to build multiple choice answer pool for user question
+		 * */
 		AnswerPool buildAnswers ()
 		{
 			AnswerPool tmpPool = new AnswerPool ();
@@ -98,13 +110,13 @@ namespace AssemblyCSharp
 			}
 			else if (submitQuest)
 			{
-				this._dbConn = DatabaseConnector.Instance;
+				this._dbConn = DatabaseConnector.Instance;//   connector for db access
 				
 				this._tf = new TrueFalseQuestion(this._subject, this._difficulty, this._question, "1");
-				this._tf.Answers = buildAnswers();
+				this._tf.Answers = buildAnswers();//   build answer pool 
 				
-				this._dbConn.InsertQuestion (this._tf);
-				resetInputFields();
+				this._dbConn.InsertQuestion (this._tf);//   add new tf question to db
+				resetInputFields();//   reset input fields to placeholders
 				this._tf = null;
 				this.submitQuest = false;
 			}

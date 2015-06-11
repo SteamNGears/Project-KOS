@@ -10,61 +10,75 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using SaveLoad;
 namespace AssemblyCSharp
 {
 	public class AccessLoadCvs : MonoBehaviour {
 		
-		private Canvas _loadCvs;
+		private Canvas _loadCvs;//   load screen canvas
 
-		private Button _checkFiles;
-		private Button _loadFile;
-		private Button _mainMenu;
+		private Button _checkFiles;//   button to request file path checking
+		private Button _loadFile;//   button to request a file to be loaded
+		private Button _mainMenu;//   button to request return to main menu
 
-		private Text _fileSelections;
+		private Text _fileSelections;//   text panel to add file paths
 
-		private InputField _fileName;
+		private InputField _fileName;//   InputField for user selected file path
 
-		private bool _chkState;
-		private bool _fileNameEntered;
+		private bool _chkState;//   bool to check for next state
+		private bool _fileNameEntered;//   bool to represent user has selected a file
 
-		public enum nextLoadState {CHECK_FILES, LOAD_FILE, MAIN_MENU};
-		public nextLoadState nxtLState;
+		public enum nextLoadState {CHECK_FILES, LOAD_FILE, MAIN_MENU};//   enums to represent possible states
+		public nextLoadState nxtLState;//   user selected state
+		private SaveLoadManager slm;//   Object to enabled loading a saved file and find file paths
 
 		// Use this for initialization
 		void Start () {
 			this._loadCvs = this.GetComponentInChildren<Canvas> ();
 
 			this._checkFiles = this.GetComponentsInChildren<Button> () [0];
-			this._checkFiles.onClick.AddListener (chkFiles);
+			this._checkFiles.onClick.AddListener (chkFiles);//   listener to request file paths
 			this._loadFile = this.GetComponentsInChildren<Button> () [1];
-			this._loadFile.onClick.AddListener (loadFile);
+			this._loadFile.onClick.AddListener (loadFile);//   listener to request a file to be loaded
 			this._mainMenu = this.GetComponentsInChildren<Button> () [2];
-			this._mainMenu.onClick.AddListener (mainMenu);
+			this._mainMenu.onClick.AddListener (mainMenu);//   listener to return to main menu
 
 			this._fileSelections = this._loadCvs.GetComponentInChildren<Text> ();
 			this._fileName = this._loadCvs.GetComponentInChildren<InputField> ();
 
 		}
 
+		/**
+		 * listener to request a search for available files to load
+		 * */
 		void chkFiles ()
 		{
 			this.nxtLState = nextLoadState.CHECK_FILES;
 			this._chkState = true;
 		}
 
+		/**
+		 * listener to request for a user specified file path to be loaded
+		 * */
 		void loadFile ()
 		{
 			this.nxtLState = nextLoadState.LOAD_FILE;
 			this._chkState = true;
-			this.fileName = this._fileName.GetComponentsInChildren<Text> () [1].text;
+			this.fileName = this._fileName.text;
 		}
 
+		/**
+		 * listener to return to the main menu screen
+		 * */
 		void mainMenu ()
 		{
 			this.nxtLState = nextLoadState.MAIN_MENU;
 			this._chkState = true;
 		}
 
+		/**
+		 * clean up all listeners
+		 * */
 		void removeListeners()
 		{
 			this._checkFiles.onClick.RemoveListener (chkFiles);
@@ -72,36 +86,53 @@ namespace AssemblyCSharp
 			this._mainMenu.onClick.RemoveListener (mainMenu);
 		}
 
+		/**
+		 * set/get stubbed out for user selected file name
+		 * */
 		public string fileName{
 			get{
 					return this.fileName;
 			}
 			private set{
-				if(value != null)
 					this.fileName = value;
-				else
-					this._fileName.GetComponentsInChildren<Text> () [0].text = "No filename entered";
 			}
 		}
 		// Update is called once per frame
 		void Update () {
 			if (this._chkState) 
 			{
-				this._loadCvs.enabled = false;
+				slm = SaveLoadManager.Instance;
 				switch(this.nxtLState)
 				{
 				case nextLoadState.CHECK_FILES:
-					//checkFiles();
+					if(slm.GetFilePaths().Length == 0)
+					{
+						this._fileSelections.text = "No files present";//   update text panel
+					}
+					else
+					{
+						foreach (string s in slm.GetFilePaths())
+						{
+							this._fileSelections.text += (s + "\n");//   update text panel
+						}
+					}
 					break;
 				case nextLoadState.LOAD_FILE:
-					//loadFile();
+					this._loadCvs.enabled = false;//   disable load prefab
+					removeListeners();//   Clean up listeners
+					this._chkState = false;
+					//Application.LoadLevel ("LevelScene");
+					//slm.LoadGame (this._fileName.text);
+
 					break;
 				case nextLoadState.MAIN_MENU:
-					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
+					this._loadCvs.enabled = false;//   disable load prefab
+					removeListeners();//   clean up listeners
+					this._chkState = false;
+					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);//   reload main scr
 					break;
 				}
-				removeListeners();
-				this._chkState = false;
+
 			}
 		}
 	}

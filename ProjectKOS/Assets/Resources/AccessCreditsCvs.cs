@@ -14,11 +14,11 @@ namespace AssemblyCSharp
 {
 	public class AccessCreditsCvs : MonoBehaviour {
 		
-		private Canvas _creditsCvs;
+		private Canvas _creditsCvs;//   credits screen canvas
 		
-		private Button _settings;
+		private Button _settings;//   button to return to settings screen
 		
-		public bool chkSet;
+		public bool chkSet;//   bool to tell system to return to settings
 		
 		
 		
@@ -27,9 +27,12 @@ namespace AssemblyCSharp
 			this._creditsCvs = this.GetComponentInChildren<Canvas> ();
 			
 			this._settings = this._creditsCvs.GetComponentsInChildren<Button> () [0];
-			this._settings.onClick.AddListener (settings);			
+			this._settings.onClick.AddListener (settings);	//   listener to request settings screen		
 		}
-		
+
+		/**
+		 * listener to request return to settings screen
+		 * */
 		void settings ()
 		{
 			this._settings.onClick.RemoveListener (settings);
