@@ -10,20 +10,35 @@ public class PathFinding : MonoBehaviour {
 	List<Room> Checked;
 	List<Room> UnChecked;
 
+	bool noSolution = false;
+
+	//debug
+	int wait = 0;
+
 	// Use this for initialization
 	void Start () {
 		Doors = GetComponentsInChildren<Door> ();
 		Rooms = GetComponentsInChildren<Room> ();
-		if (!ExitIsReachable ())
-			Debug.Log ("NO SOLUTION");
-		else
-			Debug.Log ("SOLUTION");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//if (!ExitIsReachable ())
-			//Debug.Log ("NO SOLUTION");
+		if(noSolution == false)
+		{
+			wait++;
+			wait = wait % 100;
+			if (wait == 0) {
+				if (!ExitIsReachable ())
+				{
+					GameObject.Instantiate(Resources.Load("GamePlay/FailureCanvas"));
+					noSolution = true;
+					Debug.Log ("NO SOLUTION");
+				}
+				else
+					Debug.Log ("SOLUTION");
+			}
+		}
+	
 	}
 
 	bool ExitIsReachable()
