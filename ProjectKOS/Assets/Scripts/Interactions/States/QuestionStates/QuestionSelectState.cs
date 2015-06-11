@@ -39,7 +39,7 @@ namespace States
 			QuestionQuery query;				/**<The query we want to use*/
 			QuestionRestraints rest;			/**<The question restraints script(if available)*/
 			QuestionPool questions;				/**<The question pool*/
-			Question question;					/**<The question we swlwct from our pool*/
+			Question question;					/**<The question we selwct from our pool*/
 			System.Random rnd;					/**<A random number generator for selecting the question*/
 		
 			rnd = new System.Random();
@@ -65,11 +65,11 @@ namespace States
 			if (question.Type == "MULTIPLE_CHOICE") {					//if the question is multiple choice, create and return that state
 				Debug.Log(
 					"Mulitple choice question: " + question.QuestionString
-					+ "\n1) " + question.Answers[0].AnswerString
-					+ "\n2) " + question.Answers[1].AnswerString
-					+ "\n3) " + question.Answers[2].AnswerString
-					+ "\n4) " + question.Answers[3].AnswerString
 					);
+				foreach (Answer ans in question.Answers)
+				{
+					Debug.Log (ans.AnswerString);
+				}
 				return new InteractMC_State(this.actee, question, this.actor);
 			}
 

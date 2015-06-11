@@ -11,129 +11,75 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using Database;
 namespace AssemblyCSharp
 {
 	public class AccessDbManCvs : MonoBehaviour {
 		
 		private Canvas _DbManCvs;
-		
-		private InputField _questionType;
-		private InputField _questionString;
-		private InputField _answerString;
-		private InputField _correctAnswer;
-		private InputField _difficulty;
 
-		private int _diff;
-
-		private Button _addToDB;
 		private Button _mainMenu;
+		private Button _typeMC;
+		private Button _typeSA;
+		private Button _typeTF;
 
 		private bool _chkState;
 
 		public enum nextDbManState {DATABASE, MAIN_MENU};
+		public enum questType {MC, SA, TF, NULL};
+		public questType qt;
 		public nextDbManState nxtState;
 
 		// Use this for initialization
 		void Start () {
 			this._DbManCvs = this.GetComponentInChildren<Canvas> ();
 
-			this._questionType = this._DbManCvs.GetComponentsInChildren<InputField> () [0];
-			this._questionString = this._DbManCvs.GetComponentsInChildren<InputField> () [1];
-			this._answerString = this._DbManCvs.GetComponentsInChildren<InputField> () [2];
-			this._correctAnswer = this._DbManCvs.GetComponentsInChildren<InputField> () [3];
-			this._difficulty = this._DbManCvs.GetComponentsInChildren<InputField> () [4];
-
-			this._addToDB = this._DbManCvs.GetComponentsInChildren<Button> () [0];
-			this._addToDB.onClick.AddListener (databaseAdd);
-			this._mainMenu = this._DbManCvs.GetComponentsInChildren<Button> () [1];
+			this._mainMenu = this._DbManCvs.GetComponentsInChildren<Button> () [0];
 			this._mainMenu.onClick.AddListener (mainMenu);
-		}
+			this._typeMC = this._DbManCvs.GetComponentsInChildren<Button> () [1];
+			this._typeMC.onClick.AddListener (typeMc);
+			this._typeSA = this._DbManCvs.GetComponentsInChildren<Button> () [2];
+			this._typeSA.onClick.AddListener (typeSa);
+			this._typeTF = this._DbManCvs.GetComponentsInChildren<Button> () [3];
+			this._typeTF.onClick.AddListener (typeTf);
 
-		void databaseAdd ()
-		{
-			this.nxtState = nextDbManState.DATABASE;
-			this._chkState = true;
 		}
-
+	
 		void mainMenu ()
 		{
 			this.nxtState = nextDbManState.MAIN_MENU;
 			this._chkState = true;
 		}
 
-		public string answers{
-			get{
-				if(this.answers != "")
-					return this.answers;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.answers = value;
-				else
-				{
-					this._answerString.GetComponentsInChildren<Text> () [0].text = "Answers blank";
-				}
-			}
+		void typeMc ()
+		{
+			this.nxtState = nextDbManState.DATABASE;
+			this.qt = questType.MC;
+			this._chkState = true;
 		}
 
-		public string correct{
-			get{
-				if(this.correct != "")
-					return this.correct;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.correct = value;
-				else
-				{
-					this._correctAnswer.GetComponentsInChildren<Text> () [0].text = "Correct answer blank";
-				}
-			}
+		void typeSa ()
+		{
+			this.nxtState = nextDbManState.DATABASE;
+			this.qt = questType.SA;
+			this._chkState = true;
 		}
 
-		public string qType{
-			get{
-				if(this.qType != "")
-					return this.qType;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.qType = value;
-				else
-				{
-					this._questionType.GetComponentsInChildren<Text> () [0].text = "Type blank";
-				}
-			}
-		}
-
-		public string question{
-			get{
-				if(this.question != "")
-					return this.question;
-				else
-					return "";
-			}
-			private set{
-				if(value != "")
-					this.question = value;
-				else
-				{
-					this._questionString.GetComponentsInChildren<Text> () [0].text = "Question blank";
-				}
-			}
+		void typeTf ()
+		{
+			this.nxtState = nextDbManState.DATABASE;
+			this.qt = questType.TF;
+			this._chkState = true;
 		}
 
 		void removeListeners()
 		{
-			this._addToDB.onClick.RemoveListener (databaseAdd);
 			this._mainMenu.onClick.RemoveListener (mainMenu);
+			this._typeMC.onClick.RemoveListener (typeMc);
+			this._typeSA.onClick.RemoveListener (typeSa);
+			this._typeTF.onClick.RemoveListener (typeTf);
 		}
+
 
 		// Update is called once per frame
 		void Update () {
@@ -143,19 +89,29 @@ namespace AssemblyCSharp
 				switch(this.nxtState)
 				{
 				case nextDbManState.DATABASE:
-					this.answers = this._answerString.GetComponentsInChildren<Text> () [1].text;
-					this.correct = this._correctAnswer.GetComponentsInChildren<Text> () [1].text;
-					this.qType = this._questionType.GetComponentsInChildren<Text> () [1].text;
-					this.question = this._questionString.GetComponentsInChildren<Text> () [1].text;
-					Int32.TryParse(this._difficulty.GetComponentsInChildren<Text> () [1].text, out this._diff);
+					this._DbManCvs.enabled = false;//disables dbMan canvas
+					switch(this.qt)
+					{
+					case questType.MC:
+						GameObject.Instantiate (Resources.Load ("MCInputCvs") as GameObject);
+						break;
+					case questType.SA:
+						GameObject.Instantiate (Resources.Load ("SAInputCvs") as GameObject);
+						break;
+					case questType.TF:
+						GameObject.Instantiate (Resources.Load ("TFInputCvs") as GameObject);
+						break;
+					}
+					this._chkState = false;
+					this.qt = questType.NULL;
 					break;
 				case nextDbManState.MAIN_MENU:
-					this._DbManCvs.enabled = false;
+					this._DbManCvs.enabled = false;//disables dbMan canvas
+					removeListeners ();//cleans up listeners on request for return to main menu only
+					this._chkState = false;
 					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);
 					break;
 				}
-				removeListeners ();
-				this._chkState = false;
 			}
 		}
 	}

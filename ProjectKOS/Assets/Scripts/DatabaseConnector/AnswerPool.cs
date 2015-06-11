@@ -85,7 +85,9 @@ namespace Database {
         
         public Answer this[int index] 
         {
-            get { return _answers[index]; }
+            get {
+					return _answers[index];
+			}
             set { _answers[index] = value; }
         }
 

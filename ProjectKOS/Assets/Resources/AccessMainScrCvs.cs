@@ -88,25 +88,25 @@ namespace AssemblyCSharp
 
 			if (checkState) {
 				this.msCvs.enabled = false;
-				removeListeners ();
+
 				switch(this.nxtState)
 				{
 					case nextState.NEW_GAME:
+						removeListeners ();
 						Application.LoadLevel("TrainingRoom");
 						break;
 					case nextState.LOAD_GAME:
+						removeListeners ();
 						GameObject.Instantiate(Resources.Load ("LoadCvs") as GameObject);
-
 						break;
 					case nextState.SETTINGS:
 						GameObject.Instantiate(Resources.Load ("SettingsCvs") as GameObject);
-
 						break;
 					case nextState.DB_MANAGER:
 						GameObject.Instantiate(Resources.Load ("DatabaseCvs") as GameObject);
-
 						break;
 					case nextState.EXIT_GAME:
+						removeListeners ();
 						Application.Quit ();
 						break;
 				}
