@@ -94,7 +94,6 @@ public class PathFinding : MonoBehaviour {
 
 		if (r.IsEnd) {
 			return true;
-			Debug.Log("Found end!");
 		}
 
 

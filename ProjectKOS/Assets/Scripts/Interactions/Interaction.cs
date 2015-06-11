@@ -24,7 +24,7 @@ using States;
 public class Interaction : MonoBehaviour 
 {
 	public InteractionState startingState;						/**< The starting state for the object(interact button by default*/
-	public InteractionState currentState{ get; private set; }	/**< the current state of the object*/
+	public InteractionState currentState;						/**< the current state of the object*/
 
 	public enum UpdateType{ON_TRIGGER, CONSTANT};				/**< Indicates whether we want state updates every frame, or just when we have a collision*/
 	public UpdateType UpdateMode = UpdateType.ON_TRIGGER;

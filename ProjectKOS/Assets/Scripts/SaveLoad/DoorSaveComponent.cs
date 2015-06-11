@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using States;
 using System;
 
 namespace SaveLoad
@@ -68,7 +69,19 @@ namespace SaveLoad
 
         public SaveData Save()
         {
-            return null;
+			Interaction inter = this.gameObject.GetComponent<Interaction> ();
+			DoorSaveData save = new DoorSaveData ();
+			save.saveState =  DoorSaveData.state.IDLE;
+
+			if(inter != null)
+			{
+				if(inter.currentState is OpenState)
+					save.saveState = DoorSaveData.state.OPEN;
+				if(inter.currentState is LockedState)
+					save.saveState = DoorSaveData.state.LOCKED;
+			}
+
+			return save;
         }
 
 
@@ -80,7 +93,18 @@ namespace SaveLoad
 
         public void Load(SaveData data)
         {
+			DoorSaveData load = (DoorSaveData)data;
+			Interaction inter = GetComponent<Interaction> ();
 
+			if (load != null && inter != null) 
+			{
+				if(load.saveState == DoorSaveData.state.OPEN)
+					inter.currentState = new OpeningState(this.gameObject, null);
+				else if (load.saveState == DoorSaveData.state.LOCKED)
+				         inter.currentState = new OpeningState(this.gameObject, null);
+				else
+					inter.currentState = new InteractButtonState(this.gameObject, null);
+			}
         }
     }
 }

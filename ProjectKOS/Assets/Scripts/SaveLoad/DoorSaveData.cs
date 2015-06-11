@@ -12,10 +12,12 @@ using System.Collections;
 
 namespace SaveLoad
 {
-    [System.Serializable]
-    public class DoorSaveData : SaveData
+
+	[System.Serializable]
+    
+	public class DoorSaveData : SaveData
     {
-
-
+		public enum state{LOCKED, OPEN, IDLE};
+		public state saveState;
     }
 }
