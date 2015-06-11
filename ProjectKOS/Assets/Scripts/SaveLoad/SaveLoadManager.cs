@@ -29,7 +29,7 @@ namespace SaveLoad
             get
             {
                 if (_instance != null)
-                    return Instance;
+                    return _instance;
 
                 return _instance = new SaveLoadManager();
             }
@@ -70,9 +70,10 @@ namespace SaveLoad
 
             try
             {
-                savePath += System.DateTime.Now + ".save";
+                savePath += System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond + ".save";
 
-                FileStream fout = File.Open(savePath, FileMode.Create);
+                File.Open(savePath, FileMode.Create).Close();
+				FileStream fout = File.Open(savePath, FileMode.Open, FileAccess.Write);
                 BinaryFormatter writer = new BinaryFormatter();
 
                 writer.Serialize(fout, _snapshot);
