@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace SaveLoad
 {
+	[System.Serializable]
     public abstract class SaveData
     {
 

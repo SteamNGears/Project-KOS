@@ -24,12 +24,13 @@ namespace SaveLoad
         public static string SaveFileDirectory = "Assets/SavedGames/";
 
         private static SaveLoadManager _instance;
-        public static SaveLoadManager Instance
+        
+		public static SaveLoadManager Instance
         {
             get
             {
                 if (_instance != null)
-                    return Instance;
+                    return _instance;
 
                 return _instance = new SaveLoadManager();
             }
@@ -65,16 +66,19 @@ namespace SaveLoad
         public string SaveGame()
         {
             string savePath = "" + SaveFileDirectory;
+            string currentScene = Application.loadedLevelName;
 
-            this.SaveObject();
+            this.SaveObject(); //calls all ISaveables that have registered with this event
 
             try
             {
-                savePath += System.DateTime.Now + ".save";
+                savePath += System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond + ".save";
 
-                FileStream fout = File.Open(savePath, FileMode.Create);
+                File.Open(savePath, FileMode.Create).Close();
+				FileStream fout = File.Open(savePath, FileMode.Open, FileAccess.Write);
                 BinaryFormatter writer = new BinaryFormatter();
 
+                writer.Serialize(fout, currentScene);
                 writer.Serialize(fout, _snapshot);
 
                 fout.Close();
@@ -114,7 +118,12 @@ namespace SaveLoad
                 FileStream fin = File.Open(filePath, FileMode.Open);
                 BinaryFormatter reader = new BinaryFormatter();
 
+                string savedScene = (string)reader.Deserialize(fin);
+                Application.LoadLevel(savedScene);
+
                 _snapshot = (Dictionary<string, SaveData>) reader.Deserialize(fin);
+
+				this.LoadObject();
 
                 fin.Close();
             }

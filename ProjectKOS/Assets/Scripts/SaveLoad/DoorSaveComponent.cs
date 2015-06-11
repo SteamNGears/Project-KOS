@@ -7,7 +7,7 @@ namespace SaveLoad
     public class DoorSaveComponent : MonoBehaviour, ISaveable
     {
 
-        public void Start()
+        public void OnLevelWasLoaded()
         {
             SaveLoadManager.Instance.SaveObject += this.SaveObject;
             SaveLoadManager.Instance.LoadObject += this.LoadObject;
