@@ -49,7 +49,7 @@ namespace States
 					rend.material.SetColor("_EmissionColor", Color.green);
 				}
 				
-				return new IdleState(this.actee, this.actor);
+				return new OpenState(this.actee, this.actor);
 		}
 	}
 }

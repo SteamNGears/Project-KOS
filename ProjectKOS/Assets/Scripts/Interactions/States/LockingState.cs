@@ -33,7 +33,7 @@ namespace States
 				rend.material.SetColor("_EmissionColor", Color.red);
 			}
 
-			return new IdleState(this.actee, this.actor);
+			return new LockedState(this.actee, this.actor);
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace Database {
          */
         
         public ShortAnswerQuestion(string subject, int difficulty, string qString, string id) :
-            base(subject, "MULTIPLE_CHOICE", difficulty, qString, id)
+            base(subject, "SHORT_ANSWER", difficulty, qString, id)
         { }
 
 	}
