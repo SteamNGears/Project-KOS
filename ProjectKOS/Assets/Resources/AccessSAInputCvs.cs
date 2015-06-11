@@ -48,10 +48,10 @@ namespace AssemblyCSharp
 		
 		void resetInputFields ()
 		{
-			this._mcFields [0].GetComponentsInChildren<Text> () [1].text = "";
-			this._mcFields [1].GetComponentsInChildren<Text> () [1].text = "";
-			this._mcFields [2].GetComponentsInChildren<Text> () [1].text = "";
-			this._mcFields [3].GetComponentsInChildren<Text> () [1].text = "";
+			this._mcFields [0].text = "";
+			this._mcFields [1].text = "";
+			this._mcFields [2].text = "";
+			this._mcFields [3].text = "";
 		}
 		
 		void settings ()
@@ -63,10 +63,10 @@ namespace AssemblyCSharp
 		void submitQ ()
 		{
 			this.submitQuest = true;
-			this._question = this._mcFields [0].GetComponentsInChildren<Text> () [1].text;
-			this._subject = this._mcFields [1].GetComponentsInChildren<Text> () [1].text;
-			Int32.TryParse (this._mcFields [2].GetComponentsInChildren<Text> () [1].text, out this._difficulty);
-			this._correctAns = this._mcFields [3].GetComponentsInChildren<Text> () [1].text;
+			this._question = this._mcFields [0].text;
+			this._subject = this._mcFields [1].text;
+			Int32.TryParse (this._mcFields [2].text, out this._difficulty);
+			this._correctAns = this._mcFields [3].text;
 		}
 		
 		AnswerPool buildAnswers ()
