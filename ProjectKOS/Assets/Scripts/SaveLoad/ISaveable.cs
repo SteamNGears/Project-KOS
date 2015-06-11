@@ -20,7 +20,7 @@ namespace SaveLoad
          * SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
          */
 
-        void SaveObject();
+        void LoadObject();
 
 
         /**
