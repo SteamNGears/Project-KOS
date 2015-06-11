@@ -6,7 +6,7 @@ namespace SaveLoad
 {
     public class PlayerSaveComponent : MonoBehaviour, ISaveable
     {
-        public void Start()
+        public void OnLevelWasLoaded()
         {
             SaveLoadManager.Instance.SaveObject += this.SaveObject;
             SaveLoadManager.Instance.LoadObject += this.LoadObject;

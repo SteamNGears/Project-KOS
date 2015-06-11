@@ -13,9 +13,9 @@ public class SaveTestScript : MonoBehaviour {
         SaveLoadManager.Instance.SaveObject += testPool.SaveObject;
         SaveLoadManager.Instance.LoadObject += testPool.LoadObject;
 
-        string savePath = SaveLoadManager.Instance.SaveGame();
-        Debug.Log(savePath);
+        //string savePath = SaveLoadManager.Instance.SaveGame();
+        //Debug.Log(savePath);
 
-        SaveLoadManager.Instance.LoadGame(savePath);
+		SaveLoadManager.Instance.LoadGame(SaveLoadManager.SaveFileDirectory + "63569602935146.save");
 	}
 }
