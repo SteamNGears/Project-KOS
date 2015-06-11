@@ -11,9 +11,9 @@ using System;
 using UnityEngine;
 namespace States
 {
-	public class OpenState:InteractionState
+	public class LockedState:InteractionState
 	{
-		public OpenState(GameObject _actee, GameObject _actor):base(_actee, _actor)
+		public LockedState(GameObject _actee, GameObject _actor):base(_actee, _actor)
 		{
 			//nothing
 		}
@@ -23,4 +23,3 @@ namespace States
 		}
 	}
 }
-
