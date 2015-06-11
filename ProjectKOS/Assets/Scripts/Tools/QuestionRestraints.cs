@@ -1,31 +1,50 @@
-﻿using UnityEngine;
+﻿/**
+ * Filename: QuestionRestraint.cs
+ * Author: Jakob Wilson
+ * Created: 5/20/2015
+ * Revision: 
+ * Rev. Date: 
+ * Rev. Author: 
+ * */
+
+using UnityEngine;
 using System.Collections;
 using Database;
 
+
+/**
+ * This class is to be attached to a door to specify question restraints on that door
+ * The question select state uses this script to create restrainst for it's query
+ * */
 public class QuestionRestraints : MonoBehaviour 
 {
-	public const int INFINITY = 2147483647;
+	public const int INFINITY = 2147483647;	/**Int Infinity*/
 
-	public int Min_Difficulty = 0;
-	public int Max_Difficulty = INFINITY;
+	public int Min_Difficulty = 0;			/**The minimum question difficulty*/
+	public int Max_Difficulty = INFINITY;	/**The maximum question difficulty*/
 
-	public string[] subjects;
+	public string[] subjects;				/**All the allowable subjects*/
+		
+	public enum type{ALL, MULTIPLE_CHOICE, TRUE_FALSE, SHORT_ANSWER};	/**An enum for the question types*/
+	public type Question_Type = type.ALL;				/**The question types we want for this door*/
 
-	public enum type{ALL, MULTIPLE_CHOICE, TRUE_FALSE, SHORT_ANSWER};
-	public type Question_Type = type.ALL;
-
-	// Use this for initialization
+	/**
+	 * does nothing
+	 * */
 	void Start () {
 	
 	}
 	
-	// Update is called once per frame
+	/**
+	 * Does nothing
+	 * */
 	void Update () {
 	
 	}
 
 	/**
-	 * A queryobject property thet creates a query objecy from the constraint
+	 * A queryobject property that creates a query objecy from the constraint
+	 * @return - QuestionQuery - a query that with the appropriate restraints specified by the scripts data
 	 * */
 	public QuestionQuery QueryObject
 	{
