@@ -56,7 +56,7 @@ namespace SaveLoad
 
         public string ObjectID()
         {
-            return null;
+            return "player";
         }
 
 
@@ -68,7 +68,7 @@ namespace SaveLoad
 
         public SaveData Save()
         {
-            return null;
+			return new PlayerSaveData (this.GetComponent<Transform> ());
         }
 
 
@@ -80,7 +80,18 @@ namespace SaveLoad
 
         public void Load(SaveData data)
         {
+			try
+			{
+				PlayerSaveData player = (PlayerSaveData) data;
 
+				this.GetComponent<Transform>().position = player.PlayerTransform.position;
+				this.GetComponent<Transform>().rotation = player.PlayerTransform.rotation;
+			}
+
+			catch (System.InvalidCastException e) 
+			{
+				Debug.Log (e.Message);
+			}
         }
     }
 }
