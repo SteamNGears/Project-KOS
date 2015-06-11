@@ -15,7 +15,16 @@ namespace SaveLoad
     [System.Serializable]
     public class PlayerSaveData : SaveData
     {
+		public Transform PlayerTransform 
+		{
+			get;
+			private set;
+		}
 
+		public PlayerSaveData(Transform transform)
+		{
+			this.PlayerTransform = transform;
+		}
         
     }
 }
