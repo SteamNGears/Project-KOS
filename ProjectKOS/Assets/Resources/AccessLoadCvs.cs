@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using SaveLoad;
 namespace AssemblyCSharp
 {
 	public class AccessLoadCvs : MonoBehaviour {
@@ -74,11 +75,11 @@ namespace AssemblyCSharp
 
 		public string fileName{
 			get{
-					return this.fileName;
+					return this._fileName.text;
 			}
 			private set{
 				if(value != null)
-					this.fileName = value;
+					this._fileName.text = value;
 				else
 					this._fileName.GetComponentsInChildren<Text> () [0].text = "No filename entered";
 			}
@@ -94,7 +95,9 @@ namespace AssemblyCSharp
 					//checkFiles();
 					break;
 				case nextLoadState.LOAD_FILE:
-					//loadFile();
+					SaveLoadManager.Instance.LoadGame(this.fileName);
+					this._chkState = false;
+					Application.LoadLevel("RecruitArea");
 					break;
 				case nextLoadState.MAIN_MENU:
 					GameObject.Instantiate (Resources.Load ("MainScrCvs") as GameObject);

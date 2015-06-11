@@ -57,7 +57,7 @@ namespace SaveLoad
 
         public string ObjectID()
         {
-            return null;
+            return this.gameObject.name;
         }
 
 
