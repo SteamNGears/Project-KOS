@@ -9,6 +9,7 @@
 
 
 using System.Collections;
+using SaveLoad;
 
 namespace Database {
 
@@ -18,7 +19,7 @@ namespace Database {
      * @author Aryk Anderson
      */ 
 
-	public abstract class Question {
+	public abstract class Question : ISaveable{
 
         /**
          * Readonly access to the ID property
@@ -126,6 +127,64 @@ namespace Database {
             this.Difficulty = difficulty;
             this.QuestionString = qString;
 			this.ID = id;
+        }
+
+        /**
+         * Method that will be registered with SaveLoadManager in order to write data to disk.
+         * Internals should look something like:
+         * SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
+         */
+
+        public void LoadObject()
+        {
+            //NotImplemented!
+        }
+
+
+        /**
+         * Method that will be registered with SaveLoadManager in order to load data from disk.
+         * Internals should look something like:
+         * this.Load(SaveLoadManager.Instance.GetSaveData(this.ObjectID()));
+         */
+
+        public void SaveObject()
+        {
+            //Not implemented!
+        }
+
+
+        /**
+         * Method should return a unique object ID for the object to be saved
+         * @returns string ID
+         */
+
+        public string ObjectID()
+        {
+            return "Question" + ID;
+        }
+
+
+        /**
+         * Method should save the relevant data to be saved in a SaveData object that
+         * can have all of its fields serialized.
+         * @returns SaveData
+         */
+
+        public SaveData Save()
+        {
+            return null;
+        }
+
+
+        /**
+         * Method should take an unserialized object and then load all of the previously saved fields into
+         * memory.
+         * @params SaveData
+         */
+
+        public void Load(SaveData data)
+        {
+            //TODO
         }
 	}
 }
