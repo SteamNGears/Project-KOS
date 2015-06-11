@@ -73,7 +73,7 @@ namespace AssemblyCSharp
 		{
 			this.submitQuest = true;
 			this._question = this._saFields [0].text;
-			this._subject = this._saFields [1].text.ToUpper;
+			this._subject = this._saFields [1].text.ToUpper ();
 			Int32.TryParse (this._saFields [2].text, out this._difficulty);
 			this._correctAns = this._saFields [3].text;
 		}

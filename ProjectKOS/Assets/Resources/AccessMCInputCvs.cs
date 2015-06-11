@@ -75,7 +75,7 @@ namespace AssemblyCSharp
 		{
 			this.submitQuest = true;
 			this._question = this._mcFields [0].text;
-			this._subject = this._mcFields [1].text.ToUpper;
+			this._subject = this._mcFields [1].text.ToUpper ();
 			Int32.TryParse (this._mcFields [2].text, out this._difficulty);
 			this._correctAns = this._mcFields [3].text;
 
