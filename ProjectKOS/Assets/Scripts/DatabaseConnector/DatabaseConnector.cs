@@ -27,7 +27,7 @@ namespace Database {
  
 	public class DatabaseConnector {
 
-        private static string ConnectionString = "Data Source=Assets/Database/Questions.db;Version=3;";
+        private static string ConnectionString = "Data Source=Database/Questions.db;Version=3;";
         private static DatabaseConnector _instance = null;
         
 
