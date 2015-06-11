@@ -19,7 +19,7 @@ namespace Database {
      * @author Aryk Anderson
      */ 
 
-	public abstract class Question : ISaveable{
+	public class Question : ISaveable{
 
         /**
          * Readonly access to the ID property
@@ -137,7 +137,7 @@ namespace Database {
 
         public void LoadObject()
         {
-            //NotImplemented!
+            this.Load(SaveLoadManager.Instance.GetSaveData(this.ObjectID()));
         }
 
 
@@ -149,7 +149,7 @@ namespace Database {
 
         public void SaveObject()
         {
-            //Not implemented!
+            SaveLoadManager.Instance.AddSaveData(this.ObjectID(), this.Save());
         }
 
 
@@ -160,7 +160,10 @@ namespace Database {
 
         public string ObjectID()
         {
-            return "Question" + ID;
+            if (!ID.Equals(""))
+                return "Question" + ID;
+            else
+                return "Question" + this;
         }
 
 
@@ -172,7 +175,7 @@ namespace Database {
 
         public SaveData Save()
         {
-            return null;
+            return new SaveLoad.QuestionSaveData(ID, Subject, Type, Difficulty, QuestionString, Answers);
         }
 
 
@@ -184,7 +187,21 @@ namespace Database {
 
         public void Load(SaveData data)
         {
-            //TODO
+            try
+            {
+                QuestionSaveData questionData = (QuestionSaveData) data;
+                this.ID = questionData.ID;
+                this.Subject = questionData.Subject;
+                this.Type = questionData.Type;
+                this.Difficulty = questionData.Difficulty;
+                this.QuestionString = questionData.QuestionString;
+                this.Answers = questionData.Answers;
+            }
+
+            catch (System.InvalidCastException e)
+            {
+                UnityEngine.Debug.Log(e.Message);
+            }
         }
 	}
 }
