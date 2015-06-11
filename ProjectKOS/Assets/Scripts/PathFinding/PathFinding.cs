@@ -75,7 +75,7 @@ public class PathFinding : MonoBehaviour {
 		foreach (Room r in UnChecked)
 			if (r.PlayerInRoom || r.IsStart) {
 				start = r;
-			Debug.Log("found start!");
+				//Debug.Log("found start!");
 			}
 
 		return DFS (start);
