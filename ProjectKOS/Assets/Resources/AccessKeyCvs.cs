@@ -14,11 +14,11 @@ namespace AssemblyCSharp
 {
 	public class AccessKeyCvs : MonoBehaviour {
 		
-		private Canvas _keyCvs;
+		private Canvas _keyCvs;//   keyboard layout canvas
 
-		private Button _settings;
+		private Button _settings;//   button to return to settings screen
 		
-		public bool chkSet;
+		public bool chkSet;//   bool to tell system to change state
 
 
 
@@ -27,9 +27,12 @@ namespace AssemblyCSharp
 			this._keyCvs = this.GetComponentInChildren<Canvas> ();
 
 			this._settings = this._keyCvs.GetComponentsInChildren<Button> () [0];
-			this._settings.onClick.AddListener (settings);			
+			this._settings.onClick.AddListener (settings);//   listener to return to settings screen	
 		}
-		
+
+		/**
+		 * listener to return to settings screen: cleans up itself
+		 * */
 		void settings ()
 		{
 			this._settings.onClick.RemoveListener (settings);
