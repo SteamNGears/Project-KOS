@@ -23,8 +23,8 @@ public class Door : MonoBehaviour {
 	public GameObject RoomOne;		/**The gameobject holding the first room collider*/
 	public GameObject RoomTwo;		/**The gameobject holding the second room collider*/
 
-	public Room ZoneOne{ get; private set; }	/**The actual room script for room one*/
-	public Room ZoneTwo{ get; private set; }	/**The actual room script for room two*/
+	public Room ZoneOne;//{ get; private set; }	/**The actual room script for room one*/
+	public Room ZoneTwo;//{ get; private set; }	/**The actual room script for room two*/
 
 	public enum DoorState{LOCKED, IDLE, OPEN};	/**an enum to represent the state of the door so BFS knows where connections are*/
 	public DoorState currentState = DoorState.IDLE;	/** the current door state*/

@@ -17,8 +17,8 @@ using System.Collections.Generic;
  * */
 public class PathFinding : MonoBehaviour {
 
-	Door[] Doors;	/**All the doors on the map*/
-	Room[] Rooms;	/**All the rooms on the map*/
+	public Door[] Doors;	/**All the doors on the map*/
+	public Room[] Rooms;	/**All the rooms on the map*/
 
 	List<Room> Checked;			/**The list of checked rooms for BFS*/
 	List<Room> UnChecked;		/**The list of unchecked rooms for BFS*/
@@ -62,7 +62,7 @@ public class PathFinding : MonoBehaviour {
 	 * A function that inits the BFS 
 	 * @return bool - whether or not the exit can be reached
 	 * */
-	bool ExitIsReachable()
+	public bool ExitIsReachable()
 	{
 		Checked = new List<Room> ();
 		UnChecked = new List<Room> ();
@@ -75,6 +75,7 @@ public class PathFinding : MonoBehaviour {
 		foreach (Room r in UnChecked)
 			if (r.PlayerInRoom || r.IsStart) {
 				start = r;
+			Debug.Log("found start!");
 			}
 
 		return DFS (start);
@@ -91,8 +92,11 @@ public class PathFinding : MonoBehaviour {
 		if (r == null)
 			return false;
 
-		if (r.IsEnd)
+		if (r.IsEnd) {
 			return true;
+			Debug.Log("Found end!");
+		}
+
 
 		Checked.Add (r);
 		UnChecked.Remove (r);
