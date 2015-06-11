@@ -93,7 +93,7 @@ namespace AssemblyCSharp
 				{
 					case nextState.NEW_GAME:
 						removeListeners ();
-						Application.LoadLevel("TrainingRoom");
+						Application.LoadLevel("RecruitArea");
 						break;
 					case nextState.LOAD_GAME:
 						removeListeners ();
