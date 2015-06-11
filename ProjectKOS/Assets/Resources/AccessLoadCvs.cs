@@ -31,6 +31,7 @@ namespace AssemblyCSharp
 		public enum nextLoadState {CHECK_FILES, LOAD_FILE, MAIN_MENU};//   enums to represent possible states
 		public nextLoadState nxtLState;//   user selected state
 		private SaveLoadManager slm;//   Object to enabled loading a saved file and find file paths
+		public string fileName;
 
 		// Use this for initialization
 		void Start () {
@@ -86,17 +87,6 @@ namespace AssemblyCSharp
 			this._mainMenu.onClick.RemoveListener (mainMenu);
 		}
 
-		/**
-		 * set/get stubbed out for user selected file name
-		 * */
-		public string fileName{
-			get{
-					return this.fileName;
-			}
-			private set{
-					this.fileName = value;
-			}
-		}
 		// Update is called once per frame
 		void Update () {
 			if (this._chkState) 
@@ -121,8 +111,7 @@ namespace AssemblyCSharp
 					this._loadCvs.enabled = false;//   disable load prefab
 					removeListeners();//   Clean up listeners
 					this._chkState = false;
-					//Application.LoadLevel ("LevelScene");
-					//slm.LoadGame (this._fileName.text);
+					slm.LoadGame (this.fileName);
 
 					break;
 				case nextLoadState.MAIN_MENU:
