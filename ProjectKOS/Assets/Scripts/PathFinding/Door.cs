@@ -55,7 +55,7 @@ public class Door : MonoBehaviour {
 				this.currentState = DoorState.OPEN;
 			else if (inter.currentState is LockedState)
 				this.currentState = DoorState.LOCKED;
-			else 
+			else if(inter.currentState is IdleState)
 				this.currentState = DoorState.IDLE;
 		}
 	}

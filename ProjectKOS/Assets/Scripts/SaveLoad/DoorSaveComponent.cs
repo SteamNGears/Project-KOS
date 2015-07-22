@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿/**
+ * Filename: DoorSaveComponent.cs
+ * Author: Jakob Wilson
+ * Created: 6/7/2015
+ * Revision: 1
+ * Rev. Date: 7/20/2015
+ * Rev. Author: Jakob Wilson
+ * */
+
+using UnityEngine;
 using System.Collections;
 using States;
 using System;
@@ -7,12 +16,22 @@ namespace SaveLoad
 {
     public class DoorSaveComponent : MonoBehaviour, ISaveable
     {
-
-        public void OnLevelWasLoaded()
+		/**
+		 * Subscribes to the save event and checks if load data is present
+		 * if there is load data, then it initialized the object with that data
+		 * */
+        public void Start()
         {
             SaveLoadManager.Instance.SaveObject += this.SaveObject;
-            SaveLoadManager.Instance.LoadObject += this.LoadObject;
+
+			SaveData s = SaveLoadManager.Instance.GetSaveData (this.ObjectID());
+
+			if (!(s is NullSaveData)) {
+				this.Load(s);
+				SaveLoadManager.Instance.RemoveSaveData(this.ObjectID());
+			}
         }
+
 
 
         /**
@@ -95,15 +114,29 @@ namespace SaveLoad
         {
 			DoorSaveData load = (DoorSaveData)data;
 			Interaction inter = GetComponent<Interaction> ();
+			Door door = GetComponent<Door> ();
 
 			if (load != null && inter != null) 
 			{
 				if(load.saveState == DoorSaveData.state.OPEN)
+				{
+					inter.startingState = new OpeningState(this.gameObject, null);
 					inter.currentState = new OpeningState(this.gameObject, null);
+					door.currentState = Door.DoorState.OPEN;
+				}
 				else if (load.saveState == DoorSaveData.state.LOCKED)
-				         inter.currentState = new OpeningState(this.gameObject, null);
+				{
+					inter.startingState = new OpeningState(this.gameObject, null);
+				    inter.currentState = new LockingState(this.gameObject, null);
+					door.currentState = Door.DoorState.LOCKED;
+				}
 				else
+				{
+					inter.startingState = new InteractButtonState(this.gameObject, null);
 					inter.currentState = new InteractButtonState(this.gameObject, null);
+					door.currentState = Door.DoorState.IDLE;
+				}
+				inter.currentState.Behave();
 			}
         }
     }

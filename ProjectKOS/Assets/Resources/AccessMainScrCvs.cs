@@ -105,7 +105,7 @@ namespace AssemblyCSharp
 		void Update () {
 
 			if (this.chkState) {
-				this.msCvs.enabled = false;
+				//this.msCvs.enabled = false;
 
 				switch(this.nxtState)
 				{
@@ -128,6 +128,7 @@ namespace AssemblyCSharp
 						break;
 				}
 				this.chkState = false;
+				GameObject.Destroy(this.gameObject);
 			}
 
 		}

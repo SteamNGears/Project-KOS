@@ -63,31 +63,14 @@ namespace States
 
 
 			if (question.Type == "MULTIPLE_CHOICE") {					//if the question is multiple choice, create and return that state
-				Debug.Log(
-					"Mulitple choice question: " + question.QuestionString
-					);
-				foreach (Answer ans in question.Answers)
-				{
-					Debug.Log (ans.AnswerString);
-				}
 				return new InteractMC_State(this.actee, question, this.actor);
 			}
 
 			if (question.Type == "TRUE_FALSE") {						//if the question is true/false, create and return that state
-				Debug.Log(
-					"True/false question: " + question.QuestionString
-					+ "Answer: " + question.Answers[0].AnswerString
-					);
-
 				return new InteractTF_State(this.actee, question, this.actor);
 			}
 
 			if (question.Type == "SHORT_ANSWER") {						//if the question is short answer, create and return that state
-				Debug.Log(
-					"Short answer question: " + question.QuestionString
-					+ "Answer: " + question.Answers[0].AnswerString
-					);
-
 				return new InteractSA_State(this.actee, question, this.actor);
 			}
 

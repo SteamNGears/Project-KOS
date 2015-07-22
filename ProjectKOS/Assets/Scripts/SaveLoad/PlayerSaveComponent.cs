@@ -6,11 +6,18 @@ namespace SaveLoad
 {
     public class PlayerSaveComponent : MonoBehaviour, ISaveable
     {
-        public void OnLevelWasLoaded()
+        public void Start()
         {
             SaveLoadManager.Instance.SaveObject += this.SaveObject;
-            SaveLoadManager.Instance.LoadObject += this.LoadObject;
+
+			SaveData s = SaveLoadManager.Instance.GetSaveData (this.ObjectID());
+			
+			if (!(s is NullSaveData)) {
+				this.Load(s);
+				SaveLoadManager.Instance.RemoveSaveData(this.ObjectID());
+			}
         }
+
 
         
         /**
@@ -56,7 +63,7 @@ namespace SaveLoad
 
         public string ObjectID()
         {
-            return "player";
+            return this.gameObject.name;
         }
 
 
@@ -68,7 +75,7 @@ namespace SaveLoad
 
         public SaveData Save()
         {
-			return new PlayerSaveData (this.GetComponent<Transform> ());
+			return new PlayerSaveData (this.GetComponent<Transform> ().position);
         }
 
 
@@ -84,8 +91,7 @@ namespace SaveLoad
 			{
 				PlayerSaveData player = (PlayerSaveData) data;
 
-				this.GetComponent<Transform>().position = player.PlayerTransform.position;
-				this.GetComponent<Transform>().rotation = player.PlayerTransform.rotation;
+				this.GetComponent<Transform>().position = player.PlayerTransform;
 			}
 
 			catch (System.InvalidCastException e) 

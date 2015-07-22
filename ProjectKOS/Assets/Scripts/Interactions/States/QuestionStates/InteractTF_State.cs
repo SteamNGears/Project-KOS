@@ -64,8 +64,6 @@ namespace States
 						break;
 					}
 				}
-				Debug.Log (correctAns + "\n");
-				Debug.Log (userAns + "\n");
 				bool correct = correctAns.Equals(userAns, StringComparison.OrdinalIgnoreCase);
 
 				if(correct)

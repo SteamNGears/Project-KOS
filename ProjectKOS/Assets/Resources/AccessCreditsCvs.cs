@@ -43,9 +43,10 @@ namespace AssemblyCSharp
 		void Update () {
 			if (this.chkSet) 
 			{
-				this._creditsCvs.enabled = false;
+				//this._creditsCvs.enabled = false;
 				this.chkSet = false;
 				GameObject.Instantiate (Resources.Load ("SettingsCvs") as GameObject);
+				GameObject.Destroy(this.gameObject);
 			}
 		}
 	}

@@ -13,17 +13,21 @@ using System.IO;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
+using System.Threading;
 
 namespace SaveLoad
 {
     public delegate void SaveHandler();
-    public delegate void LoadHandler();
+
+
 
     public class SaveLoadManager
     {
-        public static string SaveFileDirectory = "Assets/SavedGames/";
+        public static string SaveFileDirectory = "SavedGames/";
 
         private static SaveLoadManager _instance;
+
         
 		public static SaveLoadManager Instance
         {
@@ -43,8 +47,8 @@ namespace SaveLoad
 
         private Dictionary<string, SaveData> _snapshot;
 
-        public event SaveHandler SaveObject;
-        public event LoadHandler LoadObject;
+		public event SaveHandler SaveObject;
+
 
 
         /**
@@ -68,6 +72,8 @@ namespace SaveLoad
             string savePath = "" + SaveFileDirectory;
             string currentScene = Application.loadedLevelName;
 
+			_snapshot = new Dictionary<string, SaveData>();
+
             this.SaveObject(); //calls all ISaveables that have registered with this event
 
             try
@@ -76,12 +82,12 @@ namespace SaveLoad
 
                 File.Open(savePath, FileMode.Create).Close();
 				FileStream fout = File.Open(savePath, FileMode.Open, FileAccess.Write);
-                BinaryFormatter writer = new BinaryFormatter();
-
+				BinaryFormatter writer = new BinaryFormatter();
                 writer.Serialize(fout, currentScene);
                 writer.Serialize(fout, _snapshot);
+				fout.Close();
 
-                fout.Close();
+                
             }
 
             catch (IOException e)
@@ -107,25 +113,26 @@ namespace SaveLoad
 
         public void LoadGame(string filePath)
         {
-            if (!File.Exists(filePath)) 
+			string savedScene = "mainScene";
+            if (!File.Exists(SaveFileDirectory + filePath)) 
             {
                 Debug.Log(filePath + " does not exist!");
                 return;
             }
 
+
+			this.SaveObject = null;
             try
             {
-                FileStream fin = File.Open(filePath, FileMode.Open);
+				FileStream fin = File.Open(SaveFileDirectory + filePath, FileMode.Open);
                 BinaryFormatter reader = new BinaryFormatter();
 
-                string savedScene = (string)reader.Deserialize(fin);
-                Application.LoadLevel(savedScene);
+                savedScene = (string)reader.Deserialize(fin);
 
-                _snapshot = (Dictionary<string, SaveData>) reader.Deserialize(fin);
+				_snapshot = (Dictionary<string, SaveData>) reader.Deserialize(fin);
 
-				this.LoadObject();
+				fin.Close();
 
-                fin.Close();
             }
 
             catch (IOException e)
@@ -137,8 +144,10 @@ namespace SaveLoad
             {
                 Debug.Log(e.Message);
             }
+			Application.LoadLevel(savedScene);
         }
 
+		
 
         /**
          * Scans the directory for all saved game files and returns an array of the filepaths
@@ -195,7 +204,7 @@ namespace SaveLoad
 
             return files[newestIndex];
         }
-
+		
 
         /**
          */
@@ -219,6 +228,11 @@ namespace SaveLoad
 
             return new NullSaveData();
         }
+
+		public void RemoveSaveData(string key)
+		{
+			_snapshot.Remove (key);
+		}
     }
 }
 

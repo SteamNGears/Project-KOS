@@ -15,13 +15,22 @@ namespace SaveLoad
     [System.Serializable]
     public class PlayerSaveData : SaveData
     {
-		public Transform PlayerTransform 
+
+		public float x = 0;
+		public float y = 0;
+		public float z = 0;
+		public Vector3 PlayerTransform
 		{
-			get;
-			private set;
+			get{return new Vector3(x,y,z);}
+			set{
+				this.x = value.x;
+				this.y = value.y;
+				this.z = value.z;
+			}
+
 		}
 
-		public PlayerSaveData(Transform transform)
+		public PlayerSaveData(Vector3 transform)
 		{
 			this.PlayerTransform = transform;
 		}

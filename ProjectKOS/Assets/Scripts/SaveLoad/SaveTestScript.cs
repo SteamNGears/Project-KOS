@@ -11,7 +11,6 @@ public class SaveTestScript : MonoBehaviour {
         QuestionPool testPool = DatabaseConnector.Instance.GetQuestions(new QuestionQuery());
 
         SaveLoadManager.Instance.SaveObject += testPool.SaveObject;
-        SaveLoadManager.Instance.LoadObject += testPool.LoadObject;
 
         string savePath = SaveLoadManager.Instance.SaveGame();
         Debug.Log(savePath);
