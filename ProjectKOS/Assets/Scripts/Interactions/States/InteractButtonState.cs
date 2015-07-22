@@ -74,7 +74,8 @@ namespace States
 			//remove event listener
 			this.actee.GetComponent<Interaction> ().ExitSignal -= this.Suspend;
 			this.actor = null;
-			this.btnInteract.onClick.RemoveListener (this.onButtonClick);//clean up listener
+			if(this.btnInteract != null)
+				this.btnInteract.onClick.RemoveListener (this.onButtonClick);//clean up listener
 			GameObject.Destroy (this.cvsQuestion);
 		}
 
