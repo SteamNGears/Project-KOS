@@ -8,6 +8,7 @@
  * */
 using System;
 using UnityEngine;
+using UnityStandardAssets.Characters.ThirdPerson;
 namespace States
 {
 	/**
@@ -19,8 +20,12 @@ namespace States
 	{
 		private Animator anim;		/**The animator so we cna playback animations*/
 		private Renderer rend;		/**The renderer so we can change the color of the frame lights*/
+		private GameObject player;		/**A reference to the player so we can enable his movement*/
 
-		public OpeningState (GameObject _actee, GameObject _actor):base(_actee, _actor){}
+
+		public OpeningState (GameObject _actee, GameObject _actor):base(_actee, _actor){
+
+		}
 
 
 		/**
@@ -33,7 +38,11 @@ namespace States
 		{
 				this.anim = this.actee.GetComponent<Animator> ();
 				this.rend = this.actee.GetComponentInChildren<Renderer>();
-				
+				this.player = GameObject.Find ("ThirdPersonController");
+
+				if (this.player != null)
+					this.player.GetComponent<ThirdPersonUserControl> ().CanMove = true;
+
 				// if we have an animator, play the animation
 				if(this.anim != null)
 					this.anim.Play("OpenDoors");

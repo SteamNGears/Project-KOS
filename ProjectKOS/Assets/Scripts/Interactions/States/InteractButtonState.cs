@@ -12,6 +12,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.ThirdPerson;
+
 namespace States
 {
 	/**
@@ -24,13 +26,14 @@ namespace States
 		private GameObject cvsQuestion;	/**The canvas containing the "interact" button"*/
 		Button btnInteract;				/**The interact button itself(gotten from the canvas)*/
 		private bool buttonClicked;		/**Whether or not the interact button has been clicked*/
-
-
+		private GameObject player;		/**A reference to the player so we can disable his movement*/
+		
 		/**
 		 * Sets default values and calls base constructor
 		 * */
 		public InteractButtonState (GameObject _actee, GameObject _actor = null):base(_actee, _actor)
 		{
+			this.player = GameObject.Find ("ThirdPersonController");
 			this.actee.GetComponent<Interaction> ().ExitSignal += this.Suspend;
 			buttonClicked = false;
 		}
@@ -86,6 +89,8 @@ namespace States
 		void onButtonClick()
 		{
 			this.buttonClicked = true;	//set button clicked to true
+			if (this.player != null)
+				this.player.GetComponent<ThirdPersonUserControl> ().CanMove = false;
 			this.btnInteract.onClick.RemoveListener (this.onButtonClick);//clean up listener
 		}
 

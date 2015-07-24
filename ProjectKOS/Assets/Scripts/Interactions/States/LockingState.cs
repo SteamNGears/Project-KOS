@@ -9,6 +9,7 @@
 
 using System;
 using UnityEngine;
+using UnityStandardAssets.Characters.ThirdPerson;
 namespace States
 {
 	/**
@@ -19,6 +20,7 @@ namespace States
 	public class LockingState:InteractionState
 	{
 		private Renderer rend;					/**The renderer so we can change the color of the frame lights*/
+		private GameObject player;		/**A reference to the player so we can enable his movement*/
 
 		/**
 		 * Calls base constructor only
@@ -33,6 +35,11 @@ namespace States
 		public override InteractionState Behave ()
 		{
 			this.rend = this.actee.GetComponentInChildren<Renderer>();
+			this.player = GameObject.Find ("ThirdPersonController");
+
+			if (this.player != null)
+				this.player.GetComponent<ThirdPersonUserControl> ().CanMove = true;
+
 			
 			//if we have the renderer, change the frame light color
 			if(this.rend != null)
