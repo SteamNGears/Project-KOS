@@ -56,15 +56,24 @@ namespace AssemblyCSharp
 			//for each file, create a button, set the text, and parent(to the scroll content), then add it to the buttons list so it can be cleaned up
 			foreach (var fi in info.GetFiles())
 			{
+				string filename = fi.Name;
 				GameObject b = GameObject.Instantiate(Resources.Load("UI/Button") as GameObject);
-				b.GetComponentInChildren<Text>().text = fi.Name;
+				b.GetComponentInChildren<Text>().text = filename ;
 				b.transform.SetParent(scrollContent.transform, false);
 				b.GetComponent<RectTransform>().localPosition = new Vector3(0,this._savedGameButtons.Count * -30 + scrollContent.GetComponent<RectTransform>().rect.height/2 - 20, 0);
 				b.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 30);
-				b.GetComponent<Button>().onClick.AddListener(delegate() {SaveLoadManager.Instance.LoadGame(fi.Name);});
+				b.GetComponent<Button>().onClick.AddListener(delegate() {this.LoadLevel(filename);});
 				this._savedGameButtons.Add(b);
 
 			}
+		}
+
+		/**
+		 * Loads a new level
+		 * */
+		private void LoadLevel (string levelname)
+		{
+			SaveLoadManager.Instance.LoadGame(levelname);
 		}
 
 		/**

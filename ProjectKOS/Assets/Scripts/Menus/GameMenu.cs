@@ -38,7 +38,6 @@ public class GameMenu : MonoBehaviour {
 	public void Save()
 	{
 		SaveLoadManager.Instance.SaveGame ();
-		Debug.Log ("Saving");
 	}
 	
 	/**
